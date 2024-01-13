@@ -11,6 +11,7 @@ Postmann aims to simplify the testing and debugging of APIs by emulating the fun
 - **User-Friendly Interface:** A simple and intuitive interface for constructing requests with necessary parameters.
 - **Response Viewer:** Quickly view and analyze the responses received from the server.
 - **Efficiency:** Speed up the testing process by eliminating the need for external tools or applications.
+- **JSON Response Handling:** Easily read both raw and prettified JSON responses for better analysis.
 
 ## Contribution
 
