@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "version": "1.0.0",
+    "name": "Postmann",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting"
+    ],
+    "host_permissions": [
+        "http:/*/*",
+        "https:/*/*"
+    ],
+    "icons": {
+        "128": "icon128.png"
+    }
+}
