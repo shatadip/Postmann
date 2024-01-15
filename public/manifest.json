@@ -6,13 +6,13 @@
         "default_popup": "index.html"
     },
     "permissions": [
-        "scripting"
+        "storage"
     ],
     "host_permissions": [
-        "http:/*/*",
-        "https:/*/*"
+        "http://*/*",
+        "https://*/*"
     ],
     "icons": {
-        "128": "icon128.png"
+        "128": "postmann-icon128.png"
     }
 }
