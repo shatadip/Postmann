@@ -47,6 +47,61 @@ Built with React, TypeScript, and Vite.
 - **GitHub**: [Shatadip's GitHub Profile](https://github.com/shatadip)
 
 ## Contribution
+## Recommended Test APIs
+
+Explore and test various functionalities using the following public APIs:
+
+1. **Public APIs**
+   - Retrieve a list of public APIs cataloged in the project.
+   - Sample API URL: [https://api.publicapis.org/entries](https://api.publicapis.org/entries)
+
+2. **Cat Facts**
+   - Receive random cat facts via text message every day.
+   - Sample API URL: [https://catfact.ninja/fact](https://catfact.ninja/fact)
+
+3. **CoinDesk**
+   - View the real-time Bitcoin Price Index (BPI).
+   - Sample API URL: [https://api.coindesk.com/v1/bpi/currentprice.json](https://api.coindesk.com/v1/bpi/currentprice.json)
+
+4. **Bored**
+   - Find something to do with suggestions for random activities.
+   - Sample API URL: [https://www.boredapi.com/api/activity](https://www.boredapi.com/api/activity)
+
+5. **Agify.io**
+   - Predict the age of a person based on their name.
+   - Sample API URL: [https://api.agify.io?name=meelad](https://api.agify.io?name=meelad)
+
+6. **Genderize.io**
+   - Predict the gender of a person based on their name.
+   - Sample API URL: [https://api.genderize.io?name=luc](https://api.genderize.io?name=luc)
+
+7. **Nationalize.io**
+   - Predict the nationality of a person based on their name.
+   - Sample API URL: [https://api.nationalize.io?name=nathaniel](https://api.nationalize.io?name=nathaniel)
+
+8. **Data USA**
+   - Retrieve US public data, such as population data.
+   - Sample API URL: [https://datausa.io/api/data?drilldowns=Nation&measures=Population](https://datausa.io/api/data?drilldowns=Nation&measures=Population)
+
+9. **Dogs**
+   - Brighten your day with random dog images.
+   - Sample API URL: [https://dog.ceo/api/breeds/image/random](https://dog.ceo/api/breeds/image/random)
+
+10. **IPify**
+    - Get your current IP address.
+    - Sample API URL: [https://api.ipify.org?format=json](https://api.ipify.org?format=json)
+
+11. **IPinfo**
+    - Retrieve information about a specified IP address.
+    - Sample API URL: [https://ipinfo.io/161.185.160.93/geo](https://ipinfo.io/161.185.160.93/geo)
+
+12. **Jokes**
+    - Enjoy random jokes or get jokes based on type, such as programming jokes.
+    - Sample API URL: [https://official-joke-api.appspot.com/random_joke](https://official-joke-api.appspot.com/random_joke)
+
+Now, you will also receive and be able to view response headers in the API responses.
+
+Feel free to explore and integrate these APIs into your development and testing workflows. Happy coding!
 
 Contributions are welcome! If you have ideas for improvements or new features, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/shatadip/Postmann.git).
 
