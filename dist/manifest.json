@@ -2,6 +2,8 @@
     "manifest_version": 3,
     "version": "1.0.0",
     "name": "Postmann",
+    "description": "Perform API testing with Postmann, inspired by Postman. Handle GET, POST, PUT, PATCH, UPDATE, DELETE HTTP requests with precision.",
+    "author": "Shatadip Majumder",
     "action": {
         "default_popup": "index.html"
     },
