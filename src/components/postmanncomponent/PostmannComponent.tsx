@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
+import { Github, Heart } from 'react-bootstrap-icons';
+
 
 interface PostmannComponentProps {
     showLineNumbers: boolean;
@@ -15,8 +17,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
     const [responseCode, setResponseCode] = useState<number | null>(null);
     const [response, setResponse] = useState<string>('');
+    const [responseHeaders, setResponseHeaders] = useState<Headers | null>(null);
     const [responseClass, setResponseClass] = useState<string>('');
-    const [viewOption, setViewOption] = useState<'pretty' | 'raw'>('pretty');
+    const [viewOption, setViewOption] = useState<'pretty' | 'raw' | 'headers'>('pretty');
     const [responseTime, setResponseTime] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [syntaxHighlighterLanguage, setSyntaxHighlighterLanguage] = useState<string>('json');
@@ -30,7 +33,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     "email": "eve.holt@reqres.in",
     "password": "cityslicka"
 }`;
-    const urlPlaceholder='Enter API URL, e.g. https://reqres.in/api/login';
+    const urlPlaceholder = 'Enter API URL, e.g. https://reqres.in/api/login';
 
     useEffect(() => {
         // Save to localStorage whenever the URL or JSON body changes
@@ -45,6 +48,23 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
         }
     }, []);
 
+    useEffect(() => {
+        // Load the previously selected request type from localStorage
+        const savedRequestType = localStorage.getItem('postmannRequestType');
+        if (savedRequestType) {
+            setRequestType(savedRequestType);
+        }
+    }, []);
+    // Function to format HTML for better readability
+    const formatHtml = (html: string) => {
+        // Create a temporary div element to parse the HTML
+        // const tempDiv = document.createElement('div');
+        // tempDiv.innerHTML = html;
+
+        // // Use innerHTML with indentation to format the HTML
+        // return tempDiv.innerHTML.replace(/><\//g, '>\n<');
+        return html;
+    };
     const sendRequest = async () => {
         setLoading(true); // Set loading to true when starting the request
         setRequestSent(true);
@@ -65,6 +85,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                 headers: {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache',
+                    'Accept': '*/*',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive',
                 },
                 signal,
             };
@@ -79,6 +102,11 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             // alert(res.text());
             clearTimeout(timeoutId);
 
+            // Capture the response headers
+            const resHeaders = res.headers;
+            setResponseHeaders(resHeaders);
+
+            //Capoture the response code (200, 201, 404 etc.)
             const responseCode = res.status;
             setResponseCode(responseCode);
 
@@ -91,7 +119,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
 
                 if (contentType && contentType.includes('text/html')) {
                     const responseBody = await res.text();
-                    setResponse(responseBody);
+                    const formattedHtml = formatHtml(responseBody);
+                    setResponse(formattedHtml);
                     // Set language to "html" for HTML responses
                     setSyntaxHighlighterLanguage('html');
                 } else {
@@ -155,21 +184,47 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             setResponseTime(elapsedTime);
         }
     };
+    const formatHeaders = (headers: Headers | null) => {
+        const formattedHeaders: Record<string, string> = {};
+
+        if (headers) {
+            headers.forEach((value, key) => {
+                formattedHeaders[key] = value;
+            });
+        }
+
+        return JSON.stringify(formattedHeaders, null, 2);
+    };
+
+
+
+    const handleRequestTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedRequestType = e.target.value;
+        setRequestType(selectedRequestType);
+
+        // Save the selected request type to localStorage
+        localStorage.setItem('postmannRequestType', selectedRequestType);
+    };
 
 
     return (
         <div className={`postmann-container`}>
             <div className="postmann-header">
-            <img src="postmann-icon128.png" alt="Logo" className="postmann-logo" />
-            <h2 className="postmann-title">Postmann</h2>
+                <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
+                <h2 className="postmann-title">Postmann</h2>
+                <div className="postmann-links">
+                    <a href="https://www.paypal.com/paypalme/shatadip2020" target="_blank" rel="noopener noreferrer"><Heart className='donateHeart' />Donate</a>
+                    <a href="https://github.com/shatadip/Postmann" target="_blank" rel="noopener noreferrer"><Github className='githubLink' />GitHub</a>
+                    <a href="https://www.shatadip.com/" target="_blank" rel="noopener noreferrer">@Shatadip</a>
+                </div>
             </div>
             <div>
                 <label>
-                    Request Type:
+                    HTTP Request Type:
                     <select
                         className={`postmann-select postmann-${requestType.toLowerCase()}`}
                         value={requestType}
-                        onChange={(e) => setRequestType(e.target.value)}
+                        onChange={handleRequestTypeChange}
                     >
                         <option className="postmann-get" value="GET">
                             GET
@@ -192,13 +247,13 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             <div>
                 <label>
                     URL:
-                    <input 
-                    ref={urlInputRef}
-                    className="postmann-input" 
-                    type="text" 
-                    value={url} 
-                    onChange={(e) => setUrl(e.target.value)} 
-                    placeholder={urlPlaceholder}
+                    <input
+                        ref={urlInputRef}
+                        className="postmann-input"
+                        type="text"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder={urlPlaceholder}
                     />
                 </label>
             </div>
@@ -234,6 +289,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                             <div className={`postmann-tab ${viewOption === 'raw' ? 'active' : ''}`} onClick={() => setViewOption('raw')}>
                                 Raw
                             </div>
+                            <div className={`postmann-tab ${viewOption === 'headers' ? 'active' : ''}`} onClick={() => setViewOption('headers')}>
+                                Headers
+                            </div>
                         </div>
 
                         {loading ? (
@@ -249,8 +307,17 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                                     <SyntaxHighlighter language={syntaxHighlighterLanguage} style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
                                         {response}
                                     </SyntaxHighlighter>
+                                ) : viewOption === 'raw' ? (
+                                    <div className={`postmann-raw-response`}><pre>{response}</pre></div>
                                 ) : (
-                                    <div className={`postmann-raw-response`}>{response}</div>
+                                    <div className={`postmann-headers`}>
+                                        {/* Render headers here */}
+                                        {responseHeaders && (
+                                            <SyntaxHighlighter language="json" style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
+                                                {formatHeaders(responseHeaders)}
+                                            </SyntaxHighlighter>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         )}

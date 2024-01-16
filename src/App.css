@@ -1,3 +1,6 @@
+body {
+  background-color: #1e1e1e!important;
+}
 #root {
   width: 400px;
   margin: 0 auto;

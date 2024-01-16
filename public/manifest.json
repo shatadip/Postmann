@@ -2,6 +2,8 @@
     "manifest_version": 3,
     "version": "1.0.0",
     "name": "Postmann",
+    "description": "Perform seamless API testing with our lightweight Chrome extension, drawing inspiration from the acclaimed Postman tool. Effortlessly handle GET, SET, PUT, PATCH, UPDATE, and DELETE requests with precision and speed. Elevate your development experience as you craft, execute, and refine API calls with ease.",
+    "author": "Shatadip Majumder",
     "action": {
         "default_popup": "index.html"
     },

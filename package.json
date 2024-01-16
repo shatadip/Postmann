@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@types/react-syntax-highlighter": "^15.5.11",
+    "bootstrap-icons": "^1.11.3",
+    "html-prettify": "^1.0.7",
     "react": "^18.2.0",
+    "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18.2.0",
     "react-syntax-highlighter": "^15.5.0"
   },
