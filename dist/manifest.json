@@ -7,9 +7,6 @@
     "action": {
         "default_popup": "index.html"
     },
-    "permissions": [
-        "storage"
-    ],
     "host_permissions": [
         "http://*/*",
         "https://*/*"
