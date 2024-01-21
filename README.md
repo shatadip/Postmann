@@ -20,12 +20,12 @@ Built with React, TypeScript, and Vite.
 ## How to Use
 
 1. **Installation:**
-   - Add the extension to your Chrome browser.
-   - Navigate to the Chrome Web Store and search for "Postmann," then click on "Add to Chrome."
+   - Add the extension to your Chrome browser by visiting [this link](https://chrome.google.com/webstore/detail/okonkfbibmnmlpcookfdplminfemfhgf).
+   - Alternatively, you can search for "Postmann" (note the double "n") on the [Chrome Web Store](https://chromewebstore.google.com/) and click on "Add to Chrome."
 
 2. **Accessing Postmann:**
-   - Once installed, find the Postmann icon in the Chrome toolbar.
-   - Click on the icon to open the extension.
+   - Once installed, locate the Postmann icon in the Chrome Extensions toolbar and pin it for quick access.
+   - Click on the pinned icon to open the extension.
 
 3. **Using Locally:**
    - To use Postmann locally on your computer, load the unpacked `dist` folder.
