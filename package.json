@@ -1,7 +1,7 @@
 {
   "name": "postmann",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-pdf/pdfkit": "^3.1.2",
+    "@react-pdf/png-js": "^2.3.0",
+    "@types/react-modal": "^3.16.3",
     "@types/react-syntax-highlighter": "^15.5.11",
     "bootstrap-icons": "^1.11.3",
     "html-prettify": "^1.0.7",
     "react": "^18.2.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "react-syntax-highlighter": "^15.5.0"
   },
   "devDependencies": {

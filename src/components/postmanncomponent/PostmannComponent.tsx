@@ -5,7 +5,12 @@ import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
 import { Github, Heart } from 'react-bootstrap-icons';
+// import { Document, Page, pdfjs } from "react-pdf";
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
+import Modal from 'react-modal'; // Import the modal library
+Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
 interface PostmannComponentProps {
     showLineNumbers: boolean;
@@ -16,14 +21,21 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     const [url, setUrl] = useState<string>(localStorage.getItem('postmannUrl') || ''); // Load from localStorage
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
     const [responseCode, setResponseCode] = useState<number | null>(null);
-    const [response, setResponse] = useState<string>('');
+    const [response, setResponse] = useState<any>('');
     const [responseHeaders, setResponseHeaders] = useState<Headers | null>(null);
     const [responseClass, setResponseClass] = useState<string>('');
-    const [viewOption, setViewOption] = useState<'pretty' | 'raw' | 'headers'>('pretty');
+    const [viewOption, setViewOption] = useState<'pretty' | 'raw' | 'image' | 'binary' | 'pdf' | 'headers'>('pretty');
     const [responseTime, setResponseTime] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [syntaxHighlighterLanguage, setSyntaxHighlighterLanguage] = useState<string>('json');
     const [requestSent, setRequestSent] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isClosing, setIsClosing] = useState<boolean>(false);
+    const [responseType, setResponseType] = useState<any>('');
+    const [binaryFileContents, setBinaryFileContents] = useState<string>('');
+    const [imageResolution, setImageResolution] = React.useState<any>('');
+    // const [numPages, setNumPages] = useState<number>();
+    // const [pageNumber, setPageNumber] = useState<number>(1);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
     const textareaPlaceholder = `//This is TOTALLY Optional
@@ -34,6 +46,13 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     "password": "cityslicka"
 }`;
     const urlPlaceholder = 'Enter API URL, e.g. https://reqres.in/api/login';
+    // function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    //     setNumPages(numPages);
+    //     setPageNumber(numPages);
+    // }
+    // const onDocumentLoadError = () => {
+    //     console.log('Error loading PDF document.');
+    // };
 
     useEffect(() => {
         // Save to localStorage whenever the URL or JSON body changes
@@ -55,8 +74,30 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             setRequestType(savedRequestType);
         }
     }, []);
+
+    //Get Country for Donation purpose
+    const [country, setCountry] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch('https://api.country.is', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const countryName = data.country;
+                setCountry(countryName);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }, []);
+
     // Function to format HTML for better readability
     const formatHtml = (html: string) => {
+        // WILL WORK ON THIS LATER, FOR NOW JUST RETURNING THE HTML
         // Create a temporary div element to parse the HTML
         // const tempDiv = document.createElement('div');
         // tempDiv.innerHTML = html;
@@ -115,32 +156,102 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             if (contentLength && parseInt(contentLength, 100) > maxSize) {
                 setResponse('Response is too large to display.');
             } else {
-                const contentType = res.headers.get('content-type');
+                const contentType = res.headers.get('content-type') || '';
 
-                if (contentType && contentType.includes('text/html')) {
-                    const responseBody = await res.text();
-                    const formattedHtml = formatHtml(responseBody);
-                    setResponse(formattedHtml);
-                    // Set language to "html" for HTML responses
-                    setSyntaxHighlighterLanguage('html');
-                } else {
-                    const jsonResponse = responseCode === 204 ? null : await res.json();
-                    setResponse(JSON.stringify(jsonResponse, null, 2));
-                    // Set language to "json" for JSON responses
-                    setSyntaxHighlighterLanguage('json');
+                switch (true) {
+                    case contentType.includes('text/html'):
+                    case contentType.includes('text/plain'):
+                    case contentType.includes('application/xml'):
+                        const responseBody = await res.text();
+                        const formattedHtml = formatHtml(responseBody);
+                        setResponse(formattedHtml);
+                        setViewOption('pretty');
+                        break;
+
+                    case contentType.includes('image/jpeg'):
+                    case contentType.includes('image/png'):
+                    case contentType.includes('image/svg'):
+                    case contentType.includes('image/webp'):
+                    case contentType.includes('image/gif'):
+                        const blobImage = await res.blob();
+                        const urlImage = URL.createObjectURL(blobImage);
+                        setResponse(urlImage);
+                        setViewOption('image');
+                        break;
+
+                    case contentType.includes('application/octet-stream'):
+                        const blobBinary = await res.blob();
+                        const urlBinary = URL.createObjectURL(blobBinary);
+                        const arrayBuffer = await blobBinary.arrayBuffer();
+                        const decoder = new TextDecoder('utf-8');
+                        const text = decoder.decode(arrayBuffer);
+                        setBinaryFileContents(text);
+                        setResponse(urlBinary);
+                        setViewOption('binary');
+                        break;
+
+                    case contentType.includes('application/pdf'):
+                        // const blobPdf = await res.blob();
+                        // const urlPdf = URL.createObjectURL(blobPdf);
+                        const pdfData = await res.arrayBuffer();
+                        const pdfUrl = URL.createObjectURL(new Blob([pdfData], { type: 'application/pdf' }));
+                        setResponse(pdfUrl);
+                        // setResponse(blobPdf);
+                        setViewOption('pdf');
+                        break;
+
+                    default:
+                        const jsonResponse = responseCode === 204 ? 204 : await res.json();
+                        setResponse(JSON.stringify(jsonResponse, null, 2));
+                        setViewOption('pretty');
+                        break;
                 }
 
-                const responseClass =
-                    responseCode >= 200 && responseCode < 300
-                        ? 'success'
-                        : responseCode >= 400 && responseCode < 500
-                            ? 'error'
-                            : responseCode >= 500
-                                ? 'server-error'
-                                : '';
+                switch (true) {
+                    case contentType.includes('text/html'):
+                        setResponseType('html');
+                        setSyntaxHighlighterLanguage('html');
+                        break;
 
-                setResponseClass(responseClass);
+                    case contentType.includes('text/plain'):
+                        setResponseType('text');
+                        setSyntaxHighlighterLanguage('text');
+                        break;
+
+                    case contentType.includes('image'):
+                        setResponseType('image');
+                        break;
+
+                    case contentType.includes('application/octet-stream'):
+                        setResponseType('binary');
+                        break;
+
+                    case contentType.includes('application/xml'):
+                        setResponseType('xml');
+                        setSyntaxHighlighterLanguage('xml');
+                        break;
+
+                    case contentType.includes('application/pdf'):
+                        setResponseType('pdf');
+                        break;
+
+                    default:
+                        setResponseType('json');
+                        setSyntaxHighlighterLanguage('json');
+                        break;
+                }
             }
+            const responseClass =
+                responseCode >= 200 && responseCode < 300
+                    ? 'success'
+                    : responseCode >= 400 && responseCode < 500
+                        ? 'error'
+                        : responseCode >= 500
+                            ? 'server-error'
+                            : '';
+
+            setResponseClass(responseClass);
+
         } catch (error: any) {
             // Handle errors and set the response code to indicate failure
             setResponseCode(null);
@@ -196,7 +307,37 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
         return JSON.stringify(formattedHeaders, null, 2);
     };
 
+    const renderDonationLink = () => {
+        if (country === 'IN') {
+            // Display image in modal window for India
+            return (
+                <a href="#" onClick={() => showModal()}>
+                    <Heart className='donateHeart' />
+                    Donate
+                </a>
+            );
+        } else {
+            // Display regular PayPal link for other countries
+            return (
+                <a href="https://www.paypal.com/paypalme/shatadip2020" target="_blank" rel="noopener noreferrer">
+                    <Heart className='donateHeart' />
+                    Donate
+                </a>
+            );
+        }
+    };
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsModalOpen(false);
+            setIsClosing(false);
+        }, 150);
+    };
 
     const handleRequestTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedRequestType = e.target.value;
@@ -206,14 +347,16 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
         localStorage.setItem('postmannRequestType', selectedRequestType);
     };
 
-
     return (
         <div className={`postmann-container`}>
             <div className="postmann-header">
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
-                <h2 className="postmann-title">Postmann</h2>
+                <div className="postmann-title-container">
+                    <h2 className="postmann-title">Postmann</h2>
+                    <p className="postmann-version">v 1.0.2</p>
+                </div>
                 <div className="postmann-links">
-                    <a href="https://www.paypal.com/paypalme/shatadip2020" target="_blank" rel="noopener noreferrer"><Heart className='donateHeart' />Donate</a>
+                    {renderDonationLink()}
                     <a href="https://github.com/shatadip/Postmann" target="_blank" rel="noopener noreferrer"><Github className='githubLink' />GitHub</a>
                     <a href="https://www.shatadip.com/" target="_blank" rel="noopener noreferrer">@Shatadip</a>
                 </div>
@@ -280,15 +423,41 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                         </p>
 
                         <div className="postmann-tabs">
-                            <div
-                                className={`postmann-tab ${viewOption === 'pretty' ? 'active' : ''}`}
-                                onClick={() => setViewOption('pretty')}
-                            >
-                                Pretty
-                            </div>
-                            <div className={`postmann-tab ${viewOption === 'raw' ? 'active' : ''}`} onClick={() => setViewOption('raw')}>
-                                Raw
-                            </div>
+                            {(responseType === 'image') ? (
+                                <div
+                                    className={`postmann-tab ${viewOption === 'image' ? 'active' : ''}`}
+                                    onClick={() => setViewOption('image')}
+                                >
+                                    Image
+                                </div>
+                            ) : (responseType === 'binary') ? (
+                                <div
+                                    className={`postmann-tab ${viewOption === 'binary' ? 'active' : ''}`}
+                                    onClick={() => setViewOption('binary')}
+                                >
+                                    Binary
+                                </div>
+                            ) : (responseType === 'pdf') ? (
+                                <div
+                                    className={`postmann-tab ${viewOption === 'pdf' ? 'active' : ''}`}
+                                    onClick={() => setViewOption('pdf')}
+                                >
+                                    PDF
+                                </div>
+
+                            ) : (
+                                <>
+                                    <div
+                                        className={`postmann-tab ${viewOption === 'pretty' ? 'active' : ''}`}
+                                        onClick={() => setViewOption('pretty')}
+                                    >
+                                        Pretty
+                                    </div>
+                                    <div className={`postmann-tab ${viewOption === 'raw' ? 'active' : ''}`} onClick={() => setViewOption('raw')}>
+                                        Raw
+                                    </div>
+                                </>
+                            )}
                             <div className={`postmann-tab ${viewOption === 'headers' ? 'active' : ''}`} onClick={() => setViewOption('headers')}>
                                 Headers
                             </div>
@@ -303,10 +472,55 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                             </div>
                         ) : (
                             <div>
+                                {/* {responseType === 'image' ? (
+                                    <img src={response} alt="Image response" />
+                                ) : responseType === 'octet-stream' ? (
+                                    <a href={response} download>Download file</a>
+                                ) : null} */}
                                 {viewOption === 'pretty' ? (
+
                                     <SyntaxHighlighter language={syntaxHighlighterLanguage} style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
                                         {response}
                                     </SyntaxHighlighter>
+                                ) : viewOption === 'image' ? (
+                                    <div className={`postmann-raw-response`}>
+                                        <div style={{ position: 'relative' }}>
+                                                <kbd className='binaryFC-length-kbd' style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                                                    {'{'}Res: {imageResolution}{'}'}
+                                                </kbd>
+                                        <img className='imageResponse-img' 
+                                        src={response} 
+                                        alt="Image response" 
+                                        onLoad={(e) => {
+                                            const target = e.target as HTMLImageElement;
+                                            setImageResolution(`${target.naturalWidth} x ${target.naturalHeight}`);
+                                        }}
+                                        />
+                                        </div>
+                                    </div>
+                                ) : viewOption === 'binary' ? (
+                                    <div className={`postmann-raw-response`}>
+                                        <a href={response} download>Download file</a>
+                                        {/* show what the download file link will trigger */}
+                                        <pre>{response}</pre>
+                                        {/* show binary file contents */}
+                                        <p className='binaryFC-title-p'>
+                                            Binary/Octet-Stream File Contents (Response Data)
+                                        </p>
+
+                                        {responseType === 'binary' &&
+                                            <div style={{ position: 'relative' }}>
+                                                <kbd className='binaryFC-length-kbd' style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                                                    {'{'}Len: {binaryFileContents.length}{'}'}
+                                                </kbd>
+                                                <pre className='binaryPRE'>{binaryFileContents}</pre>
+                                            </div>
+                                        }
+                                    </div>
+                                ) : viewOption === 'pdf' ? (
+                                    <div className={`postmann-raw-response`}>
+                                            <iframe src={response} title="PDF Response" className='pdf-iframe' />
+                                    </div>
                                 ) : viewOption === 'raw' ? (
                                     <div className={`postmann-raw-response`}><pre>{response}</pre></div>
                                 ) : (
@@ -331,6 +545,22 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             )} */}
             <div>
             </div>
+            {/* Modal for India */}
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Donation Modal"
+                className={`donation-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                overlayClassName="donation-modal-overlay"
+                shouldCloseOnOverlayClick={true}
+            >
+                <div className="modal-content">
+                    <button className="close-button" onClick={closeModal}>
+                        &times;
+                    </button>
+                    <img src="india-qr.png" className='donation-india-qr' alt="Donation Image" />
+                </div>
+            </Modal>
         </div>
     );
 

@@ -7,42 +7,60 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     text-align: left;
 }
+
 .postmann-title {
     font-size: 18px;
     margin-bottom: 12px;
     color: #f15a24;
-   /* Postmann color */
-   /* #61dafb;
+    /* Postmann color */
+    /* #61dafb;
     */
-   /* React blue color */
+    /* React blue color */
 }
-.postmann-select, .postmann-input, .postmann-textarea {
+
+.postmann-title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 0.46rem;
+    line-height: 0.46rem;
+    padding-top: 1rem;
+}
+
+.postmann-select,
+.postmann-input,
+.postmann-textarea {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
     box-sizing: border-box;
     border: 1px solid #61dafb;
-   /* React blue color */
+    /* React blue color */
     border-radius: 4px;
     background-color: #111;
-   /* #282c34;
+    /* #282c34;
     */
-   /* Dark background color */
+    /* Dark background color */
     color: #ffffff;
     resize: vertical;
 }
+
 .postmann-select {
     cursor: pointer;
 }
+
 .postmann-textarea {
     height: 7.75rem;
     min-height: 7.75rem;
 }
-.postmann-input::placeholder, .postmann-textarea::placeholder {
+
+.postmann-input::placeholder,
+.postmann-textarea::placeholder {
     color: #8a8a8a;
     font-family: monospace;
     font-size: 11px;
 }
+
 .postmann-button {
     background-color: #61dafb;
     color: #1e1e1e;
@@ -54,45 +72,52 @@
     font-weight: bold;
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
+
 .postmann-button:hover {
     background-color: #4fa3d1;
     border-color: #4fa3d1;
     color: #ffffff;
 }
+
 .postmann-response-title {
     font-size: 14px;
 }
+
 .postmann-tabs {
     display: flex;
 }
+
 .postmann-tab {
     flex: 1;
     padding: 12px;
     cursor: pointer;
     border: 1px solid #61dafb;
-   /* React blue color */
+    /* React blue color */
     border-radius: 4px 4px 0 0;
     background-color: #282c34;
-   /* Dark background color */
+    /* Dark background color */
     color: #61dafb;
-   /* React blue color */
+    /* React blue color */
 }
+
 .postmann-tab:hover {
     background-color: #4fa3d1;
-   /* Darker shade on hover */
+    /* Darker shade on hover */
 }
+
 .postmann-tab.active {
     background-color: #4fa3d1;
-   /* Active tab color */
+    /* Active tab color */
     border-bottom: 1px solid #4fa3d1;
-   /* Active tab border color */
+    /* Active tab border color */
 }
+
 .postmann-raw-response,
 .syntax-hl-custom-styles {
-    border-width: 1px!important;
-    border-style: solid!important;
-    border-color: transparent #61dafb #61dafb #61dafb!important;
-    border-radius: 0 0 4px 4px!important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: transparent #61dafb #61dafb #61dafb !important;
+    border-radius: 0 0 4px 4px !important;
     background-color: #282c34;
     color: #ffffff;
     overflow: auto;
@@ -100,99 +125,127 @@
     box-sizing: border-box;
     width: 100%;
 }
+
 .syntax-hl-custom-styles {
     padding: 1em 0.45em;
-    margin: 0!important;
+    margin: 0 !important;
 }
+
 .postmann-raw-response {
     width: 100%;
-    padding-left: 0.5rem!important;
+    padding-left: 0.5rem !important;
     margin-top: -1px;
+    overflow-x: hidden;
 }
+
 .loading-indicator {
     display: flex;
     align-items: center;
     font-size: 18px;
     color: #61dafb;
-   /* React blue color */
+    /* React blue color */
     padding-right: 2rem;
 }
-.dot1, .dot2, .dot3 {
+
+.dot1,
+.dot2,
+.dot3 {
     width: 3px;
     height: 3px;
     background-color: #61dafb;
-   /* React blue color */
+    /* React blue color */
     border-radius: 50%;
     margin: 0 4px;
     animation: loadingDots 1s infinite ease-in-out;
 }
+
 @keyframes loadingDots {
-    0%, 20%, 80%, 100% {
+
+    0%,
+    20%,
+    80%,
+    100% {
         transform: scale(1);
-   }
+    }
+
     50% {
         transform: scale(1.5);
-   }
+    }
 }
+
 .postmann-get {
     color: #007F31;
 }
+
 .postmann-post {
     color: #AD7A03;
 }
+
 .postmann-put {
     color: #0053B8;
 }
+
 .postmann-patch {
     color: #623497;
 }
+
 .postmann-delete {
     color: #d73a49;
 }
+
 .success {
     color: green;
-   /* Green color for success */
+    /* Green color for success */
 }
+
 .error {
     color: red;
-   /* Red color for client errors and general errors */
+    /* Red color for client errors and general errors */
 }
+
 .server-error {
     color: darkred;
-   /* Dark red color for server errors */
+    /* Dark red color for server errors */
 }
+
 .postmann-header {
     display: flex;
     align-items: center;
-   /* Centers the content horizontally */
+    /* Centers the content horizontally */
     margin-bottom: 10px;
-   /* Adjust as needed */
+    /* Adjust as needed */
 }
+
 .postmann-logo {
     width: 50px;
-   /* Adjust as needed */
+    /* Adjust as needed */
     height: auto;
     margin-right: 10px;
-   /* Adjust as needed */
+    /* Adjust as needed */
 }
+
 .postmann-title {
     margin: 0;
-   /* Remove default margin */
+    /* Remove default margin */
 }
+
 .postmann-logo.rotating {
     animation: rotate 14s linear infinite;
-   /* Adjust duration and timing function as needed */
+    /* Adjust duration and timing function as needed */
 }
+
 @keyframes rotate {
     from {
         transform: rotate(0deg);
-   }
+    }
+
     to {
         transform: rotate(360deg);
-   }
+    }
 }
+
 pre {
-    font-family: Arial,sans-serif!important;
+    font-family: Arial, sans-serif !important;
     padding: 1px;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
@@ -200,12 +253,15 @@ pre {
     white-space: -o-pre-wrap;
     word-wrap: break-word;
 }
+
 .postmann-links {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin-left: auto; /* Push to the right side of the container */
+    margin-left: auto;
+    /* Push to the right side of the container */
 }
+
 .postmann-links a {
     color: #fff;
     text-decoration: none;
@@ -216,13 +272,139 @@ pre {
     gap: 8px;
     transition: color 0.3s ease-in-out;
 }
+
 .postmann-links a:hover {
     color: #4fa3d1;
 }
+
 .donateHeart {
-    color: #ff5a5f; /* Change heart color */
-}
-.githubLink {
-    color: #ffffff; /* Change GitHub icon color */
+    color: #ff5a5f;
+    /* Change heart color */
 }
 
+.githubLink {
+    color: #ffffff;
+    /* Change GitHub icon color */
+}
+
+.donation-modal.ReactModal__Content--after-open {
+    opacity: 1;
+}
+
+.donation-modal.ReactModal__Content--before-close {
+    opacity: 0;
+}
+
+.donation-modal-overlay.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.donation-modal-overlay.ReactModal__Overlay--before-close {
+    opacity: 0;
+}
+
+.donation-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 10000;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.donation-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal-content {
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #333;
+}
+
+.close-button:hover {
+    color: red;
+    border: none;
+}
+
+.donation-india-qr {
+    width: 255px;
+    border: 2px solid #4fa3d1;
+    border-radius: 5px;
+}
+
+.close-button {
+    position: fixed;
+    top: 8px;
+    right: 3px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #333;
+}
+.binaryPRE {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: monospace;
+    color: #121212;
+    line-height: normal;
+    letter-spacing: 0.07rem;
+}
+.binaryFC-title-p {
+    text-decoration: underline;
+    margin-top: 1rem;
+}
+.binaryFC-count-p {
+    margin-top: 0.5rem;
+}
+.binaryFC-length-kbd {
+    padding: 3px 4px 0px 4px;
+    font-size: .9em;
+    color: #61dafb;
+    background: rgba(0,0,0,0.69);
+    border: transparent;
+    border-radius: 3px 0 3px 0;
+}
+.pdf-iframe {
+    width: 100%;
+    height: 37em;
+    padding: 0;
+    margin: 0 auto; /* centers the iframe if it's not as wide as its container */
+    border: 1px solid #343434; /* a light gray border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* a subtle shadow for depth */
+    border-radius: 4px; /* rounded corners */
+}
+.imageResponse-img {
+    max-width: 100%;
+    height: auto;
+}
