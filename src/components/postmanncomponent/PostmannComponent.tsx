@@ -5,9 +5,6 @@ import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
 import { Github, Heart } from 'react-bootstrap-icons';
-// import { Document, Page, pdfjs } from "react-pdf";
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 import Modal from 'react-modal'; // Import the modal library
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
@@ -34,8 +31,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     const [responseType, setResponseType] = useState<any>('');
     const [binaryFileContents, setBinaryFileContents] = useState<string>('');
     const [imageResolution, setImageResolution] = React.useState<any>('');
-    // const [numPages, setNumPages] = useState<number>();
-    // const [pageNumber, setPageNumber] = useState<number>(1);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
     const textareaPlaceholder = `//This is TOTALLY Optional
@@ -46,14 +41,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     "password": "cityslicka"
 }`;
     const urlPlaceholder = 'Enter API URL, e.g. https://reqres.in/api/login';
-    // function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    //     setNumPages(numPages);
-    //     setPageNumber(numPages);
-    // }
-    // const onDocumentLoadError = () => {
-    //     console.log('Error loading PDF document.');
-    // };
-
+    
     useEffect(() => {
         // Save to localStorage whenever the URL or JSON body changes
         localStorage.setItem('postmannUrl', url);
@@ -97,13 +85,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
 
     // Function to format HTML for better readability
     const formatHtml = (html: string) => {
-        // WILL WORK ON THIS LATER, FOR NOW JUST RETURNING THE HTML
-        // Create a temporary div element to parse the HTML
-        // const tempDiv = document.createElement('div');
-        // tempDiv.innerHTML = html;
-
-        // // Use innerHTML with indentation to format the HTML
-        // return tempDiv.innerHTML.replace(/><\//g, '>\n<');
+        
         return html;
     };
     const sendRequest = async () => {
@@ -472,11 +454,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                             </div>
                         ) : (
                             <div>
-                                {/* {responseType === 'image' ? (
-                                    <img src={response} alt="Image response" />
-                                ) : responseType === 'octet-stream' ? (
-                                    <a href={response} download>Download file</a>
-                                ) : null} */}
+                               
                                 {viewOption === 'pretty' ? (
 
                                     <SyntaxHighlighter language={syntaxHighlighterLanguage} style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
