@@ -106,10 +106,10 @@
 }
 
 .postmann-tab.active {
-    background-color: #4fa3d1;
-    /* Active tab color */
-    border-bottom: 1px solid #4fa3d1;
-    /* Active tab border color */
+    background-color: #4fa3d1; /* Active tab color */
+    border-bottom: 1px solid #4fa3d1; /* Active tab border color */
+    color: white;
+    text-decoration: none;
 }
 
 .postmann-raw-response,
@@ -367,6 +367,7 @@ pre {
     border: none;
     color: #333;
 }
+
 .binaryPRE {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -380,31 +381,50 @@ pre {
     line-height: normal;
     letter-spacing: 0.07rem;
 }
+
 .binaryFC-title-p {
     text-decoration: underline;
     margin-top: 1rem;
 }
+
 .binaryFC-count-p {
     margin-top: 0.5rem;
 }
+
 .binaryFC-length-kbd {
     padding: 3px 4px 0px 4px;
     font-size: .9em;
     color: #61dafb;
-    background: rgba(0,0,0,0.69);
+    background: rgba(0, 0, 0, 0.69);
     border: transparent;
     border-radius: 3px 0 3px 0;
 }
+
 .pdf-iframe {
     width: 100%;
     height: 37em;
     padding: 0;
-    margin: 0 auto; /* centers the iframe if it's not as wide as its container */
-    border: 1px solid #343434; /* a light gray border */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* a subtle shadow for depth */
-    border-radius: 4px; /* rounded corners */
+    margin: 0 auto;
+    /* centers the iframe if it's not as wide as its container */
+    border: 1px solid #343434;
+    /* a light gray border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    /* a subtle shadow for depth */
+    border-radius: 4px;
+    /* rounded corners */
 }
+
 .imageResponse-img {
     max-width: 100%;
     height: auto;
+}
+
+.invalidJSON-sup {
+    color: red;
+    background-color: white;
+    padding: 1px 4px;
+    margin: 0 0 0 3px;
+    font-size: 0.55rem;
+    /* border: 1px solid black; */
+    border-radius: 5px;
 }

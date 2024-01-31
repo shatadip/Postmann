@@ -1,3 +1,17 @@
+## [1.0.3] - 2024-01-31
+### Added
+- Support for fetching invalid JSON responses (e.g. https://httpbin.org/stream/2)
+- Added a small notification text block using &lt;sup&gt; to inform if the response is Invalid JSON
+- Parsing JSON as JSON.parse(res.text()), previously JSON was parsed as res.json()
+
+### Changed
+- Styling updated
+  - @index.css > min-width: 33em; from /*320px;*/, and min-height: 40em; from /*100vh;*/
+  - @PostmannComponent.css > Added .invalidJSON-sup class and added color:white & text-decoration:none to .postmann-tab.active
+
+### Fixed
+- No fixes needed, my code rocks!  
+
 ## [1.0.2] - 2024-01-28
 ### Added
 - Support for fetching XML responses.

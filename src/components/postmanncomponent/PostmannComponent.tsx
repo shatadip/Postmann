@@ -31,6 +31,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     const [responseType, setResponseType] = useState<any>('');
     const [binaryFileContents, setBinaryFileContents] = useState<string>('');
     const [imageResolution, setImageResolution] = React.useState<any>('');
+    const [isInvalidJSON, setIsInvalidJSON] = useState<boolean>(false);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
     const textareaPlaceholder = `//This is TOTALLY Optional
@@ -140,6 +141,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             } else {
                 const contentType = res.headers.get('content-type') || '';
 
+                let rawResponse2:any;
                 switch (true) {
                     case contentType.includes('text/html'):
                     case contentType.includes('text/plain'):
@@ -148,6 +150,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                         const formattedHtml = formatHtml(responseBody);
                         setResponse(formattedHtml);
                         setViewOption('pretty');
+                        setIsInvalidJSON(false);
                         break;
 
                     case contentType.includes('image/jpeg'):
@@ -183,10 +186,27 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                         break;
 
                     default:
-                        const jsonResponse = responseCode === 204 ? 204 : await res.json();
-                        setResponse(JSON.stringify(jsonResponse, null, 2));
-                        setViewOption('pretty');
-                        break;
+                    //[[v1.0.2]] I was using res.json but it had issues pursuing invalid JSON responses    
+                    // const jsonResponse = responseCode === 204 ? null : await res.json();
+                        // setResponse(JSON.stringify(jsonResponse, null, 2));
+                        // setViewOption('pretty');
+                        // break;
+
+                        //[[v1.0.3]] I am using res.text, and then parsing it to JSON, so that I can handle invalid JSON responses e.g. https://httpbin.org/stream/2
+                        // try is used to handle valid JSON responses and catch is used to handle invalid JSON responses
+
+                        try {
+                            rawResponse2 = responseCode === 204 ? null : await res.text();
+                            const jsonResponse = JSON.parse(rawResponse2);
+                            setResponse(JSON.stringify(jsonResponse, null, 2));
+                            setViewOption('pretty');
+                            setIsInvalidJSON(false);
+                          } catch (error) {
+                            setResponse(rawResponse2);  // Use the stored raw response
+                            setViewOption('pretty');
+                            setIsInvalidJSON(true);
+                          }
+                          break;
                 }
 
                 switch (true) {
@@ -335,7 +355,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.0.2</p>
+                    <p className="postmann-version">v 1.0.3</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}
@@ -434,6 +454,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                                         onClick={() => setViewOption('pretty')}
                                     >
                                         Pretty
+                                        {isInvalidJSON && <sup className='invalidJSON-sup'>Invalid JSON</sup>}
                                     </div>
                                     <div className={`postmann-tab ${viewOption === 'raw' ? 'active' : ''}`} onClick={() => setViewOption('raw')}>
                                         Raw
