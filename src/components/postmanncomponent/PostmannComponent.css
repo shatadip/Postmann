@@ -127,7 +127,7 @@
 }
 
 .syntax-hl-custom-styles {
-    padding: 1em 0.45em;
+    padding: 1em 0.45em 1em 0!important;
     margin: 0 !important;
 }
 

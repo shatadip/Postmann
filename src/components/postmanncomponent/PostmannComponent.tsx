@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
 import { Github, Heart } from 'react-bootstrap-icons';
 
 import Modal from 'react-modal'; // Import the modal library
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
+
+const themeForSHL = atomDark;
 
 interface PostmannComponentProps {
     showLineNumbers: boolean;
@@ -197,6 +199,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
 
                         try {
                             rawResponse2 = responseCode === 204 ? null : await res.text();
+                            //rawResponse2 = await res.text(); //usually a null body if responseCode is 204 but some people might send a body with 204. So...
                             const jsonResponse = JSON.parse(rawResponse2);
                             setResponse(JSON.stringify(jsonResponse, null, 2));
                             setViewOption('pretty');
@@ -478,7 +481,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                                
                                 {viewOption === 'pretty' ? (
 
-                                    <SyntaxHighlighter language={syntaxHighlighterLanguage} style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
+                                    <SyntaxHighlighter language={syntaxHighlighterLanguage} style={themeForSHL} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
                                         {response}
                                     </SyntaxHighlighter>
                                 ) : viewOption === 'image' ? (
@@ -526,7 +529,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                                     <div className={`postmann-headers`}>
                                         {/* Render headers here */}
                                         {responseHeaders && (
-                                            <SyntaxHighlighter language="json" style={ghcolors} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
+                                            <SyntaxHighlighter language="json" style={themeForSHL} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
                                                 {formatHeaders(responseHeaders)}
                                             </SyntaxHighlighter>
                                         )}
