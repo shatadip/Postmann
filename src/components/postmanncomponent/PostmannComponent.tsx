@@ -3,19 +3,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
-import { Github, Heart } from 'react-bootstrap-icons';
+import { atomDark, ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
+import { Github, Heart, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl } from 'react-bootstrap-icons';
 
 import Modal from 'react-modal'; // Import the modal library
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
-const themeForSHL = atomDark;
+// const themeForSHL = atomDark; //ghcolors;
 
 interface PostmannComponentProps {
     showLineNumbers: boolean;
 }
 
-const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }) => {
+const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [requestType, setRequestType] = useState<string>('GET');
     const [url, setUrl] = useState<string>(localStorage.getItem('postmannUrl') || ''); // Load from localStorage
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
@@ -34,8 +34,46 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     const [binaryFileContents, setBinaryFileContents] = useState<string>('');
     const [imageResolution, setImageResolution] = React.useState<any>('');
     const [isInvalidJSON, setIsInvalidJSON] = useState<boolean>(false);
+    const [wrapState, setWrapState] = useState<boolean>(false);
+    const [themeForSHL, setThemeForSHL] = useState<any>(atomDark); //ghcolors;
+    const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
+    interface CopyButtonProps {
+        contentToCopy: string;
+    }
+
+    const CopyButton: React.FC<CopyButtonProps> = ({ contentToCopy }) => {
+        const [copied, setCopied] = useState(false);
+
+        const handleCopy = () => {
+            navigator.clipboard.writeText(contentToCopy);
+            setCopied(true);
+
+            // Reset "Copied" message after a short delay
+            setTimeout(() => setCopied(false), 400);
+        };
+
+        return (
+            <button onClick={handleCopy} className={`copy-button ${copied ? 'flash' : ''}`}>
+                <Clipboard className='rbi-button-icon' />{copied ? 'Copied' : 'Copy'}
+            </button>
+        );
+    };
+    const toggleLineNumbers = () => {
+        setShowLineNumbers(!showLineNumbers);
+      };
+    const downloadResponse = () => {
+        const blob = new Blob([response], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'response.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     const textareaPlaceholder = `//This is TOTALLY Optional
 //You may send something like this:
     
@@ -44,7 +82,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
     "password": "cityslicka"
 }`;
     const urlPlaceholder = 'Enter API URL, e.g. https://reqres.in/api/login';
-    
+
     useEffect(() => {
         // Save to localStorage whenever the URL or JSON body changes
         localStorage.setItem('postmannUrl', url);
@@ -88,7 +126,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
 
     // Function to format HTML for better readability
     const formatHtml = (html: string) => {
-        
+
         return html;
     };
     const sendRequest = async () => {
@@ -143,7 +181,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
             } else {
                 const contentType = res.headers.get('content-type') || '';
 
-                let rawResponse2:any;
+                let rawResponse2: any;
                 switch (true) {
                     case contentType.includes('text/html'):
                     case contentType.includes('text/plain'):
@@ -188,8 +226,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                         break;
 
                     default:
-                    //[[v1.0.2]] I was using res.json but it had issues pursuing invalid JSON responses    
-                    // const jsonResponse = responseCode === 204 ? null : await res.json();
+                        //[[v1.0.2]] I was using res.json but it had issues pursuing invalid JSON responses    
+                        // const jsonResponse = responseCode === 204 ? null : await res.json();
                         // setResponse(JSON.stringify(jsonResponse, null, 2));
                         // setViewOption('pretty');
                         // break;
@@ -204,12 +242,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                             setResponse(JSON.stringify(jsonResponse, null, 2));
                             setViewOption('pretty');
                             setIsInvalidJSON(false);
-                          } catch (error) {
+                        } catch (error) {
                             setResponse(rawResponse2);  // Use the stored raw response
                             setViewOption('pretty');
                             setIsInvalidJSON(true);
-                          }
-                          break;
+                        }
+                        break;
                 }
 
                 switch (true) {
@@ -358,7 +396,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.0.3</p>
+                    <p className="postmann-version">v 1.0.4*</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}
@@ -478,26 +516,55 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                             </div>
                         ) : (
                             <div>
-                               
-                                {viewOption === 'pretty' ? (
 
-                                    <SyntaxHighlighter language={syntaxHighlighterLanguage} style={themeForSHL} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
-                                        {response}
-                                    </SyntaxHighlighter>
+                                {viewOption === 'pretty' ? (
+                                    <>
+                                        <div className='optionsDiv'>
+                                        <button onClick={toggleLineNumbers} className='toggle-lnum-button'>
+                                            <ListOl className='rbi-button-icon' />
+                                            {showLineNumbers ? '!!Lines' : 'Lines'}
+                                        </button>
+                                            <button onClick={() => setWrapState(!wrapState)} className='wrap-button'>
+                                                <TextWrap className='rbi-button-icon' /> {wrapState ? '!!Wrap' : 'Wrap'}
+                                            </button>
+                                            <CopyButton contentToCopy={response} />
+                                            <button onClick={downloadResponse} className='download-button'>
+                                                <Download className='rbi-button-icon' />Download
+                                            </button>
+                                            <button
+                                                onClick={() => setThemeForSHL(themeForSHL == atomDark ? ghcolors : atomDark)}
+                                                className='theme-button'
+                                            >
+                                                {themeForSHL == atomDark ? <BrightnessHighFill className='rbi-button-icon' /> : <MoonFill className='rbi-button-icon' />}
+                                                {themeForSHL == atomDark ? 'Light' : 'Dark'}
+                                            </button>
+                                        </div>
+                                        <SyntaxHighlighter
+                                            language={syntaxHighlighterLanguage}
+                                            style={themeForSHL}
+                                            showLineNumbers={showLineNumbers}
+                                            className="syntax-hl-custom-styles"
+                                            wrapLongLines={wrapState}
+                                        >
+                                            {response}
+                                        </SyntaxHighlighter>
+
+
+                                    </>
                                 ) : viewOption === 'image' ? (
                                     <div className={`postmann-raw-response`}>
                                         <div style={{ position: 'relative' }}>
-                                                <kbd className='binaryFC-length-kbd' style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                                                    {'{'}Res: {imageResolution}{'}'}
-                                                </kbd>
-                                        <img className='imageResponse-img' 
-                                        src={response} 
-                                        alt="Image response" 
-                                        onLoad={(e) => {
-                                            const target = e.target as HTMLImageElement;
-                                            setImageResolution(`${target.naturalWidth} x ${target.naturalHeight}`);
-                                        }}
-                                        />
+                                            <kbd className='binaryFC-length-kbd' style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                                                {'{'}Res: {imageResolution}{'}'}
+                                            </kbd>
+                                            <img className='imageResponse-img'
+                                                src={response}
+                                                alt="Image response"
+                                                onLoad={(e) => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    setImageResolution(`${target.naturalWidth} x ${target.naturalHeight}`);
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                 ) : viewOption === 'binary' ? (
@@ -521,7 +588,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = ({ showLineNumbers }
                                     </div>
                                 ) : viewOption === 'pdf' ? (
                                     <div className={`postmann-raw-response`}>
-                                            <iframe src={response} title="PDF Response" className='pdf-iframe' />
+                                        <iframe src={response} title="PDF Response" className='pdf-iframe' />
                                     </div>
                                 ) : viewOption === 'raw' ? (
                                     <div className={`postmann-raw-response`}><pre>{response}</pre></div>

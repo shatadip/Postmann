@@ -106,8 +106,10 @@
 }
 
 .postmann-tab.active {
-    background-color: #4fa3d1; /* Active tab color */
-    border-bottom: 1px solid #4fa3d1; /* Active tab border color */
+    background-color: #4fa3d1;
+    /* Active tab color */
+    border-bottom: 1px solid #4fa3d1;
+    /* Active tab border color */
     color: white;
     text-decoration: none;
 }
@@ -127,7 +129,7 @@
 }
 
 .syntax-hl-custom-styles {
-    padding: 1em 0.45em 1em 0!important;
+    padding: 1em 0.45em 1em 0 !important;
     margin: 0 !important;
 }
 
@@ -427,4 +429,98 @@ pre {
     font-size: 0.55rem;
     /* border: 1px solid black; */
     border-radius: 5px;
+}
+
+/* .optionsDiv {
+    border: 1px solid #61dafb;
+    border-top: none;
+    background-color: black;
+    padding: 2px;
+    margin: 0;
+} */
+
+/* .wrap-button-icon {
+    color: green;
+} */
+
+.optionsDiv {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid #61dafb;
+    border-top: none;
+    border-bottom: none;
+    background-color: transparent;
+    padding: 1px;
+}
+
+.wrap-button,
+.theme-button,
+.copy-button, .download-button, .toggle-lnum-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    /* padding: 10px 15px; */
+    /* margin-right: 10px; */
+    cursor: pointer;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+    padding: 4px 13px
+}
+
+.wrap-button:hover,
+.copy-button:hover,
+.theme-button:hover, .download-button:hover, .toggle-lnum-button:hover {
+    background-color: #2980b9;
+}
+
+.rbi-button-icon {
+    margin-right: 2px;
+}
+
+.syntax-hl-custom-styles {
+    border: 1px solid #61dafb !important;
+    border-radius: 0 0 4px 4px;
+    background-color: #282c34;
+    color: #ffffff;
+    overflow: auto;
+    padding: 12px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/*   
+  .copy-button {
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .copy-button:hover {
+    background-color: #27ae60;
+  } */
+
+.flash {
+    animation: flashAnimation .4s ease-in-out;
+}
+
+@keyframes flashAnimation {
+
+    0%,
+    100% {
+        scale: 1;
+    }
+
+    50% {
+        background-color: #007F31;
+        scale: 1.01;
+    }
 }
