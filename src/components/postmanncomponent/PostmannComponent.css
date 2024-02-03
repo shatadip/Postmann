@@ -1,4 +1,13 @@
 /* PostmannComponent.css */
+
+@font-face {
+    font-family: 'IBMPlexMono';
+    src: url('./IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 .postmann-container {
     font-family: 'Arial', sans-serif;
     background-color: #1e1e1e;
@@ -247,7 +256,13 @@
 }
 
 pre {
-    font-family: Arial, sans-serif !important;
+    font-family: IBMPlexMono, "Courier New", monospace, Consolas, "Courier New", monospace!important;
+    font-weight: normal;
+    font-size: 12px;
+    font-feature-settings: "liga" 0, "calt" 0;
+    font-variation-settings: normal;
+    line-height: 18px;
+    letter-spacing: 0px;
     padding: 1px;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
@@ -457,17 +472,18 @@ pre {
 .wrap-button,
 .theme-button,
 .copy-button, .download-button, .toggle-lnum-button {
-    background-color: #3498db;
+    /* background-color: #3498db; */
+    background-color: #123256;
     color: #fff;
     border: none;
     /* padding: 10px 15px; */
     /* margin-right: 10px; */
     cursor: pointer;
-    border-radius: 1px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     font-size: 0.7rem;
-    padding: 4px 13px
+    padding: 4px 12px
 }
 
 .wrap-button:hover,

@@ -20,6 +20,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [url, setUrl] = useState<string>(localStorage.getItem('postmannUrl') || ''); // Load from localStorage
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
     const [responseCode, setResponseCode] = useState<number | null>(null);
+    const [absoluteRawResponse, setAbsoluteRawResponse] = useState<string>(''); //[[v1.0.4]]
+    // const [absoluteRawHeaders, setAbsoluteRawHeaders] = useState<any>(null);    //[[v1.0.4]]
     const [response, setResponse] = useState<any>('');
     const [responseHeaders, setResponseHeaders] = useState<Headers | null>(null);
     const [responseClass, setResponseClass] = useState<string>('');
@@ -39,6 +41,33 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
+
+    const calculateSizeInBytes = (str: any) => {
+        // const encoder = new TextEncoder();
+        // const encodedData = encoder.encode(str);
+        // return encodedData.length;
+        const sizeInBytes = new Blob([str]).size;
+
+        if (sizeInBytes > 1024) {
+            const sizeInKB = (sizeInBytes / 1024).toFixed(2); // Rounds to 2 decimal places
+            return `${sizeInKB} KB`;
+        } else {
+            return `${sizeInBytes} B`;
+        }
+
+    };
+
+    const calculateSizeInBytes2 = (resBod: any, resHead: any) => {
+        const sizeInBytes = new Blob([resBod]).size + new Blob([resHead]).size;
+
+        if (sizeInBytes > 1024) {
+            const sizeInKB = (sizeInBytes / 1024).toFixed(2); // Rounds to 2 decimal places
+            return `${sizeInKB} KB`;
+        } else {
+            return `${sizeInBytes} B`;
+        }
+    };
+
     interface CopyButtonProps {
         contentToCopy: string;
     }
@@ -62,17 +91,49 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     };
     const toggleLineNumbers = () => {
         setShowLineNumbers(!showLineNumbers);
-      };
-    const downloadResponse = () => {
-        const blob = new Blob([response], { type: 'text/plain' });
+    };
+    const downloadResponse = (downloadFileName: any, downloadBlob: any) => {
+        const blob = new Blob([downloadBlob], { type: 'text/plain' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'response.txt';
+        a.download = downloadFileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
     };
+
+    const optionsDiv = (type: string, resp: any) => {
+        let fileName = type === 'pretty' ? 'response-body.txt' : 'response-headers.txt';
+
+        let handleDownload = () => {
+            downloadResponse(fileName, resp);
+        };
+
+        return (
+            <div className='optionsDiv'>
+                <button onClick={toggleLineNumbers} className='toggle-lnum-button'>
+                    <ListOl className='rbi-button-icon' />
+                    {showLineNumbers ? '!!Lines' : 'Lines'}
+                </button>
+                <button onClick={() => setWrapState(!wrapState)} className='wrap-button'>
+                    <TextWrap className='rbi-button-icon' /> {wrapState ? '!!Wrap' : 'Wrap'}
+                </button>
+                <CopyButton contentToCopy={resp} />
+                <button onClick={handleDownload} className='download-button'>
+                    <Download className='rbi-button-icon' />Download
+                </button>
+                <button
+                    onClick={() => setThemeForSHL(themeForSHL == atomDark ? ghcolors : atomDark)}
+                    className='theme-button'
+                >
+                    {themeForSHL == atomDark ? <BrightnessHighFill className='rbi-button-icon' /> : <MoonFill className='rbi-button-icon' />}
+                    {themeForSHL == atomDark ? 'Light' : 'Dark'}
+                </button>
+            </div>
+        );
+    };
+
 
     const textareaPlaceholder = `//This is TOTALLY Optional
 //You may send something like this:
@@ -125,10 +186,10 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     }, []);
 
     // Function to format HTML for better readability
-    const formatHtml = (html: string) => {
+    // const formatHtml = (html: any) => {
 
-        return html;
-    };
+    //     return html;
+    // };
     const sendRequest = async () => {
         setLoading(true); // Set loading to true when starting the request
         setRequestSent(true);
@@ -187,8 +248,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     case contentType.includes('text/plain'):
                     case contentType.includes('application/xml'):
                         const responseBody = await res.text();
-                        const formattedHtml = formatHtml(responseBody);
-                        setResponse(formattedHtml);
+                        // const formattedHtml = formatHtml(responseBody);
+                        setResponse(responseBody); //formattedHtml
                         setViewOption('pretty');
                         setIsInvalidJSON(false);
                         break;
@@ -237,6 +298,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
 
                         try {
                             rawResponse2 = responseCode === 204 ? null : await res.text();
+                            setAbsoluteRawResponse(rawResponse2);
                             //rawResponse2 = await res.text(); //usually a null body if responseCode is 204 but some people might send a body with 204. So...
                             const jsonResponse = JSON.parse(rawResponse2);
                             setResponse(JSON.stringify(jsonResponse, null, 2));
@@ -340,15 +402,40 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     };
     const formatHeaders = (headers: Headers | null) => {
         const formattedHeaders: Record<string, string> = {};
+    
+        if (headers) {
+            headers.forEach((value, key) => {
+                try {
+                    // Attempt to parse JSON values inside the header
+                    const jsonString = String.raw`${value}`.replace(/\\/g, '\\\\');
+                    const parsedValue = JSON.parse(jsonString);
+                    const formattedValue = parsedValue;
+                    formattedHeaders[key] = formattedValue;
+                } catch (error) {
+                    // If parsing fails, use the original value
+                    formattedHeaders[key] = value;
+                }
+            });
+        }
+    
+        return JSON.stringify(formattedHeaders, null, 2);
+    };
+    
+    
+    
+    const formatHeaders2 = (headers: Headers | null) => {
+        const formattedHeaders2: Record<string, string> = {};
 
         if (headers) {
             headers.forEach((value, key) => {
-                formattedHeaders[key] = value;
+                formattedHeaders2[key] = value;
             });
         }
 
-        return JSON.stringify(formattedHeaders, null, 2);
+        return JSON.stringify(formattedHeaders2, null);
     };
+
+
 
     const renderDonationLink = () => {
         if (country === 'IN') {
@@ -461,8 +548,17 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 {requestSent && ( // Render the response section only if the request has been sent
                     <>
                         <p className={`postmann-response-title`}>
-                            Response (<span className={responseClass}>{responseCode !== null ? responseCode : 'N/A'}</span>
-                            <span>{' - Time: '}{responseTime !== null ? ` ${responseTime.toFixed(2)}s` : ' N/A'}</span>):
+                            Response (
+                            <span className={responseClass}>{responseCode !== null ? responseCode : 'N/A'}</span>
+                            <span>{' - Time: '}{responseTime !== null ? ` ${responseTime.toFixed(2)}s` : ' N/A'}</span>
+                            {response && absoluteRawResponse && responseHeaders && (
+                                <span>
+                                    {' - Size: '}
+                                    {calculateSizeInBytes2(absoluteRawResponse, formatHeaders2(responseHeaders))} =
+                                    {calculateSizeInBytes(absoluteRawResponse)} + {calculateSizeInBytes(formatHeaders2(responseHeaders))}
+                                </span>
+                            )}
+                            ):
                         </p>
 
                         <div className="postmann-tabs">
@@ -519,26 +615,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
 
                                 {viewOption === 'pretty' ? (
                                     <>
-                                        <div className='optionsDiv'>
-                                        <button onClick={toggleLineNumbers} className='toggle-lnum-button'>
-                                            <ListOl className='rbi-button-icon' />
-                                            {showLineNumbers ? '!!Lines' : 'Lines'}
-                                        </button>
-                                            <button onClick={() => setWrapState(!wrapState)} className='wrap-button'>
-                                                <TextWrap className='rbi-button-icon' /> {wrapState ? '!!Wrap' : 'Wrap'}
-                                            </button>
-                                            <CopyButton contentToCopy={response} />
-                                            <button onClick={downloadResponse} className='download-button'>
-                                                <Download className='rbi-button-icon' />Download
-                                            </button>
-                                            <button
-                                                onClick={() => setThemeForSHL(themeForSHL == atomDark ? ghcolors : atomDark)}
-                                                className='theme-button'
-                                            >
-                                                {themeForSHL == atomDark ? <BrightnessHighFill className='rbi-button-icon' /> : <MoonFill className='rbi-button-icon' />}
-                                                {themeForSHL == atomDark ? 'Light' : 'Dark'}
-                                            </button>
-                                        </div>
+                                        {optionsDiv('pretty', response)}
                                         <SyntaxHighlighter
                                             language={syntaxHighlighterLanguage}
                                             style={themeForSHL}
@@ -591,12 +668,19 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                         <iframe src={response} title="PDF Response" className='pdf-iframe' />
                                     </div>
                                 ) : viewOption === 'raw' ? (
-                                    <div className={`postmann-raw-response`}><pre>{response}</pre></div>
+                                    <div className={`postmann-raw-response`}><pre>{absoluteRawResponse}</pre></div>
                                 ) : (
                                     <div className={`postmann-headers`}>
                                         {/* Render headers here */}
+                                        {optionsDiv('headers', formatHeaders(responseHeaders))}
                                         {responseHeaders && (
-                                            <SyntaxHighlighter language="json" style={themeForSHL} showLineNumbers={showLineNumbers} className="syntax-hl-custom-styles">
+                                            <SyntaxHighlighter
+                                                language="json"
+                                                style={themeForSHL}
+                                                showLineNumbers={showLineNumbers}
+                                                className="syntax-hl-custom-styles"
+                                                wrapLongLines={wrapState}
+                                            >
                                                 {formatHeaders(responseHeaders)}
                                             </SyntaxHighlighter>
                                         )}
