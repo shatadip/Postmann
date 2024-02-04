@@ -1,14 +1,12 @@
 // PostmannComponent.tsx
 
 
-// *****FIX BUTTON LOGIC AFTER BLUR/DE-FOCUS, MANY BUTTONS ARE NOT WORKING PROPERLY [copy, download, lines]*****
-
 import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark, ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
-import { Github, Heart, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl } from 'react-bootstrap-icons';
-
+import { Github, HeartFill, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl } from 'react-bootstrap-icons';
+import LinkAlternator from '../LinkAlternator'; //Show <> @Shatadip <> Rate Postmann <> alternately
 import Modal from 'react-modal'; // Import the modal library
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
@@ -22,7 +20,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [requestType, setRequestType] = useState<string>('GET');
     const [url, setUrl] = useState<string>(localStorage.getItem('postmannUrl') || ''); // Load from localStorage
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
-    const [responseCode, setResponseCode] = useState<number | null>(null);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [responseCode, setResponseCode] = useState<any | null>(null);
     const [absoluteRawResponse, setAbsoluteRawResponse] = useState<string>(''); //[[v1.0.4]]
     // const [absoluteRawHeaders, setAbsoluteRawHeaders] = useState<any>(null);    //[[v1.0.4]]
     const [response, setResponse] = useState<any>('');
@@ -61,7 +60,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         // timeout
         setTimeout(() => {
             ref.current?.blur();
-        }, 50);
+        }, 175);
         // ref.current?.blur();
         // Add your button click logic here
     };
@@ -116,7 +115,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             >
                 <Clipboard className='rbi-button-icon' />{copied ? 'Copied' : 'Copy'}
             </button>
-            
+
         );
     };
     const toggleLineNumbers = () => {
@@ -172,12 +171,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 {/* Download Button */}
 
                 <button
-    onClick={() => { handleDownload(); handleButtonClick(downloadButtonRef); }}
-    className='download-button'
-    ref={downloadButtonRef}
->
-    <Download className='rbi-button-icon' />Download
-</button>
+                    onClick={() => { handleDownload(); handleButtonClick(downloadButtonRef); }}
+                    className='download-button'
+                    ref={downloadButtonRef}
+                >
+                    <Download className='rbi-button-icon' />Download
+                </button>
 
 
                 {/* Theme Button */}
@@ -253,7 +252,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const sendRequest = async () => {
         setLoading(true); // Set loading to true when starting the request
         setResponseCode(null); // Reset the response code when sending a new request
-
+        setIsButtonDisabled(true);
         setRequestSent(true);
         const startTime: number = performance.now();
         const maxSize = 1024 * 1024; // 1 MB (adjust as needed)
@@ -296,7 +295,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             //Capoture the response code (200, 201, 404 etc.)
             const responseCode = res.status;
             setResponseCode(responseCode);
-
+            setIsButtonDisabled(false);
             const contentLength = res.headers.get('content-length');
 
             if (contentLength && parseInt(contentLength, 100) > maxSize) {
@@ -422,7 +421,10 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
 
         } catch (error: any) {
             // Handle errors and set the response code to indicate failure
-            setResponseCode(null);
+            setResponseCode('N/A');
+            setResponseHeaders(null);
+            setAbsoluteRawResponse(`Error: ${error.message}`);
+            setIsButtonDisabled(false);
             setResponseClass('error'); // Red for errors
             setResponse(`Error: ${error.message}`);
         } finally {
@@ -505,7 +507,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             // Display image in modal window for India
             return (
                 <a href="#" onClick={() => showModal()}>
-                    <Heart className='donateHeart' />
+                    <HeartFill className='donateHeart' />
                     Donate
                 </a>
             );
@@ -513,7 +515,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             // Display regular PayPal link for other countries
             return (
                 <a href="https://www.paypal.com/paypalme/shatadip2020" target="_blank" rel="noopener noreferrer">
-                    <Heart className='donateHeart' />
+                    <HeartFill className='donateHeart' />
                     Donate
                 </a>
             );
@@ -546,12 +548,13 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.0.4*</p>
+                    <p className="postmann-version">v 1.0.4</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}
                     <a href="https://github.com/shatadip/Postmann" target="_blank" rel="noopener noreferrer"><Github className='githubLink' />GitHub</a>
-                    <a href="https://www.shatadip.com/" target="_blank" rel="noopener noreferrer">@Shatadip</a>
+                    {/* <a href="https://www.shatadip.com/" target="_blank" rel="noopener noreferrer">@Shatadip</a> */}
+                    <LinkAlternator />
                 </div>
             </div>
             <div>
@@ -603,7 +606,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                         placeholder={textareaPlaceholder}
                     ></textarea>
                 </label>
-                <button className="postmann-button" onClick={sendRequest}>
+                <button
+                    className="postmann-button"
+                    onClick={sendRequest}
+                    disabled={isButtonDisabled}
+                    style={{ cursor: isButtonDisabled ? 'not-allowed' : 'pointer' }}
+                >
                     Send Request
                 </button>
             </div>
@@ -612,7 +620,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     <>
                         <p className={`postmann-response-title`}>
                             Response:
-                            <span className={`prt-code ${responseClass}`} data-tooltip='Status Code'>{responseCode !== null ? responseCode : '⌛'}</span>
+                            <span className={`prt-code ${responseClass}`} data-tooltip='Status Code'><strong>{responseCode !== null ? responseCode : <><i className="hourGlassEmoji-styles">⌛</i></>}</strong></span>
 
                             <span className='prt-time' data-tooltip='Response Time'>{responseTime !== null ? ` ${responseTime.toFixed(2)}s` : ' N/A'}</span>
 
@@ -737,7 +745,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                     <div className={`postmann-headers`}>
                                         {/* Render headers here */}
                                         {optionsDiv('headers', formatHeaders(responseHeaders))}
-                                        {responseHeaders && (
+                                        {/* {responseHeaders && ( */}
                                             <SyntaxHighlighter
                                                 language="json"
                                                 style={themeForSHL}
@@ -745,9 +753,11 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                                 className="syntax-hl-custom-styles"
                                                 wrapLongLines={wrapState}
                                             >
-                                                {formatHeaders(responseHeaders)}
+                                                {/* {formatHeaders(responseHeaders)} */}
+                                                {/* if response headers is null. show err */}
+                                                {responseHeaders ? formatHeaders(responseHeaders) : `No Headers Available\nAPI URI broken or CORS issue or Network Error\nCheck the URL and try again\nAnd Donate to Postmann for 7 years of good luck`}
                                             </SyntaxHighlighter>
-                                        )}
+                                        {/* )} */}
                                     </div>
                                 )}
                             </div>

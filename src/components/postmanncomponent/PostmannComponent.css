@@ -450,7 +450,7 @@ pre {
 
 .invalidJSON-sup {
     color: red;
-    background-color: white;
+    background-color: #EEEEEE;
     padding: 1px 4px;
     margin: 0 0 0 3px;
     font-size: 0.55rem;
@@ -556,7 +556,8 @@ pre {
 .postmann-response-title {
     color: white;
     font-size: 14px;
-    font-family: Inter;
+    font-family: Inter!important;
+    margin: 1.75em auto 1.5em auto;
   }
 
 .prt-code,
@@ -592,7 +593,7 @@ pre {
   [data-tooltip]::before,
   [data-tooltip]::after {
     text-transform: none; /* opinion 2 */
-    font-size: .9em; /* opinion 3 */
+    font-size: .8em; /* opinion 3 */
     line-height: 1;
     user-select: none;
     pointer-events: none;
@@ -677,5 +678,23 @@ pre {
   [data-tooltip][flow^="down"]:hover::before,
   [data-tooltip][flow^="down"]:hover::after {
     animation: tooltips-vert 300ms ease-out forwards;
+  }
+  
+  @keyframes rotateAndStop {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+      
+    }
+    100% {
+      transform: rotate(360deg);
+      display:inline-block;
+    }
+  }
+  
+  .hourGlassEmoji-styles {
+    animation: rotateAndStop 4s linear infinite;
   }
   
