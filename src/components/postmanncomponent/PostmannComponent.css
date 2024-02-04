@@ -1,12 +1,25 @@
 /* PostmannComponent.css */
 
+:root {
+    --background-color: #121212;
+    --font-color-red: #61dafb;
+    --font-color-blue: #5258cc;
+    --font-color-react: #61dafb;
+    --font-color-slategrey: slategrey;
+    --padding: 4px 13px;
+    --border-radius: 3px;
+    --margin: 0 1.1ch;
+    --margin-right: 1.1ch;
+  }
+
 @font-face {
     font-family: 'IBMPlexMono';
-    src: url('./IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+    src: url('../fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
 }
-
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter/Inter-Regular.ttf') format('truetype');
+}
 
 .postmann-container {
     font-family: 'Arial', sans-serif;
@@ -88,17 +101,13 @@
     color: #ffffff;
 }
 
-.postmann-response-title {
-    font-size: 14px;
-}
-
 .postmann-tabs {
     display: flex;
 }
 
 .postmann-tab {
     flex: 1;
-    padding: 12px;
+    padding: 9px 12px;
     cursor: pointer;
     border: 1px solid #61dafb;
     /* React blue color */
@@ -151,11 +160,14 @@
 
 .loading-indicator {
     display: flex;
-    align-items: center;
     font-size: 18px;
     color: #61dafb;
     /* React blue color */
-    padding-right: 2rem;
+    border: 1px solid #61dafb;
+    border-top: none;
+    justify-content: center;
+    padding: 0.35rem 0;
+    align-items: center;
 }
 
 .dot1,
@@ -540,3 +552,130 @@ pre {
         scale: 1.01;
     }
 }
+
+.postmann-response-title {
+    color: white;
+    font-size: 14px;
+    font-family: Inter;
+  }
+
+.prt-code,
+.prt-time,
+.prt-size {
+  background-color: var(--background-color);
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+}
+
+.prt-code {
+  margin: var(--margin);
+}
+
+.prt-time {
+  color: var(--font-color-react);
+  margin-right: var(--margin-right);
+}
+
+.prt-size {
+  color: var(--font-color-slategrey);
+  font-weight: normal;
+}
+  
+  /* START TOOLTIP STYLES */
+  [data-tooltip] {
+    position: relative; /* opinion 1 */
+    cursor:pointer;
+    
+  }
+  
+  /* Applies to all tooltips */
+  [data-tooltip]::before,
+  [data-tooltip]::after {
+    text-transform: none; /* opinion 2 */
+    font-size: .9em; /* opinion 3 */
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    opacity: 0;
+  }
+  [data-tooltip]::before {
+    content: '';
+    border: 5px solid transparent; /* opinion 4 */
+    z-index: 1001; /* absurdity 1 */
+  }
+  [data-tooltip]::after {
+    content: attr(data-tooltip); /* magic! */
+    
+    /* most of the rest of this is opinion */
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+    
+    /* 
+      Let the content set the size of the tooltips 
+      but this will also keep them from being obnoxious
+      */
+    min-width: 3em;
+    max-width: 31em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1ch 1.5ch;
+    border-radius: .3ch;
+    box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, 0.35);
+    background: #333;
+    color: #fff;
+    z-index: 1000; /* absurdity 2 */
+  }
+  
+  /* Make the tooltips respond to hover */
+  [data-tooltip]:hover::before,
+  [data-tooltip]:hover::after {
+    display: block;
+  }
+  
+  /* don't show empty tooltips */
+  [tooltip='']::before,
+  [tooltip='']::after {
+    display: none !important;
+  }
+  
+  /* FLOW: UP */
+  [data-tooltip]:not([flow])::before,
+  [data-tooltip][flow^="up"]::before {
+    bottom: 100%;
+    border-bottom-width: 0;
+    border-top-color: #333;
+  }
+  [data-tooltip]:not([flow])::after,
+  [data-tooltip][flow^="up"]::after {
+    bottom: calc(100% + 5px);
+  }
+  [data-tooltip]:not([flow])::before,
+  [data-tooltip]:not([flow])::after,
+  [data-tooltip][flow^="up"]::before,
+  [data-tooltip][flow^="up"]::after {
+    left: 50%;
+    transform: translate(-50%, -.5em);
+  }
+  
+  /* KEYFRAMES */
+  @keyframes tooltips-vert {
+    to {
+      opacity: .9;
+      transform: translate(-50%, 0);
+    }
+  }
+  
+  
+  /* FX All The Things */ 
+  [data-tooltip]:not([flow]):hover::before,
+  [data-tooltip]:not([flow]):hover::after,
+  [data-tooltip][flow^="up"]:hover::before,
+  [data-tooltip][flow^="up"]:hover::after,
+  [data-tooltip][flow^="down"]:hover::before,
+  [data-tooltip][flow^="down"]:hover::after {
+    animation: tooltips-vert 300ms ease-out forwards;
+  }
+  

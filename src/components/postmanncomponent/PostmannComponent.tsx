@@ -1,5 +1,8 @@
 // PostmannComponent.tsx
 
+
+// *****FIX BUTTON LOGIC AFTER BLUR/DE-FOCUS, MANY BUTTONS ARE NOT WORKING PROPERLY [copy, download, lines]*****
+
 import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -41,6 +44,28 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
     // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
+
+
+
+
+    const wrapButtonRef = useRef<HTMLButtonElement>(null);
+    const themeButtonRef = useRef<HTMLButtonElement>(null);
+    const copyButtonRef = useRef<HTMLButtonElement>(null);
+    const downloadButtonRef = useRef<HTMLButtonElement>(null);
+    const toggleLnumButtonRef = useRef<HTMLButtonElement>(null);
+
+
+    // Function to handle button click
+    const handleButtonClick = (ref: React.RefObject<HTMLButtonElement>) => {
+        // Remove focus from the clicked button
+        // timeout
+        setTimeout(() => {
+            ref.current?.blur();
+        }, 50);
+        // ref.current?.blur();
+        // Add your button click logic here
+    };
+
 
     const calculateSizeInBytes = (str: any) => {
         // const encoder = new TextEncoder();
@@ -84,9 +109,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         };
 
         return (
-            <button onClick={handleCopy} className={`copy-button ${copied ? 'flash' : ''}`}>
+            <button
+                onClick={() => { handleCopy(); handleButtonClick(copyButtonRef) }}
+                className={`copy-button ${copied ? 'flash' : ''}`}
+                ref={copyButtonRef}
+            >
                 <Clipboard className='rbi-button-icon' />{copied ? 'Copied' : 'Copy'}
             </button>
+            
         );
     };
     const toggleLineNumbers = () => {
@@ -111,21 +141,51 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         };
 
         return (
+
             <div className='optionsDiv'>
-                <button onClick={toggleLineNumbers} className='toggle-lnum-button'>
+                {/* Toggle Line Num Button */}
+
+                <button
+                    onClick={() => { toggleLineNumbers(); handleButtonClick(toggleLnumButtonRef); }}
+                    className='toggle-lnum-button'
+                    ref={toggleLnumButtonRef}
+                >
                     <ListOl className='rbi-button-icon' />
                     {showLineNumbers ? '!!Lines' : 'Lines'}
                 </button>
-                <button onClick={() => setWrapState(!wrapState)} className='wrap-button'>
+
+
+                {/* Wrap Button */}
+
+                <button
+                    onClick={() => { setWrapState(!wrapState); handleButtonClick(wrapButtonRef); }}
+                    className='wrap-button'
+                    ref={wrapButtonRef}
+                >
                     <TextWrap className='rbi-button-icon' /> {wrapState ? '!!Wrap' : 'Wrap'}
                 </button>
+
+                {/* Copy Button */}
+
                 <CopyButton contentToCopy={resp} />
-                <button onClick={handleDownload} className='download-button'>
-                    <Download className='rbi-button-icon' />Download
-                </button>
+
+                {/* Download Button */}
+
                 <button
-                    onClick={() => setThemeForSHL(themeForSHL == atomDark ? ghcolors : atomDark)}
+    onClick={() => { handleDownload(); handleButtonClick(downloadButtonRef); }}
+    className='download-button'
+    ref={downloadButtonRef}
+>
+    <Download className='rbi-button-icon' />Download
+</button>
+
+
+                {/* Theme Button */}
+
+                <button
+                    onClick={() => { setThemeForSHL(themeForSHL == atomDark ? ghcolors : atomDark); handleButtonClick(themeButtonRef) }}
                     className='theme-button'
+                    ref={themeButtonRef}
                 >
                     {themeForSHL == atomDark ? <BrightnessHighFill className='rbi-button-icon' /> : <MoonFill className='rbi-button-icon' />}
                     {themeForSHL == atomDark ? 'Light' : 'Dark'}
@@ -192,6 +252,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     // };
     const sendRequest = async () => {
         setLoading(true); // Set loading to true when starting the request
+        setResponseCode(null); // Reset the response code when sending a new request
+
         setRequestSent(true);
         const startTime: number = performance.now();
         const maxSize = 1024 * 1024; // 1 MB (adjust as needed)
@@ -249,6 +311,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     case contentType.includes('application/xml'):
                         const responseBody = await res.text();
                         // const formattedHtml = formatHtml(responseBody);
+                        setAbsoluteRawResponse(responseBody);
                         setResponse(responseBody); //formattedHtml
                         setViewOption('pretty');
                         setIsInvalidJSON(false);
@@ -402,7 +465,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     };
     const formatHeaders = (headers: Headers | null) => {
         const formattedHeaders: Record<string, string> = {};
-    
+
         if (headers) {
             headers.forEach((value, key) => {
                 try {
@@ -417,12 +480,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 }
             });
         }
-    
+
         return JSON.stringify(formattedHeaders, null, 2);
     };
-    
-    
-    
+
+
+
     const formatHeaders2 = (headers: Headers | null) => {
         const formattedHeaders2: Record<string, string> = {};
 
@@ -548,17 +611,18 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 {requestSent && ( // Render the response section only if the request has been sent
                     <>
                         <p className={`postmann-response-title`}>
-                            Response (
-                            <span className={responseClass}>{responseCode !== null ? responseCode : 'N/A'}</span>
-                            <span>{' - Time: '}{responseTime !== null ? ` ${responseTime.toFixed(2)}s` : ' N/A'}</span>
-                            {response && absoluteRawResponse && responseHeaders && (
-                                <span>
-                                    {' - Size: '}
-                                    {calculateSizeInBytes2(absoluteRawResponse, formatHeaders2(responseHeaders))} =
-                                    {calculateSizeInBytes(absoluteRawResponse)} + {calculateSizeInBytes(formatHeaders2(responseHeaders))}
+                            Response:
+                            <span className={`prt-code ${responseClass}`} data-tooltip='Status Code'>{responseCode !== null ? responseCode : '⌛'}</span>
+
+                            <span className='prt-time' data-tooltip='Response Time'>{responseTime !== null ? ` ${responseTime.toFixed(2)}s` : ' N/A'}</span>
+
+                            {responseCode && response && absoluteRawResponse && responseHeaders && (
+                                <span className='prt-size' data-tooltip={`Response Size: ${calculateSizeInBytes(absoluteRawResponse)} (body) + ${calculateSizeInBytes(formatHeaders2(responseHeaders))} (headers)`}>
+                                    {calculateSizeInBytes2(absoluteRawResponse, formatHeaders2(responseHeaders))}
+
                                 </span>
                             )}
-                            ):
+
                         </p>
 
                         <div className="postmann-tabs">
