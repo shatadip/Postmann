@@ -1,6 +1,5 @@
 // PostmannComponent.tsx
 
-
 import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -9,8 +8,6 @@ import { Github, HeartFill, TextWrap, Clipboard, BrightnessHighFill, Download, M
 import LinkAlternator from '../LinkAlternator'; //Show <> @Shatadip <> Rate Postmann <> alternately
 import Modal from 'react-modal'; // Import the modal library
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
-
-// const themeForSHL = atomDark; //ghcolors;
 
 interface PostmannComponentProps {
     showLineNumbers: boolean;
@@ -23,7 +20,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [responseCode, setResponseCode] = useState<any | null>(null);
     const [absoluteRawResponse, setAbsoluteRawResponse] = useState<string>(''); //[[v1.0.4]]
-    // const [absoluteRawHeaders, setAbsoluteRawHeaders] = useState<any>(null);    //[[v1.0.4]]
     const [response, setResponse] = useState<any>('');
     const [responseHeaders, setResponseHeaders] = useState<Headers | null>(null);
     const [responseClass, setResponseClass] = useState<string>('');
@@ -41,7 +37,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [wrapState, setWrapState] = useState<boolean>(false);
     const [themeForSHL, setThemeForSHL] = useState<any>(atomDark); //ghcolors;
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
-    // const [scrolling, setScrolling] = useState<boolean>(false);
     const urlInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -61,8 +56,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         setTimeout(() => {
             ref.current?.blur();
         }, 175);
-        // ref.current?.blur();
-        // Add your button click logic here
     };
 
 
@@ -244,11 +237,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             });
     }, []);
 
-    // Function to format HTML for better readability
-    // const formatHtml = (html: any) => {
-
-    //     return html;
-    // };
     const sendRequest = async () => {
         setLoading(true); // Set loading to true when starting the request
         setResponseCode(null); // Reset the response code when sending a new request
@@ -500,8 +488,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         return JSON.stringify(formattedHeaders2, null);
     };
 
-
-
     const renderDonationLink = () => {
         if (country === 'IN') {
             // Display image in modal window for India
@@ -697,8 +683,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                         >
                                             {response}
                                         </SyntaxHighlighter>
-
-
                                     </>
                                 ) : viewOption === 'image' ? (
                                     <div className={`postmann-raw-response`}>
@@ -753,7 +737,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                                 className="syntax-hl-custom-styles"
                                                 wrapLongLines={wrapState}
                                             >
-                                                {/* {formatHeaders(responseHeaders)} */}
                                                 {/* if response headers is null. show err */}
                                                 {responseHeaders ? formatHeaders(responseHeaders) : `No Headers Available\nAPI URI broken or CORS issue or Network Error\nCheck the URL and try again\nAnd Donate to Postmann for 7 years of good luck`}
                                             </SyntaxHighlighter>
@@ -765,11 +748,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     </>
                 )}
             </div>
-            {/* {scrolling && (
-                <div className="scroll-indicator">
-                    Scrolling...
-                </div>
-            )} */}
             <div>
             </div>
             {/* Modal for India */}
