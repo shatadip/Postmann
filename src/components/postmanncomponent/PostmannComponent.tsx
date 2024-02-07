@@ -14,6 +14,7 @@ interface PostmannComponentProps {
 }
 
 const PostmannComponent: React.FC<PostmannComponentProps> = () => {
+    //STATES
     const [requestType, setRequestType] = useState<string>('GET');
     const [url, setUrl] = useState<string>(localStorage.getItem('postmannUrl') || ''); // Load from localStorage
     const [jsonBody, setJsonBody] = useState<string>(localStorage.getItem('postmannJsonBody') || ''); // Load from localStorage
@@ -37,11 +38,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [wrapState, setWrapState] = useState<boolean>(false);
     const [themeForSHL, setThemeForSHL] = useState<any>(atomDark); //ghcolors;
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
+
+    // REFS
     const urlInputRef = useRef<HTMLInputElement>(null);
-
-
-
-
     const wrapButtonRef = useRef<HTMLButtonElement>(null);
     const themeButtonRef = useRef<HTMLButtonElement>(null);
     const copyButtonRef = useRef<HTMLButtonElement>(null);
@@ -273,7 +272,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             const timeoutId = setTimeout(() => abortController.abort(), 60000);
 
             const res = await fetch(url, requestOptions);
-            // alert(res.text());
             clearTimeout(timeoutId);
 
             // Capture the response headers
@@ -297,9 +295,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     case contentType.includes('text/plain'):
                     case contentType.includes('application/xml'):
                         const responseBody = await res.text();
-                        // const formattedHtml = formatHtml(responseBody);
                         setAbsoluteRawResponse(responseBody);
-                        setResponse(responseBody); //formattedHtml
+                        setResponse(responseBody);
                         setViewOption('pretty');
                         setIsInvalidJSON(false);
                         break;
@@ -327,12 +324,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                         break;
 
                     case contentType.includes('application/pdf'):
-                        // const blobPdf = await res.blob();
-                        // const urlPdf = URL.createObjectURL(blobPdf);
                         const pdfData = await res.arrayBuffer();
                         const pdfUrl = URL.createObjectURL(new Blob([pdfData], { type: 'application/pdf' }));
                         setResponse(pdfUrl);
-                        // setResponse(blobPdf);
                         setViewOption('pdf');
                         break;
 
@@ -349,7 +343,6 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                         try {
                             rawResponse2 = responseCode === 204 ? null : await res.text();
                             setAbsoluteRawResponse(rawResponse2);
-                            //rawResponse2 = await res.text(); //usually a null body if responseCode is 204 but some people might send a body with 204. So...
                             const jsonResponse = JSON.parse(rawResponse2);
                             setResponse(JSON.stringify(jsonResponse, null, 2));
                             setViewOption('pretty');
@@ -730,16 +723,16 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                                         {/* Render headers here */}
                                         {optionsDiv('headers', formatHeaders(responseHeaders))}
                                         {/* {responseHeaders && ( */}
-                                            <SyntaxHighlighter
-                                                language="json"
-                                                style={themeForSHL}
-                                                showLineNumbers={showLineNumbers}
-                                                className="syntax-hl-custom-styles"
-                                                wrapLongLines={wrapState}
-                                            >
-                                                {/* if response headers is null. show err */}
-                                                {responseHeaders ? formatHeaders(responseHeaders) : `No Headers Available\nAPI URI broken or CORS issue or Network Error\nCheck the URL and try again\nAnd Donate to Postmann for 7 years of good luck`}
-                                            </SyntaxHighlighter>
+                                        <SyntaxHighlighter
+                                            language="json"
+                                            style={themeForSHL}
+                                            showLineNumbers={showLineNumbers}
+                                            className="syntax-hl-custom-styles"
+                                            wrapLongLines={wrapState}
+                                        >
+                                            {/* if response headers is null. show err */}
+                                            {responseHeaders ? formatHeaders(responseHeaders) : `No Headers Available\nAPI URI broken or CORS issue or Network Error\nCheck the URL and try again\nAnd Donate to Postmann for 7 years of good luck`}
+                                        </SyntaxHighlighter>
                                         {/* )} */}
                                     </div>
                                 )}
