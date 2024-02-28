@@ -666,4 +666,12 @@ pre {
   .hourGlassEmoji-styles {
     animation: rotateAndStop 4s linear infinite;
   }
-  
+  .dynamic-options {
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    background-color: #282c34;
+    padding: 0.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+  }

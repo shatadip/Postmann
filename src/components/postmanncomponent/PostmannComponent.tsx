@@ -481,6 +481,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         return JSON.stringify(formattedHeaders2, null);
     };
 
+    const renderVariablesModal = () => {
+        showModal();
+    }
+    const renderHistoryModal = () => {
+        showModal();
+    }
     const renderDonationLink = () => {
         if (country === 'IN') {
             // Display image in modal window for India
@@ -535,6 +541,10 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     {/* <a href="https://www.shatadip.com/" target="_blank" rel="noopener noreferrer">@Shatadip</a> */}
                     <LinkAlternator />
                 </div>
+            </div>
+            <div className='dynamic-options'>
+                <a href='#' onClick={renderVariablesModal}>Variables</a>
+                <a href='#' onClick={renderHistoryModal}>History</a>
             </div>
             <div>
                 <label>
