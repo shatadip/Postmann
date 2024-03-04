@@ -1,0 +1,13 @@
+.nc-textarea {
+    width: 89%;
+    height: 100%;
+    overflow-x: hidden;
+    font-size: 1.25rem;
+    padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+    resize: vertical;
+    /* color: #DDD;
+    background-color: #333; */
+    
+}
+

@@ -7,6 +7,10 @@ import { atomDark, ghcolors } from 'react-syntax-highlighter/dist/esm/styles/pri
 import { Github, HeartFill, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl } from 'react-bootstrap-icons';
 import LinkAlternator from '../LinkAlternator'; //Show <> @Shatadip <> Rate Postmann <> alternately
 import Modal from 'react-modal'; // Import the modal library
+
+//options components
+import NotesComponent from '../notescomponent/NotesComponent';
+
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
 interface PostmannComponentProps {
@@ -825,11 +829,12 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
-                <div className="modal-content">
+                <div className="modal-content" style={{width: '20rem'}}>
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
                     <h1>Notes</h1>
+                    <NotesComponent />
                 </div>
             </Modal>
         </div>
