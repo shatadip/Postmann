@@ -674,4 +674,9 @@ pre {
     margin-bottom: 0.75rem;
     display: flex;
     gap: 0.5rem;
+    justify-content: space-evenly;
+  }
+  .notes-modal {
+    background-color: #121212;
+    border: 2px solid #666;
   }

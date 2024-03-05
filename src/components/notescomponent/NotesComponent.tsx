@@ -1,6 +1,4 @@
-//NotesComponent.tsx
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './NotesComponent.css';
 
 const NotesComponent = () => {
@@ -9,6 +7,9 @@ const NotesComponent = () => {
         const savedNotes = localStorage.getItem('postmannNotes');
         return savedNotes ? savedNotes : '';
     });
+
+    // Create a reference to the textarea with explicit typing
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Update localStorage whenever notes changes
     useEffect(() => {
@@ -23,10 +24,19 @@ const NotesComponent = () => {
         }
     }, []);
 
+    // Set focus on the textarea when the component mounts
+    useEffect(() => {
+        // Check if the ref is currently pointing to a DOM element
+        if (textareaRef.current) {
+            textareaRef.current.focus();
+        }
+    }, []);
+
     return (
         <>
-            <div>NotesComponent</div>
+            <div className='notes-label'>Your notes are auto-saved here</div>
             <textarea
+                ref={textareaRef} // Attach the ref to the textarea
                 className="nc-textarea"
                 placeholder="Write your notes here..."
                 value={notes}

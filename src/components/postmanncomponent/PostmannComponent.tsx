@@ -825,7 +825,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 isOpen={isNotesModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Donation Modal"
-                className={`donation-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                className={`donation-modal notes-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
@@ -833,7 +833,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
-                    <h1>Notes</h1>
+                    <h1 style={{'color':'#F15A24'}}>Notes</h1>
                     <NotesComponent />
                 </div>
             </Modal>
