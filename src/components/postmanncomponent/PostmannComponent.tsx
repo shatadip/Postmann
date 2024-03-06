@@ -9,6 +9,7 @@ import LinkAlternator from '../LinkAlternator'; //Show <> @Shatadip <> Rate Post
 import Modal from 'react-modal'; // Import the modal library
 
 //options components
+import VariablesComponent from '../variablescomponent/VariablesComponent';
 import NotesComponent from '../notescomponent/NotesComponent';
 
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
@@ -802,6 +803,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                         &times;
                     </button>
                     <h1>Variables</h1>
+                    <VariablesComponent />
                 </div>
             </Modal>
             {/* Modal for History */}

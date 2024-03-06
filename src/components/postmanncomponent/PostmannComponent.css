@@ -6,6 +6,7 @@
     --font-color-blue: #5258cc;
     --font-color-react: #61dafb;
     --font-color-slategrey: slategrey;
+    --modal-bg-color: #1e1e1e;
     --padding: 4px 13px;
     --border-radius: 3px;
     --margin: 0 1.1ch;
@@ -677,6 +678,6 @@ pre {
     justify-content: space-evenly;
   }
   .notes-modal {
-    background-color: #121212;
+    background-color: var(--modal-bg-color);
     border: 2px solid #666;
   }
