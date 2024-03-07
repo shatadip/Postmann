@@ -1,0 +1,40 @@
+.table-container {
+    display: table;
+    width: 318px;
+    border-collapse: collapse;
+    margin: 20px 0;
+   }
+   
+   .table-row {
+    display: table-row;
+   }
+   
+   .table-row.header {
+    background-color: #f2f2f2; /* Light grey background for headers */
+   }
+   
+   .table-cell {
+    display: table-cell;
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+   }
+   
+   .delete-button {
+    text-align: center;
+    background-color: #f44336; /* Red background */
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-left: 1px solid #ddd; /* Separate delete button from value column */
+   }
+   
+   .delete-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+   }
+   
+   /* Styling for alternating row colors */
+   .table-row:nth-child(even) {
+    background-color: #f2f2f2;
+   }
+   
