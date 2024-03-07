@@ -244,7 +244,28 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             });
     }, []);
 
+    interface Variable {
+        name: string;
+        value: string;
+       }
+       
+       const replaceVariables = (input: string) => {
+        let result = input;
+        // Retrieve the variables from localStorage and parse them into an array
+        const storedVariables = localStorage.getItem('postmannVars');
+        const variables: Variable[] = storedVariables ? JSON.parse(storedVariables) : [];
+       
+        variables.forEach((variable: Variable) => {
+            const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
+            result = result.replace(regex, variable.value);
+        });
+        return result;
+       };
+       
+       
     const sendRequest = async () => {
+        const processedUrl = replaceVariables(url);
+        const processedBody = replaceVariables(jsonBody);
         setLoading(true); // Set loading to true when starting the request
         setResponseCode(null); // Reset the response code when sending a new request
         setIsButtonDisabled(true);
@@ -274,12 +295,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             };
 
             if (requestType !== 'GET') {
-                requestOptions.body = jsonBody;
+                // requestOptions.body = jsonBody;
+                requestOptions.body = processedBody;
             }
 
             const timeoutId = setTimeout(() => abortController.abort(), 60000);
 
-            const res = await fetch(url, requestOptions);
+            // const res = await fetch(url, requestOptions);
+            const res = await fetch(processedUrl, requestOptions);
             clearTimeout(timeoutId);
 
             // Capture the response headers

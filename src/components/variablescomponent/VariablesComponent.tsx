@@ -8,25 +8,33 @@ interface Variable {
 
 const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
-  const cellRefs = useRef<HTMLDivElement[]>([]);
+  const nameRefs = useRef<HTMLDivElement[]>([]);
+  const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
 
   useEffect(() => {
-    const storedVariables = localStorage.getItem('variables');
+    const storedVariables = localStorage.getItem('postmannVars');
     if (storedVariables) {
       setVariables(JSON.parse(storedVariables));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('variables', JSON.stringify(variables));
+    localStorage.setItem('postmannVars', JSON.stringify(variables));
   }, [variables]);
 
   useEffect(() => {
-    cellRefs.current = cellRefs.current.slice(0, variables.length);
+    nameRefs.current = nameRefs.current.slice(0, variables.length);
+    valueRefs.current = valueRefs.current.slice(0, variables.length); // Update valueRefs as well
   }, [variables]);
 
   const addVariable = () => {
-    setVariables([...variables, { name: '', value: '' }]);
+    const newVariables = [...variables, { name: '', value: '' }];
+    setVariables(newVariables);
+    // Focus on the last added variable's name field
+    const lastIndex = newVariables.length - 1;
+    setTimeout(() => {
+      nameRefs.current[lastIndex]?.focus();
+    }, 0);
   };
 
   const deleteVariable = (index: number) => {
@@ -42,12 +50,27 @@ const VariablesComponent: React.FC = () => {
   const handleKeyPress = (index: number, key: keyof Variable, e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Tab') {
       e.preventDefault();
-      const nextIndex = key === 'name' ? index : index + 1;
-      if (nextIndex < variables.length) {
-        cellRefs.current[nextIndex]?.focus();
+      if (e.shiftKey) { // If Shift+Tab is pressed
+        if (key === 'value') { // If currently focused on a value field
+          // Focus on the current variable's name field
+          nameRefs.current[index]?.focus();
+        } else if (index > 0) { // If currently focused on a name field and not the first variable
+          // Focus on the previous variable's value field
+          valueRefs.current[index - 1]?.focus();
+        }
+      } else {
+        if (key === 'name') {
+          // Focus on the current variable's value field
+          valueRefs.current[index]?.focus();
+        } else if (index < variables.length - 1) { // If currently focused on a value field and not the last variable
+          // Focus on the next variable's name field
+          nameRefs.current[index + 1]?.focus();
+        }
       }
     }
   };
+
+
 
   return (
     <>
@@ -61,7 +84,7 @@ const VariablesComponent: React.FC = () => {
         {variables.map((variable, index) => (
           <div className="table-row" key={index}>
             <div
-              ref={(element) => (cellRefs.current[index] = element as HTMLDivElement)}
+              ref={(element) => (nameRefs.current[index] = element as HTMLDivElement)}
               className="table-cell"
               contentEditable
               onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
@@ -70,6 +93,7 @@ const VariablesComponent: React.FC = () => {
               {variable.name}
             </div>
             <div
+              ref={(element) => (valueRefs.current[index] = element as HTMLDivElement)} // Ref for value field
               className="table-cell"
               contentEditable
               onBlur={(e) => handleInputChange(index, 'value', e.currentTarget.textContent || '')}
