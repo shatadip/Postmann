@@ -11,6 +11,7 @@ import Modal from 'react-modal'; // Import the modal library
 //options components
 import VariablesComponent from '../variablescomponent/VariablesComponent';
 import NotesComponent from '../notescomponent/NotesComponent';
+import MRHComponent from '../mrhcomponent/MRHComponent';
 
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
@@ -38,6 +39,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [isVarModalOpen, setIsVarModalOpen] = useState<boolean>(false);
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState<boolean>(false);
     const [isNotesModalOpen, setIsNotesModalOpen] = useState<boolean>(false);
+    const [isModifyRequestHeadersModalOpen, setIsModifyRequestHeadersModalOpen] = useState<boolean>(false);
     const [isClosing, setIsClosing] = useState<boolean>(false);
     const [responseType, setResponseType] = useState<any>('');
     const [binaryFileContents, setBinaryFileContents] = useState<string>('');
@@ -524,6 +526,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         // showNotesModal();
         setIsNotesModalOpen(true);
     }
+    const renderMRHModal = () => {
+        setIsModifyRequestHeadersModalOpen(true);
+    }
     const renderDonationLink = () => {
         if (country === 'IN') {
             // Display image in modal window for India
@@ -555,6 +560,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             setIsVarModalOpen(false);
             setIsHistoryModalOpen(false);
             setIsNotesModalOpen(false);
+            setIsModifyRequestHeadersModalOpen(false);
             setIsClosing(false);
         }, 150);
     };
@@ -586,7 +592,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <a href='#' onClick={renderVariablesModal}>Variables</a>
                 <a href='#' onClick={renderHistoryModal}>History</a>
                 <a href='#' onClick={renderNotesModal}>Notes</a>
-                <a href='#' onClick={renderNotesModal}>Modify Request Headers</a>
+                <a href='#' onClick={renderMRHModal}>Modify Request Headers</a>
             </div>
             <div>
                 <label>
@@ -817,7 +823,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 isOpen={isVarModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Donation Modal"
-                className={`donation-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                className={`donation-modal vars-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
@@ -825,7 +831,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
-                    <h1>Variables</h1>
+                    <h1 className='dynamic-options-modal-h1'>Variables</h1>
                     <VariablesComponent />
                 </div>
             </Modal>
@@ -834,7 +840,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 isOpen={isHistoryModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Donation Modal"
-                className={`donation-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                className={`donation-modal history-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
@@ -842,7 +848,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
-                    <h1>History</h1>
+                    <h1 className='dynamic-options-modal-h1'>History</h1>
                 </div>
             </Modal>
             {/* Modal for Notes */}
@@ -858,10 +864,28 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
-                    <h1 style={{'color':'#F15A24'}}>Notes</h1>
+                    <h1 className='dynamic-options-modal-h1'>Notes</h1>
                     <NotesComponent />
                 </div>
             </Modal>
+            {/* Modal for modifying request headers */}
+            <Modal
+                isOpen={isModifyRequestHeadersModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Donation Modal"
+                className={`donation-modal mrh-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                overlayClassName="donation-modal-overlay"
+                shouldCloseOnOverlayClick={true}
+            >
+                <div className="modal-content" style={{width: '20rem'}}>
+                    <button className="close-button" onClick={closeModal}>
+                        &times;
+                    </button>
+                    <h1 className='dynamic-options-modal-h1'>Request Headers</h1>
+                    <MRHComponent />
+                </div>
+            </Modal>
+
         </div>
     );
 

@@ -18,6 +18,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
+    font-size: 0.65rem;
    }
    
    .delete-button {
@@ -37,4 +38,20 @@
    .table-row:nth-child(even) {
     background-color: #f2f2f2;
    }
-   
+   .table-row:nth-child(odd) {
+    background-color: #ffffff; /* White background for odd rows */
+  }
+   .ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+/* .var-name {
+    max-width: 19px;
+} */
+
+.vars-label {
+    color: #fff;
+    margin-bottom: 1rem;
+}

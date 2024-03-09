@@ -70,14 +70,12 @@ const VariablesComponent: React.FC = () => {
     }
   };
 
-
-
   return (
     <>
-      <div>VariablesComponent</div>
+      <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
       <div className="table-container">
         <div className="table-row header">
-          <div className="table-cell">Variable Name</div>
+          <div className="table-cell var-name">Variable Name</div>
           <div className="table-cell">Value</div>
           <div className="table-cell">Delete</div>
         </div>
@@ -85,7 +83,7 @@ const VariablesComponent: React.FC = () => {
           <div className="table-row" key={index}>
             <div
               ref={(element) => (nameRefs.current[index] = element as HTMLDivElement)}
-              className="table-cell"
+              className="table-cell var-name ellipsis"
               contentEditable
               onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
               onKeyDown={(e) => handleKeyPress(index, 'name', e)}
@@ -94,7 +92,7 @@ const VariablesComponent: React.FC = () => {
             </div>
             <div
               ref={(element) => (valueRefs.current[index] = element as HTMLDivElement)} // Ref for value field
-              className="table-cell"
+              className="table-cell ellipsis"
               contentEditable
               onBlur={(e) => handleInputChange(index, 'value', e.currentTarget.textContent || '')}
               onKeyDown={(e) => handleKeyPress(index, 'value', e)}

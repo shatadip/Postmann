@@ -11,12 +11,13 @@
     --border-radius: 3px;
     --margin: 0 1.1ch;
     --margin-right: 1.1ch;
-  }
+}
 
 @font-face {
     font-family: 'IBMPlexMono';
     src: url('../fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
 }
+
 @font-face {
     font-family: 'Inter';
     src: url('../fonts/Inter/Inter-Regular.ttf') format('truetype');
@@ -268,7 +269,7 @@
 }
 
 pre {
-    font-family: IBMPlexMono, "Courier New", monospace, Consolas, "Courier New", monospace!important;
+    font-family: IBMPlexMono, "Courier New", monospace, Consolas, "Courier New", monospace !important;
     font-weight: normal;
     font-size: 12px;
     font-feature-settings: "liga" 0, "calt" 0;
@@ -472,7 +473,9 @@ pre {
 
 .wrap-button,
 .theme-button,
-.copy-button, .download-button, .toggle-lnum-button {
+.copy-button,
+.download-button,
+.toggle-lnum-button {
     /* background-color: #3498db; */
     background-color: #123256;
     color: #fff;
@@ -487,7 +490,9 @@ pre {
 
 .wrap-button:hover,
 .copy-button:hover,
-.theme-button:hover, .download-button:hover, .toggle-lnum-button:hover {
+.theme-button:hover,
+.download-button:hover,
+.toggle-lnum-button:hover {
     background-color: #2980b9;
 }
 
@@ -526,63 +531,71 @@ pre {
 .postmann-response-title {
     color: white;
     font-size: 14px;
-    font-family: Inter!important;
+    font-family: Inter !important;
     margin: 1.75em auto 1.5em auto;
-  }
+}
 
 .prt-code,
 .prt-time,
 .prt-size {
-  background-color: var(--background-color);
-  padding: var(--padding);
-  border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
 }
 
 .prt-code {
-  margin: var(--margin);
+    margin: var(--margin);
 }
 
 .prt-time {
-  color: var(--font-color-react);
-  margin-right: var(--margin-right);
+    color: var(--font-color-react);
+    margin-right: var(--margin-right);
 }
 
 .prt-size {
-  color: var(--font-color-slategrey);
-  font-weight: normal;
+    color: var(--font-color-slategrey);
+    font-weight: normal;
 }
-  
-  /* START TOOLTIP STYLES */
-  [data-tooltip] {
-    position: relative; /* opinion 1 */
-    cursor:pointer;
-    
-  }
-  
-  /* Applies to all tooltips */
-  [data-tooltip]::before,
-  [data-tooltip]::after {
-    text-transform: none; /* opinion 2 */
-    font-size: .8em; /* opinion 3 */
+
+/* START TOOLTIP STYLES */
+[data-tooltip] {
+    position: relative;
+    /* opinion 1 */
+    cursor: pointer;
+
+}
+
+/* Applies to all tooltips */
+[data-tooltip]::before,
+[data-tooltip]::after {
+    text-transform: none;
+    /* opinion 2 */
+    font-size: .8em;
+    /* opinion 3 */
     line-height: 1;
     user-select: none;
     pointer-events: none;
     position: absolute;
     display: none;
     opacity: 0;
-  }
-  [data-tooltip]::before {
+}
+
+[data-tooltip]::before {
     content: '';
-    border: 5px solid transparent; /* opinion 4 */
-    z-index: 1001; /* absurdity 1 */
-  }
-  [data-tooltip]::after {
-    content: attr(data-tooltip); /* magic! */
-    
+    border: 5px solid transparent;
+    /* opinion 4 */
+    z-index: 1001;
+    /* absurdity 1 */
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    /* magic! */
+
     /* most of the rest of this is opinion */
     font-family: Helvetica, sans-serif;
     text-align: center;
-    
+
     /* 
       Let the content set the size of the tooltips 
       but this will also keep them from being obnoxious
@@ -597,77 +610,83 @@ pre {
     box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, 0.35);
     background: #333;
     color: #fff;
-    z-index: 1000; /* absurdity 2 */
-  }
-  
-  /* Make the tooltips respond to hover */
-  [data-tooltip]:hover::before,
-  [data-tooltip]:hover::after {
+    z-index: 1000;
+    /* absurdity 2 */
+}
+
+/* Make the tooltips respond to hover */
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
     display: block;
-  }
-  
-  /* don't show empty tooltips */
-  [tooltip='']::before,
-  [tooltip='']::after {
+}
+
+/* don't show empty tooltips */
+[tooltip='']::before,
+[tooltip='']::after {
     display: none !important;
-  }
-  
-  /* FLOW: UP */
-  [data-tooltip]:not([flow])::before,
-  [data-tooltip][flow^="up"]::before {
+}
+
+/* FLOW: UP */
+[data-tooltip]:not([flow])::before,
+[data-tooltip][flow^="up"]::before {
     bottom: 100%;
     border-bottom-width: 0;
     border-top-color: #333;
-  }
-  [data-tooltip]:not([flow])::after,
-  [data-tooltip][flow^="up"]::after {
+}
+
+[data-tooltip]:not([flow])::after,
+[data-tooltip][flow^="up"]::after {
     bottom: calc(100% + 5px);
-  }
-  [data-tooltip]:not([flow])::before,
-  [data-tooltip]:not([flow])::after,
-  [data-tooltip][flow^="up"]::before,
-  [data-tooltip][flow^="up"]::after {
+}
+
+[data-tooltip]:not([flow])::before,
+[data-tooltip]:not([flow])::after,
+[data-tooltip][flow^="up"]::before,
+[data-tooltip][flow^="up"]::after {
     left: 50%;
     transform: translate(-50%, -.5em);
-  }
-  
-  /* KEYFRAMES */
-  @keyframes tooltips-vert {
+}
+
+/* KEYFRAMES */
+@keyframes tooltips-vert {
     to {
-      opacity: .9;
-      transform: translate(-50%, 0);
+        opacity: .9;
+        transform: translate(-50%, 0);
     }
-  }
-  
-  
-  /* FX All The Things */ 
-  [data-tooltip]:not([flow]):hover::before,
-  [data-tooltip]:not([flow]):hover::after,
-  [data-tooltip][flow^="up"]:hover::before,
-  [data-tooltip][flow^="up"]:hover::after,
-  [data-tooltip][flow^="down"]:hover::before,
-  [data-tooltip][flow^="down"]:hover::after {
+}
+
+
+/* FX All The Things */
+[data-tooltip]:not([flow]):hover::before,
+[data-tooltip]:not([flow]):hover::after,
+[data-tooltip][flow^="up"]:hover::before,
+[data-tooltip][flow^="up"]:hover::after,
+[data-tooltip][flow^="down"]:hover::before,
+[data-tooltip][flow^="down"]:hover::after {
     animation: tooltips-vert 300ms ease-out forwards;
-  }
-  
-  @keyframes rotateAndStop {
+}
+
+@keyframes rotateAndStop {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     50% {
-      transform: rotate(180deg);
-      
+        transform: rotate(180deg);
+
     }
+
     100% {
-      transform: rotate(360deg);
-      display:inline-block;
+        transform: rotate(360deg);
+        display: inline-block;
     }
-  }
-  
-  .hourGlassEmoji-styles {
+}
+
+.hourGlassEmoji-styles {
     animation: rotateAndStop 4s linear infinite;
-  }
-  .dynamic-options {
+}
+
+.dynamic-options {
     border: 1px solid #CCC;
     border-radius: 4px;
     background-color: #282c34;
@@ -676,8 +695,17 @@ pre {
     display: flex;
     gap: 0.5rem;
     justify-content: space-evenly;
-  }
-  .notes-modal {
+}
+
+.notes-modal,
+.vars-modal,
+.history-modal,
+.mrh-modal {
     background-color: var(--modal-bg-color);
     border: 2px solid #666;
-  }
+}
+
+.dynamic-options-modal-h1 {
+    color: #F15A24;
+    margin-bottom: 0.66rem;
+}
