@@ -249,22 +249,22 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     interface Variable {
         name: string;
         value: string;
-       }
-       
-       const replaceVariables = (input: string) => {
+    }
+
+    const replaceVariables = (input: string) => {
         let result = input;
         // Retrieve the variables from localStorage and parse them into an array
         const storedVariables = localStorage.getItem('postmannVars');
         const variables: Variable[] = storedVariables ? JSON.parse(storedVariables) : [];
-       
+
         variables.forEach((variable: Variable) => {
             const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
             result = result.replace(regex, variable.value);
         });
         return result;
-       };
-       
-       
+    };
+
+
     const sendRequest = async () => {
         const processedUrl = replaceVariables(url);
         const processedBody = replaceVariables(jsonBody);
@@ -283,6 +283,16 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         try {
             const abortController = new AbortController();
             const { signal } = abortController;
+
+            // Get headers from local storage
+            // const savedHeadersJSON = localStorage.getItem('postmannHeaders');
+            // const savedHeaders = savedHeadersJSON ? JSON.parse(savedHeadersJSON) : {
+            //     'Content-Type': 'application/json',
+            //     'Cache-Control': 'no-cache',
+            //     'Accept': '*/*',
+            //     'Accept-Encoding': 'gzip, deflate, br',
+            //     'Connection': 'keep-alive',
+            // };
 
             const requestOptions: RequestInit = {
                 method: requestType,
@@ -579,7 +589,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.0.4</p>
+                    <p className="postmann-version">v 1.0.5*</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}
@@ -860,7 +870,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
-                <div className="modal-content" style={{width: '20rem'}}>
+                <div className="modal-content" style={{ width: '20rem' }}>
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
@@ -877,7 +887,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
-                <div className="modal-content" style={{width: '20rem'}}>
+                <div className="modal-content" style={{ width: '20rem' }}>
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
