@@ -1,3 +1,5 @@
+//useLocalStorage.ts
+
 import { useState, useEffect } from 'react';
 
 function getStorageValue(key: string, defaultValue: any) {

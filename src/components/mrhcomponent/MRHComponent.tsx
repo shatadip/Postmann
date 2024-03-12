@@ -5,13 +5,13 @@ import { useLocalStorage } from './useLocalStorage'; // Adjust the import path a
 import './MRHComponent.css';
 
 const MRHComponent = () => {
-    const [modifiedHeaders, _setModifiedHeaders] = useLocalStorage('postmannHeaders', [{
+    const [modifiedHeaders, _setModifiedHeaders] = useLocalStorage('postmannHeaders', {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive',
-    }]);
+    });
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -34,7 +34,7 @@ const MRHComponent = () => {
 
     return (
         <>
-        {modifiedHeaders}
+        {JSON.parse(modifiedHeaders)}
             {/* <div className='mrh-label'>Modify headers according to your requirements, these are auto-saved.</div>
             <div className="mrh-container">
                 <textarea

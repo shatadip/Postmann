@@ -73,6 +73,7 @@ const VariablesComponent: React.FC = () => {
   return (
     <>
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
+      <div className='vars-label'>You currently have {variables.length} variables{variables.length==0 ? ', create one by clicking on [Add Variable] button':''}</div>
       <div className="table-container">
         <div className="table-row header">
           <div className="table-cell var-name">Variable Name</div>
