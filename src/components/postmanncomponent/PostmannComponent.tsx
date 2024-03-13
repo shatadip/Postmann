@@ -293,16 +293,16 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             //     'Accept-Encoding': 'gzip, deflate, br',
             //     'Connection': 'keep-alive',
             // };
-
+            const headersJSON = {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+            }
             const requestOptions: RequestInit = {
                 method: requestType,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache',
-                    'Accept': '*/*',
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Connection': 'keep-alive',
-                },
+                headers: headersJSON,
                 signal,
             };
 
