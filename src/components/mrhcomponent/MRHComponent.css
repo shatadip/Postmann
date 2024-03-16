@@ -9,3 +9,56 @@
     width: 100%;
     height: 16rem;
 }
+
+.table-container {
+    display: table;
+    width: 304px;
+    border-collapse: collapse;
+    margin: 20px 0;
+   }
+   
+   .table-row {
+    display: table-row;
+   }
+   
+   .table-row.header {
+    background-color: #f2f2f2; /* Light grey background for headers */
+   }
+   
+   .table-cell {
+    display: table-cell;
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 0.65rem;
+   }
+   
+   .delete-button {
+    text-align: center;
+    background-color: #f44336; /* Red background */
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-left: 1px solid #ddd; /* Separate delete button from value column */
+   }
+   
+   .delete-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+   }
+   
+   /* Styling for alternating row colors */
+   .table-row:nth-child(even) {
+    background-color: #f2f2f2;
+   }
+   .table-row:nth-child(odd) {
+    background-color: #ffffff; /* White background for odd rows */
+  }
+   .ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+/* .var-name {
+    max-width: 19px;
+} */
