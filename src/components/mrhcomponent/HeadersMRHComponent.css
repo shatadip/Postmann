@@ -58,6 +58,15 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  .btnContainerMRH {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btnContainerMRH button {
+    border-radius: 2px;
+  }
   
 /* .var-name {
     max-width: 19px;

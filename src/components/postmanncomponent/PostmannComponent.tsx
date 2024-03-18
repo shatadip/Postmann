@@ -11,7 +11,7 @@ import Modal from 'react-modal'; // Import the modal library
 //options components
 import VariablesComponent from '../variablescomponent/VariablesComponent';
 import NotesComponent from '../notescomponent/NotesComponent';
-import MRHComponent from '../mrhcomponent/MRHComponent';
+import MRHComponent from '../mrhcomponent/HeadersMRHComponent';
 
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
@@ -293,16 +293,30 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             //     'Accept-Encoding': 'gzip, deflate, br',
             //     'Connection': 'keep-alive',
             // };
-            const headersJSON = {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Accept': '*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
+            // const headersJSON = {
+                // 'Content-Type': 'application/json',
+                // 'Cache-Control': 'no-cache',
+                // 'Accept': '*/*',
+                // 'Accept-Encoding': 'gzip, deflate, br',
+                // 'Connection': 'keep-alive',
+            // }
+            const savedHeadersJSON = localStorage.getItem('postmannHeadersMRH');
+            let savedHeaders: Record<string, string> = {};
+            let headersCall: Headers = new Headers();
+
+            if (savedHeadersJSON) {
+                try {
+                    savedHeaders = JSON.parse(savedHeadersJSON);
+                    headersCall = new Headers(savedHeaders);
+                } catch (error) {
+                    console.error('Error parsing saved headers JSON:', error);
+                    // Handle parsing error, perhaps by setting default headers
+                }
             }
+
             const requestOptions: RequestInit = {
                 method: requestType,
-                headers: headersJSON,
+                headers: headersCall,
                 signal,
             };
 
