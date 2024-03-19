@@ -48,6 +48,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [wrapState, setWrapState] = useState<boolean>(false);
     const [themeForSHL, setThemeForSHL] = useState<any>(atomDark); //ghcolors;
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
+    const [processedURLView, setProcessedURLView] = useState<any>('');
+    const [processedBodyView, setProcessedBodyView] = useState<any>('');
 
     // REFS
     const urlInputRef = useRef<HTMLInputElement>(null);
@@ -263,11 +265,26 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         });
         return result;
     };
+    const replaceTextareaVariables = (input: any) => {
+        let result = input;
+        // Retrieve the variables from localStorage and parse them into an array
+        // const storedVariables = localStorage.getItem('postmannVars');
+        // const variables: Variable[] = storedVariables ? JSON.parse(storedVariables) : [];
+    
+        // variables.forEach((variable: Variable) => {
+        //     const escapedName = variable.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special regex characters
+        //     const regex = new RegExp(`{{\\s*${escapedName}\\s*}}`, 'g');
+        //     result = result.replace(regex, variable.value);
+        // });
+        return result;
+    };
 
 
     const sendRequest = async () => {
         const processedUrl = replaceVariables(url);
-        const processedBody = replaceVariables(jsonBody);
+        const processedBody = replaceTextareaVariables(jsonBody);
+        setProcessedURLView(processedUrl);
+        setProcessedBodyView(processedBody);
         setLoading(true); // Set loading to true when starting the request
         setResponseCode(null); // Reset the response code when sending a new request
         setIsButtonDisabled(true);
@@ -321,8 +338,8 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             };
 
             if (requestType !== 'GET') {
-                // requestOptions.body = jsonBody;
-                requestOptions.body = processedBody;
+                requestOptions.body = jsonBody;
+                // requestOptions.body = processedBody;
             }
 
             const timeoutId = setTimeout(() => abortController.abort(), 60000);
@@ -675,6 +692,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 >
                     Send Request
                 </button>
+            </div>
+            <div className="debugStuff">
+                <p>Processed URL: {processedURLView}</p>
+                <p>Processed Body: 
+                    <pre>
+                    {processedBodyView}
+                    </pre>
+                </p>
             </div>
             <div>
                 {requestSent && ( // Render the response section only if the request has been sent
