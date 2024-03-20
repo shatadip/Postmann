@@ -310,35 +310,38 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             //     'Accept-Encoding': 'gzip, deflate, br',
             //     'Connection': 'keep-alive',
             // };
-            // const headersJSON = {
-                // 'Content-Type': 'application/json',
-                // 'Cache-Control': 'no-cache',
-                // 'Accept': '*/*',
-                // 'Accept-Encoding': 'gzip, deflate, br',
-                // 'Connection': 'keep-alive',
-            // }
-            const savedHeadersJSON = localStorage.getItem('postmannHeadersMRH');
-            let savedHeaders: Record<string, string> = {};
-            let headersCall: Headers = new Headers();
-
-            if (savedHeadersJSON) {
-                try {
-                    savedHeaders = JSON.parse(savedHeadersJSON);
-                    headersCall = new Headers(savedHeaders);
-                } catch (error) {
-                    console.error('Error parsing saved headers JSON:', error);
-                    // Handle parsing error, perhaps by setting default headers
-                }
+            const headersJSON = {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
             }
+            // const savedHeadersJSON = localStorage.getItem('postmannHeadersMRH');
+            // let savedHeaders: Record<string, string> = {};
+            // let headersCall: Headers = new Headers();
+
+            // if (savedHeadersJSON) {
+            //     try {
+            //         savedHeaders = JSON.parse(savedHeadersJSON);
+            //         headersCall = new Headers(savedHeaders);
+            //     } catch (error) {
+            //         console.error('Error parsing saved headers JSON:', error);
+            //         // Handle parsing error, perhaps by setting default headers
+            //     }
+            // }
 
             const requestOptions: RequestInit = {
                 method: requestType,
-                headers: headersCall,
+                headers: headersJSON,
                 signal,
             };
 
             if (requestType !== 'GET') {
                 requestOptions.body = jsonBody;
+                // setProcessedURLView(headersCall);
+                setProcessedBodyView(JSON.stringify(headersJSON));
+                // setProcessedBodyView(JSON.stringify(headersJSON));
                 // requestOptions.body = processedBody;
             }
 
