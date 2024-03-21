@@ -253,7 +253,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         value: string;
     }
 
-    const replaceVariables = (input: string) => {
+    const replaceVariables = (input: string, typeOfInput: string) => {
         let result = input;
         // Retrieve the variables from localStorage and parse them into an array
         const storedVariables = localStorage.getItem('postmannVars');
@@ -263,26 +263,15 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
             result = result.replace(regex, variable.value);
         });
-        return result;
+        
+        return typeOfInput==='textarea'?result:result;
     };
-    const replaceTextareaVariables = (input: any) => {
-        let result = input;
-        // Retrieve the variables from localStorage and parse them into an array
-        // const storedVariables = localStorage.getItem('postmannVars');
-        // const variables: Variable[] = storedVariables ? JSON.parse(storedVariables) : [];
-    
-        // variables.forEach((variable: Variable) => {
-        //     const escapedName = variable.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special regex characters
-        //     const regex = new RegExp(`{{\\s*${escapedName}\\s*}}`, 'g');
-        //     result = result.replace(regex, variable.value);
-        // });
-        return result;
-    };
+
 
 
     const sendRequest = async () => {
-        const processedUrl = replaceVariables(url);
-        const processedBody = replaceTextareaVariables(jsonBody);
+        const processedUrl = replaceVariables(url, 'url');
+        const processedBody = replaceVariables(jsonBody, 'textarea');
         setProcessedURLView(processedUrl);
         setProcessedBodyView(processedBody);
         setLoading(true); // Set loading to true when starting the request
@@ -310,14 +299,30 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             //     'Accept-Encoding': 'gzip, deflate, br',
             //     'Connection': 'keep-alive',
             // };
-            const headersJSON = {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Accept': '*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
-            }
-            // const savedHeadersJSON = localStorage.getItem('postmannHeadersMRH');
+            // const headersJSON = {
+            //     'Content-Type': 'application/json',
+            //     'Cache-Control': 'no-cache',
+            //     'Accept': '*/*',
+            //     'Accept-Encoding': 'gzip, deflate, br',
+            //     'Connection': 'keep-alive',
+            // }
+            // Define the type for the header objects
+            type HeaderObject = {
+                name: string;
+                value: string;
+            };
+
+            // Retrieve the saved headers JSON string from localStorage
+            let savedHeadersJSON = localStorage.getItem('postmannHeadersMRH');
+
+            // Parse the JSON string into an array of HeaderObject
+            let savedHeadersArray: HeaderObject[] = JSON.parse(savedHeadersJSON || '[]');
+
+            // Convert the array of HeaderObject into a single object
+            let savedHeadersJSONObj: Record<string, string> = savedHeadersArray.reduce((accumulator: Record<string, string>, current: HeaderObject) => {
+                accumulator[current.name] = current.value;
+                return accumulator;
+            }, {});
             // let savedHeaders: Record<string, string> = {};
             // let headersCall: Headers = new Headers();
 
@@ -333,14 +338,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
 
             const requestOptions: RequestInit = {
                 method: requestType,
-                headers: headersJSON,
+                headers: savedHeadersJSONObj,
                 signal,
             };
 
             if (requestType !== 'GET') {
-                requestOptions.body = jsonBody;
+                requestOptions.body = processedBody;
                 // setProcessedURLView(headersCall);
-                setProcessedBodyView(JSON.stringify(headersJSON));
+                // setProcessedBodyView(JSON.stringify(savedHeadersJSONObj));
                 // setProcessedBodyView(JSON.stringify(headersJSON));
                 // requestOptions.body = processedBody;
             }
@@ -698,9 +703,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             </div>
             <div className="debugStuff">
                 <p>Processed URL: {processedURLView}</p>
-                <p>Processed Body: 
+                <p>Processed Body:
                     <pre>
-                    {processedBodyView}
+                        {processedBodyView}
                     </pre>
                 </p>
             </div>

@@ -8,6 +8,8 @@ interface Variable {
 
 const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
+  // [FOR TEST PURPOSES]
+  // const [displayMsgText, setDisplayMsgText] = useState<string>('');
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
 
@@ -42,7 +44,7 @@ const VariablesComponent: React.FC = () => {
   };
 
   const handleInputChange = (index: number, key: keyof Variable, value: string) => {
-    const updatedVariables = [...variables];
+    let updatedVariables = [...variables];
     updatedVariables[index][key] = value;
     setVariables(updatedVariables);
   };
@@ -68,12 +70,38 @@ const VariablesComponent: React.FC = () => {
         }
       }
     }
+    // Remove whitespace and special characters when Enter or Shift+Enter is pressed
+    if ((e.key == 'Enter' || (e.shiftKey && e.key == 'Enter')) && key == 'name') {
+      e.preventDefault(); // Prevent default behavior
+      let sanitizedName = (e.currentTarget.textContent || '').trim(); // Trim the variable name
+      sanitizedName = sanitizedName.replace(/[^\w-]/g, ''); // Remove whitespace and special characters
+      
+      // Ensure the focus is set after the state has been updated
+      setTimeout(() => {
+        // Update the state and then focus on the value field
+        // Update the state based on the previous state
+        setVariables(variables => {
+          let updatedVariables = [...variables];
+          updatedVariables[index][key] = sanitizedName;
+          return updatedVariables;
+        });
+  
+        // Update the display message [FOR TEST PURPOSES]
+        // setDisplayMsgText(`Sanitized Name (${Math.random()}): ${sanitizedName}`);
+        valueRefs.current[index]?.focus();
+      }, 0);
+    }
   };
 
   return (
     <>
+{/*     
+    FOR TEST PURPOSES
+      <div className="debugVars" style={{ color: 'yellow', fontSize: '1.35rem' }}>
+        {displayMsgText}
+      </div> */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
-      <div className='vars-label'>You currently have {variables.length} variables{variables.length==0 ? ', create one by clicking on [Add Variable] button':''}</div>
+      <div className='vars-label'>You currently have {variables.length} variables{variables.length == 0 ? ', create one by clicking on [Add Variable] button' : ''}</div>
       <div className="table-container">
         <div className="table-row header">
           <div className="table-cell var-name">Variable Name</div>
@@ -94,6 +122,7 @@ const VariablesComponent: React.FC = () => {
             <div
               ref={(element) => (valueRefs.current[index] = element as HTMLDivElement)} // Ref for value field
               className="table-cell ellipsis"
+              style={{ whiteSpace: 'pre-wrap' }}
               contentEditable
               onBlur={(e) => handleInputChange(index, 'value', e.currentTarget.textContent || '')}
               onKeyDown={(e) => handleKeyPress(index, 'value', e)}
