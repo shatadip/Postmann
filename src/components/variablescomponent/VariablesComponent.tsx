@@ -29,6 +29,18 @@ const VariablesComponent: React.FC = () => {
     valueRefs.current = valueRefs.current.slice(0, variables.length); // Update valueRefs as well
   }, [variables]);
 
+  useEffect(() => {
+    // Synchronize contentEditable divs with the state
+    variables.forEach((variable, index) => {
+      if (nameRefs.current[index]) {
+        nameRefs.current[index].textContent = variable.name;
+      }
+      if (valueRefs.current[index]) {
+        valueRefs.current[index].textContent = variable.value;
+      }
+    });
+  }, [variables]);
+
   const addVariable = () => {
     const newVariables = [...variables, { name: '', value: '' }];
     setVariables(newVariables);
@@ -48,6 +60,7 @@ const VariablesComponent: React.FC = () => {
     updatedVariables[index][key] = value;
     setVariables(updatedVariables);
   };
+
 
   const handleKeyPress = (index: number, key: keyof Variable, e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Tab') {
@@ -75,19 +88,13 @@ const VariablesComponent: React.FC = () => {
       e.preventDefault(); // Prevent default behavior
       let sanitizedName = (e.currentTarget.textContent || '').trim(); // Trim the variable name
       sanitizedName = sanitizedName.replace(/[^\w-]/g, ''); // Remove whitespace and special characters
-      
+
+      handleInputChange(index, key, sanitizedName);
+      // Update the display message [FOR TEST PURPOSES]
+      // setDisplayMsgText(`Sanitized Name (${Math.random()}): ${sanitizedName}`);
+
       // Ensure the focus is set after the state has been updated
       setTimeout(() => {
-        // Update the state and then focus on the value field
-        // Update the state based on the previous state
-        setVariables(variables => {
-          let updatedVariables = [...variables];
-          updatedVariables[index][key] = sanitizedName;
-          return updatedVariables;
-        });
-  
-        // Update the display message [FOR TEST PURPOSES]
-        // setDisplayMsgText(`Sanitized Name (${Math.random()}): ${sanitizedName}`);
         valueRefs.current[index]?.focus();
       }, 0);
     }
@@ -95,11 +102,12 @@ const VariablesComponent: React.FC = () => {
 
   return (
     <>
-{/*     
+      {/*     
     FOR TEST PURPOSES
       <div className="debugVars" style={{ color: 'yellow', fontSize: '1.35rem' }}>
         {displayMsgText}
-      </div> */}
+      </div> 
+  */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
       <div className='vars-label'>You currently have {variables.length} variables{variables.length == 0 ? ', create one by clicking on [Add Variable] button' : ''}</div>
       <div className="table-container">
