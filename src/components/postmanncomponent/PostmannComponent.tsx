@@ -12,6 +12,7 @@ import Modal from 'react-modal'; // Import the modal library
 import VariablesComponent from '../variablescomponent/VariablesComponent';
 import NotesComponent from '../notescomponent/NotesComponent';
 import MRHComponent from '../mrhcomponent/HeadersMRHComponent';
+import HistoryComponent from '../historycomponent/HistoryComponent';
 
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
@@ -266,8 +267,22 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         
         return typeOfInput==='textarea'?result:result;
     };
+// create a function to return date time like Mar 23, 2024 - 5:34 pm
 
+    const saveRequestAsHistory = (method: string,processedBody: string,processedUrl: string) => {
+        const history = localStorage.getItem('postmannHistory');
+        const historyArray = history ? JSON.parse(history) : [];
+        const curTime = new Date().toLocaleString();
 
+        const newHistory = {
+            method: method,
+            url: processedUrl,
+            body: processedBody,
+            time: curTime
+        };
+        historyArray.push(newHistory);
+        localStorage.setItem('postmannHistory', JSON.stringify(historyArray));
+    }
 
     const sendRequest = async () => {
         const processedUrl = replaceVariables(url, 'url');
@@ -349,7 +364,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 // setProcessedBodyView(JSON.stringify(headersJSON));
                 // requestOptions.body = processedBody;
             }
-
+            saveRequestAsHistory(requestType,processedBody,processedUrl);
             const timeoutId = setTimeout(() => abortController.abort(), 60000);
 
             // const res = await fetch(url, requestOptions);
@@ -906,6 +921,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                         &times;
                     </button>
                     <h1 className='dynamic-options-modal-h1'>History</h1>
+                    <HistoryComponent />
                 </div>
             </Modal>
             {/* Modal for Notes */}

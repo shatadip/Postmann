@@ -1,0 +1,47 @@
+.hc-container {
+    width: 105%!important;
+}
+
+.postmann-get {
+    color: #007F31;
+}
+
+.postmann-post {
+    color: #AD7A03;
+}
+
+.postmann-put {
+    color: #0053B8;
+}
+
+.postmann-patch {
+    color: #623497;
+}
+
+.postmann-delete {
+    color: #d73a49;
+}
+
+/* create cards */
+.hc-card {
+    width: 100%;
+    height: 100px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.historyTA {
+    background-color: #123;
+    color: #5ea6e9;
+    font-family: IBMPlexMono, "Courier New", monospace, Consolas, "Courier New", monospace !important;
+    resize: none; white-space: nowrap; 
+    padding: 8px;
+    font-size: 0.66rem;
+}
+#urlTextArea {
+    overflow-x: scroll;
+}
+/* #bodyTextArea {
+
+} */

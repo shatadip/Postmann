@@ -342,8 +342,8 @@ pre {
     z-index: 10000;
     padding: 15px;
     border-radius: 8px;
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 95%;
+    max-height: 82%;
     overflow: auto;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
