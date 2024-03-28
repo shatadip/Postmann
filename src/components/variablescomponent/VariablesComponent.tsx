@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Trash, Clipboard } from 'react-bootstrap-icons';
 import './VariablesComponent.css';
 
 interface Variable {
@@ -54,6 +55,26 @@ const VariablesComponent: React.FC = () => {
   const deleteVariable = (index: number) => {
     setVariables(variables.filter((_, i) => i !== index));
   };
+  const copyVarVal = (index: number) => {
+    // Ensure the valueRefs are up to date with the current variables
+    useEffect(() => {
+       valueRefs.current = valueRefs.current.slice(0, variables.length);
+    }, [variables]);
+   
+    // Check if the valueRefs array has an element at the given index
+    if (valueRefs.current[index]) {
+       // Get the text content of the value field
+       const valueToCopy = valueRefs.current[index].textContent || '';
+   
+       // Use the Clipboard API to copy the value
+       navigator.clipboard.writeText(valueToCopy).then(() => {
+         console.log('Variable value copied to clipboard');
+       }).catch(err => {
+         console.error('Failed to copy variable value: ', err);
+       });
+    }
+   };
+   
 
   const handleInputChange = (index: number, key: keyof Variable, value: string) => {
     let updatedVariables = [...variables];
@@ -137,8 +158,11 @@ const VariablesComponent: React.FC = () => {
             >
               {variable.value}
             </div>
+            <div className="table-cell copy-var-val-button" onClick={() => copyVarVal(index)}>
+              <Clipboard className='icon-copy-variable-value' />
+            </div>
             <div className="table-cell delete-button" onClick={() => deleteVariable(index)}>
-              Delete
+              <Trash className='icon-delete-variable' />
             </div>
           </div>
         ))}

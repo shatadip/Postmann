@@ -272,13 +272,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const saveRequestAsHistory = (method: string,processedBody: string,processedUrl: string) => {
         const history = localStorage.getItem('postmannHistory');
         const historyArray = history ? JSON.parse(history) : [];
-        const curTime = new Date().toLocaleString();
-
+        // const curTime:string = new Date().getTime().toString(); // Store the current time as a timestamp
+        let curTime = new Date().toLocaleString();
+        curTime=curTime.toString();
         const newHistory = {
             method: method,
             url: processedUrl,
             body: processedBody,
-            time: curTime
+            time: {curTime}
         };
         historyArray.push(newHistory);
         localStorage.setItem('postmannHistory', JSON.stringify(historyArray));

@@ -34,7 +34,7 @@ const HistoryComponent = () => {
                             {/* add svg */}
                             <img src="date-svgrepo-com.svg" alt="" width={24} />
                         </span>
-                        <b>Mar 23, 2024 5:49 am</b>
+                        <b>{getDateTime()}</b>
                     </header>
                     <section>
                         <h1>Method: <span className="postmann-get">GET</span></h1>
@@ -72,20 +72,39 @@ const HistoryComponent = () => {
                 {/* card end */}
 
             </div>
-            {/* map historyArray */}
-        {historyArray.map((historyItem:any, index:number) => (
-            <div key={index} style={{color:'white'}}>
-                <p>key: {index}</p>
-                <p>date: {historyItem.date}</p>
-                <p>method: {historyItem.method}</p>
-                <p>url: {historyItem.url}</p>
-                <p>body: {historyItem.body}</p>
-                <br />
-            </div>
-            
-        ))}
+            {/* map historyArray sort by latest to oldest */}
+        
+        {historyArray.sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .map((historyItem:any, index:number) => (
+                
+                <div key={index} style={{color:'white'}}>
+                    <p>key: {index}</p>
+                    <p>date: {historyItem.date}</p>
+                    <p>method: {historyItem.method}</p>
+                    <p>url: {historyItem.url}</p>
+                    <p>body: {historyItem.body}</p>
+                    <br />
+                </div>
+                
+            ))}
         </>
     )
+}
+
+const getDateTime = () => {
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric', 
+        hour12: true
+    };
+    
+    return date.toLocaleString('en-US', options);
 }
 
 export default HistoryComponent

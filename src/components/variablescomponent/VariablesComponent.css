@@ -21,18 +21,15 @@
     font-size: 0.65rem;
    }
    
-   .delete-button {
+   .delete-button, .copy-var-val-button {
     text-align: center;
-    background-color: #f44336; /* Red background */
     color: white;
     cursor: pointer;
     padding: 5px;
     border-left: 1px solid #ddd; /* Separate delete button from value column */
    }
    
-   .delete-button:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-   }
+
    
    /* Styling for alternating row colors */
    .table-row:nth-child(even) {
@@ -55,3 +52,15 @@
     color: #fff;
     margin-bottom: 1rem;
 }
+
+.icon-delete-variable, .icon-copy-variable-value {
+  color: rgb(36, 34, 34);
+  font-size: 1.15rem;
+}
+
+.icon-delete-variable:hover {
+  color: #d32f2f;
+ }
+ .icon-copy-variable-value:hover {
+  color: rgb(71, 255, 47);
+ }
