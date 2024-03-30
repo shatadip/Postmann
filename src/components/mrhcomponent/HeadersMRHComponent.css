@@ -33,11 +33,9 @@
     font-size: 0.65rem;
    }
    
-   .delete-button {
+   .buttons-div {
     text-align: center;
-    background-color: #f44336; /* Red background */
     color: white;
-    cursor: pointer;
     padding: 5px;
     border-left: 1px solid #ddd; /* Separate delete button from value column */
    }
@@ -71,3 +69,24 @@
 /* .var-name {
     max-width: 19px;
 } */
+
+
+.icon-delete-header, .icon-copy-header-value {
+  color: rgb(110, 110, 110);
+  font-size: 1.15rem;
+}
+
+.icon-delete-header:hover, .icon-copy-header-value:hover {
+  color: rgb(36, 34, 34);
+  cursor: pointer;
+ }
+ .icon-delete-header:active {
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.icon-copy-header-value:active {
+  color: rgb(12, 139, 0);
+  cursor: pointer;
+}
+

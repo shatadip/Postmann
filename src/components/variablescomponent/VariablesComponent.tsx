@@ -1,3 +1,5 @@
+// VariablesComponent.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Trash, Clipboard } from 'react-bootstrap-icons';
 import './VariablesComponent.css';

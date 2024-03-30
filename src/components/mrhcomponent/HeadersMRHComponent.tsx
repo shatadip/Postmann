@@ -1,15 +1,16 @@
 //HeadersMRHComponent.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Trash, Clipboard } from 'react-bootstrap-icons';
 import './HeadersMRHComponent.css';
 
-interface Variable {
+interface header {
   name: string;
   value: string;
 }
 
 const HeadersMRHComponent: React.FC = () => {
-  const [headersMRH, setHeadersMRH] = useState<Variable[]>([]);
+  const [headersMRH, setHeadersMRH] = useState<header[]>([]);
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
 
@@ -43,7 +44,7 @@ const HeadersMRHComponent: React.FC = () => {
   const addHeader = () => {
     const newHeadersMRH = [...headersMRH, { name: '', value: '' }];
     setHeadersMRH(newHeadersMRH);
-    // Focus on the last added variable's name field
+    // Focus on the last added header's name field
     const lastIndex = newHeadersMRH.length - 1;
     setTimeout(() => {
       nameRefs.current[lastIndex]?.focus();
@@ -58,7 +59,27 @@ const HeadersMRHComponent: React.FC = () => {
     setHeadersMRH(headersMRH.filter((_, i) => i !== index));
   };
 
-  const handleInputChange = (index: number, key: keyof Variable, value: string) => {
+  const copyHeaderVal = (index: number) => {
+    // Ensure the valueRefs are up to date with the current variables
+    valueRefs.current = valueRefs.current.slice(0, headersMRH.length);
+  
+    // Check if the valueRefs array has an element at the given index
+    if (valueRefs.current[index]) {
+      // Get the text content of the value field
+      const valueToCopy = valueRefs.current[index].textContent || '';
+  
+      // Use the Clipboard API to copy the value
+      navigator.clipboard.writeText(valueToCopy).then(() => {
+        console.log('Header value copied to clipboard');
+      }).catch(err => {
+        console.error('Failed to copy header value: ', err);
+      });
+    }
+  };
+   
+
+
+  const handleInputChange = (index: number, key: keyof header, value: string) => {
     const updatedHeadersMRH = [...headersMRH];
     updatedHeadersMRH[index][key] = value;
     setHeadersMRH(updatedHeadersMRH);
@@ -66,7 +87,7 @@ const HeadersMRHComponent: React.FC = () => {
 
   const handleKeyPress = (
     index: number,
-    key: keyof Variable,
+    key: keyof header,
     e: React.KeyboardEvent<HTMLDivElement>
   ) => {
     if (e.key === 'Tab') {
@@ -95,7 +116,7 @@ const HeadersMRHComponent: React.FC = () => {
         <div className="table-row header">
           <div className="table-cell var-name">Header</div>
           <div className="table-cell">Value</div>
-          <div className="table-cell">Delete</div>
+          <div className="table-cell">Options</div>
         </div>
         {headersMRH.map((header, index) => (
           <div className="table-row" key={index}>
@@ -117,15 +138,16 @@ const HeadersMRHComponent: React.FC = () => {
             >
               {header.value}
             </div>
-            <div className="table-cell delete-button" onClick={() => deleteHeader(index)}>
-              Delete
+            <div className="table-cell buttons-div" style={{ display: 'flex', gap: '0.45rem', border: 'none', alignItems: 'center', justifyContent: 'center' }}>
+              <Clipboard className='icon-copy-header-value' data-tooltip='Copy Value' onClick={() => copyHeaderVal(index)} />
+              <Trash className='icon-delete-header' data-tooltip='Delete Header' onClick={() => deleteHeader(index)} />
             </div>
           </div>
         ))}
       </div>
       <div className='btnContainerMRH'>
-      <button onClick={addHeader}>Add Header</button>
-      <button onClick={restoreDefaultHeaders}>Restore Defaults</button>
+        <button onClick={addHeader}>Add Header</button>
+        <button onClick={restoreDefaultHeaders}>Restore Defaults</button>
       </div>
     </>
   );
