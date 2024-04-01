@@ -2,12 +2,12 @@ import './HistoryComponent.css'
 import './CardStyles.css'
 
 const HistoryComponent = () => {
-    let histURL = 'https://bookstore.toolsqa.com/Account/v1/User/16798781-4f29-47e8-b96f-a532903c1482';
-    let histBody =
-`{
-    'username': 'test',
-    'password': 'test'
-}`;
+//     let histURL = 'https://bookstore.toolsqa.com/Account/v1/User/16798781-4f29-47e8-b96f-a532903c1482';
+//     let histBody =
+// `{
+//     'username': 'test',
+//     'password': 'test'
+// }`;
 
 /* map all localstorage postmannHistory */
     const history = localStorage.getItem('postmannHistory');
@@ -28,10 +28,9 @@ const HistoryComponent = () => {
                 <div>HistoryComponent</div>
 
                 {/* card begin */}
-                <main>
+                {/* <main>
                     <header>
                         <span>
-                            {/* add svg */}
                             <img src="date-svgrepo-com.svg" alt="" width={24} />
                         </span>
                         <b>{getDateTime()}</b>
@@ -41,8 +40,7 @@ const HistoryComponent = () => {
                         <h1>URL:</h1>
                         <textarea
                             name="urlTextArea"
-                            id="urlTextArea"
-                            className='historyTA'
+                            className='historyTA urlTextArea'
                             cols={34}
                             rows={1}
                             readOnly
@@ -68,43 +66,88 @@ const HistoryComponent = () => {
                             Re-run
                         </button>
                     </footer>
-                </main>
+                </main> */}
                 {/* card end */}
 
-            </div>
-            {/* map historyArray sort by latest to oldest */}
-        
+                {/* map historyArray sort by latest to oldest */}
         {historyArray.sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
             .map((historyItem:any, index:number) => (
                 
-                <div key={index} style={{color:'white'}}>
-                    <p>key: {index}</p>
+                <div key={index} className='all-cards'>
+                    {/* <p>key: {index}</p>
                     <p>date: {historyItem.date}</p>
                     <p>method: {historyItem.method}</p>
                     <p>url: {historyItem.url}</p>
                     <p>body: {historyItem.body}</p>
-                    <br />
+                    <br /> */}
+                    {/* card begin */}
+                <main>
+                    <header>
+                        <span>
+                            {/* add svg */}
+                            <img src="date-svgrepo-com.svg" alt="" width={24} />
+                        </span>
+                        <b>{historyItem.date}</b>
+                    </header>
+                    <section>
+                    <h1>Method: <span className={`postmann-${historyItem.method.toLowerCase()}`}>{historyItem.method}</span></h1>
+                        <h1>URL:</h1>
+                        <textarea
+                            name="urlTextArea"
+                            className='historyTA urlTextArea'
+                            cols={34}
+                            rows={1}
+                            readOnly
+                            value={historyItem.url}
+                        ></textarea>
+                    {historyItem.method === 'GET' ? null : (
+                        <>
+                            <h1>Body:</h1>
+                            <textarea
+                                cols={34}
+                                rows={6}
+                                className="historyTA bodyTextArea"
+                                value={historyItem.body}
+                                readOnly
+                            ></textarea>
+                        </>
+                    )}
+
+                    </section>
+                    <footer>
+                        <button className="btn neutral">
+                            Delete
+                        </button>
+                        <button className="btn primary">
+                            Re-run
+                        </button>
+                    </footer>
+                </main>
+                {/* card end */}
+
                 </div>
                 
             ))}
+            </div>
+        
         </>
     )
 }
 
-const getDateTime = () => {
-    const date = new Date();
-    const options: Intl.DateTimeFormatOptions = {
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric', 
-        hour: 'numeric', 
-        minute: 'numeric', 
-        second: 'numeric', 
-        hour12: true
-    };
+// const getDateTime = () => {
+//     const date = new Date();
+//     const options: Intl.DateTimeFormatOptions = {
+//         weekday: 'long', 
+//         year: 'numeric', 
+//         month: 'long', 
+//         day: 'numeric', 
+//         hour: 'numeric', 
+//         minute: 'numeric', 
+//         second: 'numeric', 
+//         hour12: true
+//     };
     
-    return date.toLocaleString('en-US', options);
-}
+//     return date.toLocaleString('en-US', options);
+// }
 
 export default HistoryComponent

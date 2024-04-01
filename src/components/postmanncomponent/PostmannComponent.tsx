@@ -268,13 +268,53 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         return typeOfInput==='textarea'?result:result;
     };
 // create a function to return date time like Mar 23, 2024 - 5:34 pm
+function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    const hour = hours % 12 || 12; // Convert to 12-hour format
+    const hour24 = String(hours).padStart(2, '0'); // 24-hour format
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    const fullYear = String(date.getFullYear());
 
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthName = monthNames[date.getMonth()];
+    const shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const shortMonthName = shortMonthNames[date.getMonth()];
+
+    const formatOptions: Record<string, string> = {
+        'YYYY': fullYear,
+        'YY': year,
+        'MM': month,
+        'DD': day,
+        'hh': String(hour).padStart(2, '0'),
+        'HH': hour24, // 24-hour format
+        'mm': minutes,
+        'ss': seconds,
+        'a': ampm,
+        'MONTHNAME': monthName,
+        'MONNAME': shortMonthName,
+    };
+
+    let formattedTime = format;
+    for (const option in formatOptions) {
+        formattedTime = formattedTime.replace(new RegExp(option, 'g'), formatOptions[option]);
+    }
+
+    return formattedTime;
+}
     const saveRequestAsHistory = (method: string,processedBody: string,processedUrl: string) => {
         const history = localStorage.getItem('postmannHistory');
         const historyArray = history ? JSON.parse(history) : [];
         // const curTime:string = new Date().getTime().toString(); // Store the current time as a timestamp
-        let curTime = new Date().toLocaleString();
-        curTime=curTime.toString();
+        // let curTime = new Date().toLocaleString();
+        // curTime=curTime.toString();
+        let timeFormat = getCurrentTime("MONNAME DD, YY. hh:mm:ss a");
+        const curTime=timeFormat;
         const newHistory = {
             method: method,
             url: processedUrl,
