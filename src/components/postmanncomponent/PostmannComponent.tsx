@@ -51,6 +51,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
     const [processedURLView, setProcessedURLView] = useState<any>('');
     const [processedBodyView, setProcessedBodyView] = useState<any>('');
+    const [getCurTime, setGetCurTime]=useState<string>('');
 
     // REFS
     const urlInputRef = useRef<HTMLInputElement>(null);
@@ -313,8 +314,9 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
         // const curTime:string = new Date().getTime().toString(); // Store the current time as a timestamp
         // let curTime = new Date().toLocaleString();
         // curTime=curTime.toString();
-        let timeFormat = getCurrentTime("MONNAME DD, YY. hh:mm:ss a");
-        const curTime=timeFormat;
+        let timeFormat:string = getCurrentTime("MONNAME DD, YYYY. hh:mm:ss a");
+        const curTime:string=timeFormat.toString();
+        setGetCurTime(curTime);
         const newHistory = {
             method: method,
             url: processedUrl,
@@ -758,6 +760,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                 </button>
             </div>
             <div className="debugStuff">
+                <p>getCurTime: {getCurTime}</p>
                 <p>Processed URL: {processedURLView}</p>
                 <p>Processed Body:
                     <pre>

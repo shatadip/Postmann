@@ -70,8 +70,9 @@ const HistoryComponent = () => {
                 {/* card end */}
 
                 {/* map historyArray sort by latest to oldest */}
-        {historyArray.sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .map((historyItem:any, index:number) => (
+                {historyArray.sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .reverse()
+                .map((historyItem:any, index:number) => (
                 
                 <div key={index} className='all-cards'>
                     {/* <p>key: {index}</p>
@@ -87,7 +88,7 @@ const HistoryComponent = () => {
                             {/* add svg */}
                             <img src="date-svgrepo-com.svg" alt="" width={24} />
                         </span>
-                        <b>{historyItem.date}</b>
+                        <b>{historyItem.time.curTime}</b>
                     </header>
                     <section>
                     <h1>Method: <span className={`postmann-${historyItem.method.toLowerCase()}`}>{historyItem.method}</span></h1>
