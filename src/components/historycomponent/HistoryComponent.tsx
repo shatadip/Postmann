@@ -1,27 +1,26 @@
+import { useState } from 'react';
 import './HistoryComponent.css'
 import './CardStyles.css'
 
 const HistoryComponent = () => {
-//     let histURL = 'https://bookstore.toolsqa.com/Account/v1/User/16798781-4f29-47e8-b96f-a532903c1482';
-//     let histBody =
-// `{
-//     'username': 'test',
-//     'password': 'test'
-// }`;
+    //     let histURL = 'https://bookstore.toolsqa.com/Account/v1/User/16798781-4f29-47e8-b96f-a532903c1482';
+    //     let histBody =
+    // `{
+    //     'username': 'test',
+    //     'password': 'test'
+    // }`;
 
-/* map all localstorage postmannHistory */
-    const history = localStorage.getItem('postmannHistory');
-    const historyArray = history ? JSON.parse(history) : [];
+    /* map all localstorage postmannHistory */
+    const [historyArray, setHistoryArray] = useState(() => {
+        const history = localStorage.getItem('postmannHistory');
+        return history ? JSON.parse(history) : [];
+    });
 
-    // const deleteHistoryItem = (index: number) => {
-    //     const updatedHistoryArray = historyArray.filter((_:any, i:number) => i !== index);
-    //     localStorage.setItem('postmannHistory', JSON.stringify(updatedHistoryArray));
-    // };
-
-    // const rerunHistoryItem = (historyItem: any) => {
-    //     console.log(`Re-running: ${historyItem.url} with method ${historyItem.method}`);
-    // };
-
+    const deleteHistoryItem = (index: number) => {
+        const updatedHistoryArray = historyArray.filter((_: any, i: number) => i !== index);
+        setHistoryArray(updatedHistoryArray);
+        localStorage.setItem('postmannHistory', JSON.stringify(updatedHistoryArray));
+    };
     return (
         <>
             <div className="hc-container">
@@ -70,67 +69,67 @@ const HistoryComponent = () => {
                 {/* card end */}
 
                 {/* map historyArray sort by latest to oldest */}
-                {historyArray.sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                .reverse()
-                .map((historyItem:any, index:number) => (
-                
-                <div key={index} className='all-cards'>
-                    {/* <p>key: {index}</p>
+                {historyArray.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .reverse()
+                    .map((historyItem: any, index: number) => (
+
+                        <div key={index} className='all-cards'>
+                            {/* <p>key: {index}</p>
                     <p>date: {historyItem.date}</p>
                     <p>method: {historyItem.method}</p>
                     <p>url: {historyItem.url}</p>
                     <p>body: {historyItem.body}</p>
                     <br /> */}
-                    {/* card begin */}
-                <main>
-                    <header>
-                        <span>
-                            {/* add svg */}
-                            <img src="date-svgrepo-com.svg" alt="" width={24} />
-                        </span>
-                        <b>{historyItem.time.curTime}</b>
-                    </header>
-                    <section>
-                    <h1>Method: <span className={`postmann-${historyItem.method.toLowerCase()}`}>{historyItem.method}</span></h1>
-                        <h1>URL:</h1>
-                        <textarea
-                            name="urlTextArea"
-                            className='historyTA urlTextArea'
-                            cols={34}
-                            rows={1}
-                            readOnly
-                            value={historyItem.url}
-                        ></textarea>
-                    {historyItem.method === 'GET' ? null : (
-                        <>
-                            <h1>Body:</h1>
-                            <textarea
-                                cols={34}
-                                rows={6}
-                                className="historyTA bodyTextArea"
-                                value={historyItem.body}
-                                readOnly
-                            ></textarea>
-                        </>
-                    )}
+                            {/* card begin */}
+                            <main>
+                                <header>
+                                    <span>
+                                        {/* add svg */}
+                                        <img src="date-svgrepo-com.svg" alt="" width={24} />
+                                    </span>
+                                    <b>{historyItem.time.curTime}</b>
+                                </header>
+                                <section>
+                                    <h1>Method: <span className={`postmann-${historyItem.method.toLowerCase()}`}>{historyItem.method}</span></h1>
+                                    <h1>URL:</h1>
+                                    <textarea
+                                        name="urlTextArea"
+                                        className='historyTA urlTextArea'
+                                        cols={34}
+                                        rows={1}
+                                        readOnly
+                                        value={historyItem.url}
+                                    ></textarea>
+                                    {historyItem.method === 'GET' ? null : (
+                                        <>
+                                            <h1>Body:</h1>
+                                            <textarea
+                                                cols={34}
+                                                rows={6}
+                                                className="historyTA bodyTextArea"
+                                                value={historyItem.body}
+                                                readOnly
+                                            ></textarea>
+                                        </>
+                                    )}
 
-                    </section>
-                    <footer>
-                        <button className="btn neutral">
-                            Delete
-                        </button>
-                        <button className="btn primary">
-                            Re-run
-                        </button>
-                    </footer>
-                </main>
-                {/* card end */}
+                                </section>
+                                <footer>
+                                    <button className="btn neutral" onClick={() => deleteHistoryItem(index)}>
+                                        Delete
+                                    </button>
+                                    <button className="btn primary">
+                                        Re-run
+                                    </button>
+                                </footer>
+                            </main>
+                            {/* card end */}
 
-                </div>
-                
-            ))}
+                        </div>
+
+                    ))}
             </div>
-        
+
         </>
     )
 }
@@ -147,7 +146,7 @@ const HistoryComponent = () => {
 //         second: 'numeric', 
 //         hour12: true
 //     };
-    
+
 //     return date.toLocaleString('en-US', options);
 // }
 
