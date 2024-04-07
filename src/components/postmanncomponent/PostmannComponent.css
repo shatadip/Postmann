@@ -30,6 +30,7 @@
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     text-align: left;
+    min-height: 37rem;
 }
 
 .postmann-title {

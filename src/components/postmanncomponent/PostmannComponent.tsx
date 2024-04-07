@@ -759,7 +759,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     Send Request
                 </button>
             </div>
-            <div className="debugStuff">
+            <div className="debugStuff" style={{display:'none'}}>
                 <p>getCurTime: {getCurTime}</p>
                 <p>Processed URL: {processedURLView}</p>
                 <p>Processed Body:
