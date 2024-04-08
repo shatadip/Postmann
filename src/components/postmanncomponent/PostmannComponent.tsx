@@ -70,7 +70,14 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             ref.current?.blur();
         }, 175);
     };
-
+    const handleReRun = (method: string, url: string, body: string) => {
+        // Update the state with the new method, URL, and Body
+        setRequestType(method);
+        setUrl(url);
+        setJsonBody(body);
+        // Close the History modal
+        setIsHistoryModalOpen(false);
+    }
 
     const calculateSizeInBytes = (str: any) => {
         // const encoder = new TextEncoder();
@@ -965,7 +972,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                         &times;
                     </button>
                     <h1 className='dynamic-options-modal-h1'>History</h1>
-                    <HistoryComponent />
+                    <HistoryComponent onReRun={handleReRun} />
                 </div>
             </Modal>
             {/* Modal for Notes */}

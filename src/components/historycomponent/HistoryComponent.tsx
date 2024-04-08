@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import './HistoryComponent.css'
 import './CardStyles.css'
-
-const HistoryComponent = () => {
+interface HistoryComponentProps {
+    onReRun: (method: string, url: string, body: string) => void;
+}
+const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
     //     let histURL = 'https://bookstore.toolsqa.com/Account/v1/User/16798781-4f29-47e8-b96f-a532903c1482';
     //     let histBody =
     // `{
@@ -118,7 +120,7 @@ const HistoryComponent = () => {
                                     <button className="btn neutral" onClick={() => deleteHistoryItem(index)}>
                                         Delete
                                     </button>
-                                    <button className="btn primary">
+                                    <button className="btn primary" onClick={() => onReRun(historyItem.method, historyItem.url, historyItem.method === 'GET' ? '' : historyItem.body)}>
                                         Re-run
                                     </button>
                                 </footer>
