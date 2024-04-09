@@ -702,13 +702,13 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     <LinkAlternator />
                 </div>
             </div>
-            <div className='dynamic-options'>
+            <div className='dynamic-options mt-equal-1'>
                 <a href='#' onClick={renderVariablesModal}>Variables</a>
                 <a href='#' onClick={renderHistoryModal}>History</a>
                 <a href='#' onClick={renderNotesModal}>Notes</a>
                 <a href='#' onClick={renderMRHModal}>Modify Request Headers</a>
             </div>
-            <div>
+            <div className='mt-equal-1'>
                 <label>
                     HTTP Request Type:
                     <select
@@ -734,7 +734,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     </select>
                 </label>
             </div>
-            <div>
+            <div className='mt-equal-1'>
                 <label>
                     URL:
                     <input
@@ -747,7 +747,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     />
                 </label>
             </div>
-            <div>
+            <div className='mt-equal-1'>
                 <label>
                     Body (Raw/JSON):
                     <textarea
@@ -775,7 +775,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     </pre>
                 </p>
             </div>
-            <div>
+            <div className='mt-equal-1'>
                 {requestSent && ( // Render the response section only if the request has been sent
                     <>
                         <p className={`postmann-response-title`}>
