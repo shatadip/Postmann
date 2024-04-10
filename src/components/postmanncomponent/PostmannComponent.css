@@ -468,7 +468,7 @@ pre {
     border: 1px solid var(--font-color-react);
     border-top: none;
     border-bottom: none;
-    background-color: transparent;
+    background-color: #123256;
     padding: 1px;
 }
 

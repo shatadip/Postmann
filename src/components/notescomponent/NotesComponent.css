@@ -1,8 +1,8 @@
 .nc-textarea {
     width: 100%;
-    height: 11.5em;
+    height: 296px;
     overflow-x: hidden;
-    font-size: 1.1rem;
+    font-size: 0.85rem;
     padding: 1rem;
     font-family: 'Poppins', sans-serif;
     resize: vertical;
