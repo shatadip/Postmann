@@ -37,7 +37,7 @@
     text-align: center;
     color: white;
     padding: 5px;
-    border-left: 1px solid #ddd; /* Separate delete button from value column */
+    align-content: center;
    }
    
    .delete-button:hover {
@@ -51,11 +51,11 @@
    .table-row:nth-child(odd) {
     background-color: #ffffff; /* White background for odd rows */
   }
-   .ellipsis {
+   /* .ellipsis {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
+  } */
 
   .btnContainerMRH {
     display: flex;
