@@ -141,7 +141,7 @@ const VariablesComponent: React.FC = () => {
           <div className="table-row" key={index}>
             <div
               ref={(element) => (nameRefs.current[index] = element as HTMLDivElement)}
-              className="table-cell var-name ellipsis"
+              className="table-cell var-name"
               contentEditable
               onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
               onKeyDown={(e) => handleKeyPress(index, 'name', e)}
@@ -150,7 +150,7 @@ const VariablesComponent: React.FC = () => {
             </div>
             <div
               ref={(element) => (valueRefs.current[index] = element as HTMLDivElement)} // Ref for value field
-              className="table-cell ellipsis"
+              className="table-cell"
               style={{ whiteSpace: 'pre-wrap' }}
               contentEditable
               onBlur={(e) => handleInputChange(index, 'value', e.currentTarget.textContent || '')}
@@ -158,9 +158,11 @@ const VariablesComponent: React.FC = () => {
             >
               {variable.value}
             </div>
-            <div className="table-cell buttons-div" style={{ display: 'flex', gap: '0.45rem', border: 'none', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="table-cell buttons-div">
+              <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center', justifyContent: 'center' }}>
               <Clipboard className='icon-copy-variable-value' data-tooltip='Copy Value' onClick={() => copyVarVal(index)} />
               <Trash className='icon-delete-variable' data-tooltip='Delete Variable' onClick={() => deleteVariable(index)} />
+              </div>
             </div>
           </div>
         ))}

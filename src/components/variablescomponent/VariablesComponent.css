@@ -16,7 +16,7 @@
    .table-cell {
     display: table-cell;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd!important;
     text-align: left;
     font-size: 0.65rem;
    }
@@ -25,7 +25,7 @@
     text-align: center;
     color: white;
     padding: 5px;
-    border-left: 1px solid #ddd; /* Separate delete button from value column */
+    align-content: center;
    }
    
 
@@ -37,11 +37,11 @@
    .table-row:nth-child(odd) {
     background-color: #ffffff; /* White background for odd rows */
   }
-   .ellipsis {
+   /* .ellipsis {
     overflow: hidden;
     white-space: pre-wrap;
     text-overflow: ellipsis;
-  }
+  } */
   
 /* .var-name {
     max-width: 19px;
