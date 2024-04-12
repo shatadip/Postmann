@@ -26,7 +26,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
     return (
         <>
             <div className="hc-container">
-                <div>HistoryComponent</div>
+                <div className='history-label'>Here you'll see your earlier requests, and can re-run them as well.</div>
 
                 {/* card begin */}
                 {/* <main>
@@ -42,7 +42,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                         <textarea
                             name="urlTextArea"
                             className='historyTA urlTextArea'
-                            cols={34}
+                            cols={44}
                             rows={1}
                             readOnly
                             value={histURL}
@@ -50,7 +50,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                         <h1>Body:</h1>
 
                         <textarea
-                            cols={34}
+                            cols={44}
                             rows={6}
                             id='bodyTextArea'
                             className="historyTA"
@@ -97,7 +97,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                                     <textarea
                                         name="urlTextArea"
                                         className='historyTA urlTextArea'
-                                        cols={34}
+                                        cols={44}
                                         rows={1}
                                         readOnly
                                         value={historyItem.url}
@@ -106,7 +106,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                                         <>
                                             <h1>Body:</h1>
                                             <textarea
-                                                cols={34}
+                                                cols={44}
                                                 rows={6}
                                                 className="historyTA bodyTextArea"
                                                 value={historyItem.body}

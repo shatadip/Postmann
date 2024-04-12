@@ -1,5 +1,5 @@
 .hc-container {
-    width: 105%!important;
+    width: 350px!important;
 }
 
 .postmann-get {
@@ -46,6 +46,11 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
-/* #bodyTextArea {
 
-} */
+.history-label {
+    color: white;
+    margin-bottom: 1rem;
+}
+main {
+    width: 99%!important;
+}
