@@ -42,6 +42,10 @@
 .urlTextArea {
     overflow-x: scroll;
 }
+.bodyTextArea {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
 .all-cards {
     margin-top: 1rem;
     margin-bottom: 1rem;
