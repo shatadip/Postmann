@@ -110,6 +110,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                                                 rows={6}
                                                 className="historyTA bodyTextArea"
                                                 wrap='off'
+                                                style={{ whiteSpace: 'pre-wrap' }}
                                                 readOnly
                                                 value={historyItem.body.replace(/\n/g, (_: string) => '\r\n')}
                                             ></textarea>
