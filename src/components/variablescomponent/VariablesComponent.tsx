@@ -105,7 +105,7 @@ const VariablesComponent: React.FC = () => {
       }
     }
     // Remove whitespace and special characters when Enter or Shift+Enter is pressed
-    if ((e.key == 'Enter' || (e.shiftKey && e.key == 'Enter')) && key == 'name') {
+    if ((e.key == 'Enter' || (e.shiftKey && e.key == 'Enter') || e.key == 'Tab') && key == 'name') {
       e.preventDefault(); // Prevent default behavior
       let sanitizedName = (e.currentTarget.textContent || '').trim(); // Trim the variable name
       sanitizedName = sanitizedName.replace(/[^\w-]/g, ''); // Remove whitespace and special characters
