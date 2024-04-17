@@ -11,6 +11,9 @@ interface header {
 
 const HeadersMRHComponent: React.FC = () => {
   const [headersMRH, setHeadersMRH] = useState<header[]>([]);
+  const [restoreButtonText, setRestoreButtonText] = useState<string>('Restore Defaults');
+  const [restoreButtonBGColor, setRestoreButtonBGColor] = useState<string>('#F9F9F9');
+  const [isRestoring, setIsRestoring] = useState(false);
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
 
@@ -52,7 +55,15 @@ const HeadersMRHComponent: React.FC = () => {
   };
 
   const restoreDefaultHeaders = () => {
-    setHeadersMRH(defaultHeaders);
+    setIsRestoring(true);
+    setRestoreButtonText('Restoring...');
+    setRestoreButtonBGColor('yellowgreen'); // Change to green
+    setTimeout(() => {
+      setHeadersMRH(defaultHeaders);
+      setRestoreButtonText('Restore Defaults');
+      setRestoreButtonBGColor('#F9F9F9'); // Change back to the original color
+      setIsRestoring(false);
+    }, 1000); 
   };
 
   const deleteHeader = (index: number) => {
@@ -149,7 +160,13 @@ const HeadersMRHComponent: React.FC = () => {
       </div>
       <div className='btnContainerMRH'>
         <button onClick={addHeader}>Add Header</button>
-        <button onClick={restoreDefaultHeaders}>Restore Defaults</button>
+        <button
+        onClick={restoreDefaultHeaders}
+        style={{backgroundColor:`${restoreButtonBGColor}`}}
+        disabled={isRestoring}
+        >
+          {restoreButtonText}
+        </button>
       </div>
     </>
   );
