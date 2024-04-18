@@ -34,7 +34,7 @@ const NotesComponent = () => {
 
     return (
         <>
-            <div className='notes-label'>Your notes are auto-saved here</div>
+            <div className='notes-label'>Your notes are auto-saved here, think of it as a scratchpad.</div>
             <textarea
                 ref={textareaRef} // Attach the ref to the textarea
                 className="nc-textarea"

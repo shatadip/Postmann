@@ -984,7 +984,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                 overlayClassName="donation-modal-overlay"
                 shouldCloseOnOverlayClick={true}
             >
-                <div className="modal-content" style={{ width: '386px', height: '393px' }}>
+                <div className="modal-content" style={{ width: '369px', height: '393px' }}>
                     <button className="close-button" onClick={closeModal}>
                         &times;
                     </button>
