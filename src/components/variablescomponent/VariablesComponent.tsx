@@ -1,7 +1,7 @@
 // VariablesComponent.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Trash, Clipboard } from 'react-bootstrap-icons';
+import { Trash, Clipboard, InputCursorText } from 'react-bootstrap-icons';
 import './VariablesComponent.css';
 
 interface Variable {
@@ -130,7 +130,8 @@ const VariablesComponent: React.FC = () => {
       </div> 
   */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
-      <div className='vars-label'>You currently have {variables.length} variables{variables.length == 0 ? ', create one by clicking on [Add Variable] button' : ''}</div>
+      <div className="vars-label flex-icon"><InputCursorText /> Click outside to save</div>
+      <div className='vars-label flex-icon'>You currently have <span className='squared-number'>{variables.length}</span> variables{variables.length == 0 ? ', create one by clicking on [Add Variable] button' : ''}</div>
       <div className="table-container">
         <div className="table-row header">
           <div className="table-cell var-name">Variable Name</div>

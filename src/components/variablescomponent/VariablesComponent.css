@@ -49,7 +49,7 @@
 
 .vars-label {
     color: #fff;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .icon-delete-variable, .icon-copy-variable-value {
@@ -71,3 +71,14 @@
   cursor: pointer;
 }
 
+.flex-icon {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.squared-number {
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+  padding: 0 5px;
+}

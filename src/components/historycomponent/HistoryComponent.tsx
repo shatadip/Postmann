@@ -120,10 +120,10 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
 
                                 </section>
                                 <footer>
-                                    <button className="btn neutral" onClick={() => deleteHistoryItem(index)}>
+                                    <button className="btn neutral br3px" onClick={() => deleteHistoryItem(index)}>
                                         Delete
                                     </button>
-                                    <button className="btn primary" onClick={() => onReRun(historyItem.method, historyItem.url, historyItem.method === 'GET' ? '' : historyItem.body)}>
+                                    <button className="btn primary br3px" onClick={() => onReRun(historyItem.method, historyItem.url, historyItem.method === 'GET' ? '' : historyItem.body)}>
                                         Re-run
                                     </button>
                                 </footer>

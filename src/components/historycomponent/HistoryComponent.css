@@ -58,3 +58,6 @@
 main {
     width: 99%!important;
 }
+.br3px {
+    border-radius: 3px!important;
+}
