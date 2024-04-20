@@ -78,7 +78,8 @@
 }
 
 .squared-number {
-  border: 1px solid #f2f2f2;
-  border-radius: 2px;
+  border: 2px solid #F15A24;
+  border-radius: 3px;
   padding: 0 5px;
+  font-size: 0.75rem;
 }

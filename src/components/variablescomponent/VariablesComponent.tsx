@@ -60,12 +60,12 @@ const VariablesComponent: React.FC = () => {
   const copyVarVal = (index: number) => {
     // Ensure the valueRefs are up to date with the current variables
     valueRefs.current = valueRefs.current.slice(0, variables.length);
-  
+
     // Check if the valueRefs array has an element at the given index
     if (valueRefs.current[index]) {
       // Get the text content of the value field
       const valueToCopy = valueRefs.current[index].textContent || '';
-  
+
       // Use the Clipboard API to copy the value
       navigator.clipboard.writeText(valueToCopy).then(() => {
         console.log('Variable value copied to clipboard');
@@ -74,7 +74,7 @@ const VariablesComponent: React.FC = () => {
       });
     }
   };
-   
+
 
   const handleInputChange = (index: number, key: keyof Variable, value: string) => {
     let updatedVariables = [...variables];
@@ -131,13 +131,17 @@ const VariablesComponent: React.FC = () => {
   */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
       <div className="vars-label flex-icon"><InputCursorText /> Click outside to save</div>
-      <div className='vars-label flex-icon'>You currently have <span className='squared-number'>{variables.length}</span> variables{variables.length == 0 ? ', create one by clicking on [Add Variable] button' : ''}</div>
+      <div className='vars-label'>You currently have <span className='squared-number'>{variables.length}</span> {variables.length == 1 ? 'variable' : 'variables'}{variables.length == 0 ? ', create one by clicking on \'Add Variable\' button.' : ''}</div>
       <div className="table-container">
-        <div className="table-row header">
-          <div className="table-cell var-name">Variable Name</div>
-          <div className="table-cell">Value</div>
-          <div className="table-cell">Options</div>
-        </div>
+
+        {variables.length > 0 && (
+          <div className="table-row header">
+            <div className="table-cell var-name">Variable Name</div>
+            <div className="table-cell">Value</div>
+            <div className="table-cell">Options</div>
+          </div>
+        )}
+
         {variables.map((variable, index) => (
           <div className="table-row" key={index}>
             <div
@@ -161,8 +165,8 @@ const VariablesComponent: React.FC = () => {
             </div>
             <div className="table-cell buttons-div">
               <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center', justifyContent: 'center' }}>
-              <Clipboard className='icon-copy-variable-value' data-tooltip='Copy Value' onClick={() => copyVarVal(index)} />
-              <Trash className='icon-delete-variable' data-tooltip='Delete Variable' onClick={() => deleteVariable(index)} />
+                <Clipboard className='icon-copy-variable-value' data-tooltip='Copy Value' onClick={() => copyVarVal(index)} />
+                <Trash className='icon-delete-variable' data-tooltip='Delete Variable' onClick={() => deleteVariable(index)} />
               </div>
             </div>
           </div>
