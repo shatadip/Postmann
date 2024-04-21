@@ -1,7 +1,7 @@
 // VariablesComponent.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Trash, Clipboard, InputCursorText } from 'react-bootstrap-icons';
+import { Trash, Clipboard, ExclamationTriangle } from 'react-bootstrap-icons';
 import './VariablesComponent.css';
 
 interface Variable {
@@ -13,7 +13,7 @@ const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
   const [warnStyle, setWarnStyle] = useState<String>('none');
   const [isShaking, setIsShaking] = useState(false);
-  const maxNumOfVars=42;
+  const maxNumOfVars = 42;
   // [FOR TEST PURPOSES]
   // const [displayMsgText, setDisplayMsgText] = useState<string>('');
   const nameRefs = useRef<HTMLDivElement[]>([]);
@@ -47,30 +47,38 @@ const VariablesComponent: React.FC = () => {
     });
   }, [variables]);
 
-const addVariable = () => {
-  if (variables.length < maxNumOfVars) {
-    const newVariables = [...variables, { name: '', value: '' }];
-    setVariables(newVariables);
-    // Focus on the last added variable's name field
-    const lastIndex = newVariables.length - 1;
-    setTimeout(() => {
-      nameRefs.current[lastIndex]?.focus();
-    }, 0);
-  } else {
-    // Set a warning message or disable the "Add Variable" button
-    setWarnStyle('block');
-    setIsShaking(true);
+  const addVariable = () => {
+    if (variables.length < maxNumOfVars) {
+      const newVariables = [...variables, { name: '', value: '' }];
+      setVariables(newVariables);
+      // Focus on the last added variable's name field
+      const lastIndex = newVariables.length - 1;
+      setTimeout(() => {
+        nameRefs.current[lastIndex]?.focus();
+      }, 0);
+    } else {
+      // Set a warning message or disable the "Add Variable" button
+      setWarnStyle('block');
+      setIsShaking(true);
 
-    // Remove the "shaker" class after 2 seconds
-    setTimeout(() => {
-      setIsShaking(false);
-    }, 2000);
-  }
-};
+      // Remove the "shaker" class after 2 seconds
+      setTimeout(() => {
+        setIsShaking(false);
+      }, 2000);
+    }
+  };
 
   const deleteVariable = (index: number) => {
     setVariables(variables.filter((_, i) => i !== index));
     setWarnStyle('none');
+  };
+  const deleteAllVariables = () => {
+    const isConfirmed = window.confirm('Are you sure you want to delete all variables?');
+  
+    if (isConfirmed) {
+      setVariables([]);
+      setWarnStyle('none');
+    }
   };
   const copyVarVal = (index: number) => {
     // Ensure the valueRefs are up to date with the current variables
@@ -145,7 +153,7 @@ const addVariable = () => {
       </div> 
   */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
-      <div className="vars-label flex-icon"><InputCursorText /> Click outside to save</div>
+      <div className="vars-label flex-icon"><img src="click-outside-2.png" alt="Click Outside" style={{ width: '24px' }} /> Click outside to save</div>
       <div className='vars-label'>You currently have <span className='squared-number'>{variables.length}</span> {variables.length == 1 ? 'variable' : 'variables'}{variables.length == 0 ? ', create one by clicking on \'Add Variable\' button.' : ''}</div>
       <div className="table-container">
 
@@ -187,8 +195,13 @@ const addVariable = () => {
           </div>
         ))}
       </div>
-      <button onClick={addVariable} style={{borderRadius:'2px'}} id="btnAddVar" className={isShaking ? 'shake' : ''}>Add Variable</button>
-      <div className="vars-label max-num-warn" style={{display:`${warnStyle}`}}>Max {maxNumOfVars} Variables, delete some old vars to add more.</div>
+      <div className="buttonContainerVars">
+        <button onClick={addVariable} id="btnAddVar" className={isShaking ? 'shake' : ''}>Add Variable</button>
+        {variables.length > 0 && (
+          <button onClick={deleteAllVariables} id="btnDelAllVars"><ExclamationTriangle />Delete All Variables</button>
+        )}
+      </div>
+      <div className="vars-label max-num-warn" style={{ display: `${warnStyle}` }}>Max {maxNumOfVars} Variables, delete some old vars to add more.</div>
     </>
   );
 };

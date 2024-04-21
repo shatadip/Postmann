@@ -1,67 +1,74 @@
 .table-container {
-    display: table;
-    width: 304px;
-    border-collapse: collapse;
-    margin: 20px 0;
-   }
-   
-   .table-row {
-    display: table-row;
-   }
-   
-   .table-row.header {
-    background-color: #f2f2f2; /* Light grey background for headers */
-   }
-   
-   .table-cell {
-    display: table-cell;
-    padding: 10px;
-    border: 1px solid #ddd!important;
-    text-align: left;
-    font-size: 0.65rem;
-   }
-   
-   .buttons-div {
-    text-align: center;
-    color: white;
-    padding: 5px;
-    align-content: center;
-   }
-   
+  display: table;
+  width: 304px;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
 
-   
-   /* Styling for alternating row colors */
-   .table-row:nth-child(even) {
-    background-color: #f2f2f2;
-   }
-   .table-row:nth-child(odd) {
-    background-color: #ffffff; /* White background for odd rows */
-  }
-   /* .ellipsis {
+.table-row {
+  display: table-row;
+}
+
+.table-row.header {
+  background-color: #f2f2f2;
+  /* Light grey background for headers */
+}
+
+.table-cell {
+  display: table-cell;
+  padding: 10px;
+  border: 1px solid #ddd !important;
+  text-align: left;
+  font-size: 0.65rem;
+}
+
+.buttons-div {
+  text-align: center;
+  color: white;
+  padding: 5px;
+  align-content: center;
+}
+
+
+
+/* Styling for alternating row colors */
+.table-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-row:nth-child(odd) {
+  background-color: #ffffff;
+  /* White background for odd rows */
+}
+
+/* .ellipsis {
     overflow: hidden;
     white-space: pre-wrap;
     text-overflow: ellipsis;
   } */
-  
+
 /* .var-name {
     max-width: 19px;
 } */
 
 .vars-label {
-    color: #fff;
-    margin-bottom: 0.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
 }
 
-.icon-delete-variable, .icon-copy-variable-value {
+.icon-delete-variable,
+.icon-copy-variable-value {
   color: rgb(110, 110, 110);
   font-size: 1.15rem;
 }
 
-.icon-delete-variable:hover, .icon-copy-variable-value:hover {
+.icon-delete-variable:hover,
+.icon-copy-variable-value:hover {
   color: rgb(36, 34, 34);
   cursor: pointer;
- }
- .icon-delete-variable:active {
+}
+
+.icon-delete-variable:active {
   color: rgb(0, 0, 0);
   cursor: pointer;
 }
@@ -96,16 +103,24 @@
 }
 
 @keyframes shaker {
-	0% { transform: translate(2px, 0); }
-	50% { transform: translate(-2px, 0); }
-	100% { transform: translate(2px, 0); }
+  0% {
+    transform: translate(2px, 0);
+  }
+
+  50% {
+    transform: translate(-2px, 0);
+  }
+
+  100% {
+    transform: translate(2px, 0);
+  }
 }
 
 .shake {
-	animation-name: shaker;
-	animation-duration: 0.1s;
-	transform-origin:50% 50%;
-	animation-timing-function: linear;
+  animation-name: shaker;
+  animation-duration: 0.1s;
+  transform-origin: 50% 50%;
+  animation-timing-function: linear;
   background-color: #ff1900;
   color: white;
 }
@@ -120,4 +135,21 @@
 
 .shake .error {
   visibility: visible;
+}
+
+.buttonContainerVars {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buttonContainerVars button {
+  border-radius: 2px!important;
+}
+
+#btnDelAllVars {
+  background-color: darkorange;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
