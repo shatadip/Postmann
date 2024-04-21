@@ -11,6 +11,9 @@ interface Variable {
 
 const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
+  const [warnStyle, setWarnStyle] = useState<String>('none');
+  const [isShaking, setIsShaking] = useState(false);
+  const maxNumOfVars=42;
   // [FOR TEST PURPOSES]
   // const [displayMsgText, setDisplayMsgText] = useState<string>('');
   const nameRefs = useRef<HTMLDivElement[]>([]);
@@ -44,7 +47,8 @@ const VariablesComponent: React.FC = () => {
     });
   }, [variables]);
 
-  const addVariable = () => {
+const addVariable = () => {
+  if (variables.length < maxNumOfVars) {
     const newVariables = [...variables, { name: '', value: '' }];
     setVariables(newVariables);
     // Focus on the last added variable's name field
@@ -52,10 +56,21 @@ const VariablesComponent: React.FC = () => {
     setTimeout(() => {
       nameRefs.current[lastIndex]?.focus();
     }, 0);
-  };
+  } else {
+    // Set a warning message or disable the "Add Variable" button
+    setWarnStyle('block');
+    setIsShaking(true);
+
+    // Remove the "shaker" class after 2 seconds
+    setTimeout(() => {
+      setIsShaking(false);
+    }, 2000);
+  }
+};
 
   const deleteVariable = (index: number) => {
     setVariables(variables.filter((_, i) => i !== index));
+    setWarnStyle('none');
   };
   const copyVarVal = (index: number) => {
     // Ensure the valueRefs are up to date with the current variables
@@ -172,7 +187,8 @@ const VariablesComponent: React.FC = () => {
           </div>
         ))}
       </div>
-      <button onClick={addVariable}>Add Variable</button>
+      <button onClick={addVariable} style={{borderRadius:'2px'}} id="btnAddVar" className={isShaking ? 'shake' : ''}>Add Variable</button>
+      <div className="vars-label max-num-warn" style={{display:`${warnStyle}`}}>Max {maxNumOfVars} Variables, delete some old vars to add more.</div>
     </>
   );
 };
