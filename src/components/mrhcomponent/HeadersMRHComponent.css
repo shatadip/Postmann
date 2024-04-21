@@ -1,6 +1,6 @@
 .mrh-label {
     color: #fff;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 .mrh-container {
     width: 318px;
@@ -90,3 +90,9 @@
   cursor: pointer;
 }
 
+.squared-number {
+  border: 2px solid #F15A24;
+  border-radius: 3px;
+  padding: 0 5px;
+  font-size: 0.75rem;
+}

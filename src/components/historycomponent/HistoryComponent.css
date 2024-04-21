@@ -1,5 +1,5 @@
 .hc-container {
-    width: 350px!important;
+    width: 350px !important;
 }
 
 .postmann-get {
@@ -35,17 +35,21 @@
     background-color: #123;
     color: #5ea6e9;
     font-family: IBMPlexMono, "Courier New", monospace, Consolas, "Courier New", monospace !important;
-    resize: none; white-space: nowrap; 
+    resize: none;
+    white-space: nowrap;
     padding: 8px;
     font-size: 0.66rem;
 }
+
 .urlTextArea {
     overflow-x: scroll;
 }
+
 .bodyTextArea {
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
+
 .all-cards {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -55,9 +59,11 @@
     color: white;
     margin-bottom: 1rem;
 }
+
 main {
-    width: 99%!important;
+    width: 99% !important;
 }
+
 .br3px {
-    border-radius: 3px!important;
+    border-radius: 3px !important;
 }

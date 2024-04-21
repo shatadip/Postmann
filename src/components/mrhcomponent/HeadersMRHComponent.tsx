@@ -13,6 +13,7 @@ const HeadersMRHComponent: React.FC = () => {
   const [headersMRH, setHeadersMRH] = useState<header[]>([]);
   const [restoreButtonText, setRestoreButtonText] = useState<string>('Restore Defaults');
   const [restoreButtonBGColor, setRestoreButtonBGColor] = useState<string>('#F9F9F9');
+  const [btnTextColor, setBtnTextColor] = useState<string>('buttontext');
   const [isRestoring, setIsRestoring] = useState(false);
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
@@ -57,13 +58,19 @@ const HeadersMRHComponent: React.FC = () => {
   const restoreDefaultHeaders = () => {
     setIsRestoring(true);
     setRestoreButtonText('Restoring...');
-    setRestoreButtonBGColor('yellowgreen'); // Change to green
+    setRestoreButtonBGColor('#0b5f03'); // Change to green
+    setBtnTextColor('#b2ff00');
+    setTimeout(() => {
+      setBtnTextColor('#ffffff');
+      setRestoreButtonText('Restored Successfully');
+    }, 1000);
     setTimeout(() => {
       setHeadersMRH(defaultHeaders);
       setRestoreButtonText('Restore Defaults');
       setRestoreButtonBGColor('#F9F9F9'); // Change back to the original color
+      setBtnTextColor('buttontext');
       setIsRestoring(false);
-    }, 1000); 
+    }, 1750);
   };
 
   const deleteHeader = (index: number) => {
@@ -121,8 +128,9 @@ const HeadersMRHComponent: React.FC = () => {
 
   return (
     <>
-      <div className='mrh-label'>Headers are auto-saved, if you do not want to headers</div>
-      <div className='mrh-label'>You currently have {headersMRH.length} headers{headersMRH.length == 0 ? ', add one by clicking on [Add Header] button' : ''}</div>
+      <div className='mrh-label'>Headers are auto-saved, add/change them as needed.</div>
+      <div className='mrh-label'>Don't worry if you screw up, you can always restore the default headers.</div>
+      <div className='mrh-label'>You currently have <span className='squared-number'>{headersMRH.length}</span> headers{headersMRH.length == 0 ? ', add one by clicking on \'Add Header\' button' : ''}</div>
       <div className="table-container">
         <div className="table-row header">
           <div className="table-cell var-name">Header</div>
@@ -162,7 +170,7 @@ const HeadersMRHComponent: React.FC = () => {
         <button onClick={addHeader}>Add Header</button>
         <button
         onClick={restoreDefaultHeaders}
-        style={{backgroundColor:`${restoreButtonBGColor}`}}
+        style={{backgroundColor:`${restoreButtonBGColor}`, color:`${btnTextColor}`}}
         disabled={isRestoring}
         >
           {restoreButtonText}
