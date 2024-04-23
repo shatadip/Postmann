@@ -67,3 +67,8 @@ main {
 .br3px {
     border-radius: 3px !important;
 }
+.flex-icon {
+    align-items: center;
+    display: flex;
+    gap: 0.25rem;
+  }

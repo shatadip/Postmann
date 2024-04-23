@@ -51,7 +51,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [showLineNumbers, setShowLineNumbers] = useState<boolean>(true);
     const [processedURLView, setProcessedURLView] = useState<any>('');
     const [processedBodyView, setProcessedBodyView] = useState<any>('');
-    const [getCurTime, setGetCurTime]=useState<string>('');
+    const [getCurTime, setGetCurTime] = useState<string>('');
 
     // REFS
     const urlInputRef = useRef<HTMLInputElement>(null);
@@ -272,66 +272,75 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
             result = result.replace(regex, variable.value);
         });
-        
-        return typeOfInput==='textarea'?result:result;
+
+        return typeOfInput === 'textarea' ? result : result;
     };
-// create a function to return date time like Mar 23, 2024 - 5:34 pm
-function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
-    const date = new Date();
-    const hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    const hour = hours % 12 || 12; // Convert to 12-hour format
-    const hour24 = String(hours).padStart(2, '0'); // 24-hour format
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
-    const fullYear = String(date.getFullYear());
+    // create a function to return date time like Mar 23, 2024 - 5:34 pm
+    function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
+        const date = new Date();
+        const hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        const hour = hours % 12 || 12; // Convert to 12-hour format
+        const hour24 = String(hours).padStart(2, '0'); // 24-hour format
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+        const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+        const fullYear = String(date.getFullYear());
 
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const monthName = monthNames[date.getMonth()];
-    const shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const shortMonthName = shortMonthNames[date.getMonth()];
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthName = monthNames[date.getMonth()];
+        const shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const shortMonthName = shortMonthNames[date.getMonth()];
 
-    const formatOptions: Record<string, string> = {
-        'YYYY': fullYear,
-        'YY': year,
-        'MM': month,
-        'DD': day,
-        'hh': String(hour).padStart(2, '0'),
-        'HH': hour24, // 24-hour format
-        'mm': minutes,
-        'ss': seconds,
-        'a': ampm,
-        'MONTHNAME': monthName,
-        'MONNAME': shortMonthName,
-    };
+        const formatOptions: Record<string, string> = {
+            'YYYY': fullYear,
+            'YY': year,
+            'MM': month,
+            'DD': day,
+            'hh': String(hour).padStart(2, '0'),
+            'HH': hour24, // 24-hour format
+            'mm': minutes,
+            'ss': seconds,
+            'a': ampm,
+            'MONTHNAME': monthName,
+            'MONNAME': shortMonthName,
+        };
 
-    let formattedTime = format;
-    for (const option in formatOptions) {
-        formattedTime = formattedTime.replace(new RegExp(option, 'g'), formatOptions[option]);
+        let formattedTime = format;
+        for (const option in formatOptions) {
+            formattedTime = formattedTime.replace(new RegExp(option, 'g'), formatOptions[option]);
+        }
+
+        return formattedTime;
     }
-
-    return formattedTime;
-}
-    const saveRequestAsHistory = (method: string,processedBody: string,processedUrl: string) => {
+    const saveRequestAsHistory = (method: string, processedBody: string, processedUrl: string) => {
         const history = localStorage.getItem('postmannHistory');
         const historyArray = history ? JSON.parse(history) : [];
         // const curTime:string = new Date().getTime().toString(); // Store the current time as a timestamp
         // let curTime = new Date().toLocaleString();
         // curTime=curTime.toString();
-        let timeFormat:string = getCurrentTime("MONNAME DD, YYYY. hh:mm:ss a");
-        const curTime:string=timeFormat.toString();
+        let timeFormat: string = getCurrentTime("MONNAME DD, YYYY. hh:mm:ss a");
+        const curTime: string = timeFormat.toString();
         setGetCurTime(curTime);
         const newHistory = {
             method: method,
             url: processedUrl,
             body: processedBody,
-            time: {curTime}
+            time: { curTime }
         };
+        // Check if the history array has reached the limit
+        if (historyArray.length >= 150) {
+            // If the limit is reached, remove the oldest record
+            historyArray.shift();
+        }
+
+        // Add the new history to the end of the array
         historyArray.push(newHistory);
+
         localStorage.setItem('postmannHistory', JSON.stringify(historyArray));
+
     }
 
     const sendRequest = async () => {
@@ -414,7 +423,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                 // setProcessedBodyView(JSON.stringify(headersJSON));
                 // requestOptions.body = processedBody;
             }
-            saveRequestAsHistory(requestType,processedBody,processedUrl);
+            saveRequestAsHistory(requestType, processedBody, processedUrl);
             const timeoutId = setTimeout(() => abortController.abort(), 60000);
 
             // const res = await fetch(url, requestOptions);
@@ -766,7 +775,7 @@ function getCurrentTime(format = 'MM-DD-YY hh:mm:ss a') {
                     Send Request
                 </button>
             </div>
-            <div className="debugStuff" style={{display:'none'}}>
+            <div className="debugStuff" style={{ display: 'none' }}>
                 <p>getCurTime: {getCurTime}</p>
                 <p>Processed URL: {processedURLView}</p>
                 <p>Processed Body:

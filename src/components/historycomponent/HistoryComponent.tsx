@@ -27,6 +27,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
         <>
             <div className="hc-container">
                 <div className='history-label'>Here you'll see your earlier requests, and can re-run them as well.</div>
+                <div className='history-label flex-icon'><img src="150.png" alt="Click Outside" style={{ width: '24px' }} /> Currently, we store the last 150 records.</div>
 
                 {/* card begin */}
                 {/* <main>
