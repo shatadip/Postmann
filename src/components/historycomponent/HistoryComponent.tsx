@@ -29,48 +29,6 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                 <div className='history-label'>Here you'll see your earlier requests, and can re-run them as well.</div>
                 <div className='history-label flex-icon'><img src="150.png" alt="Click Outside" style={{ width: '24px' }} /> Currently, we store the last 150 records.</div>
 
-                {/* card begin */}
-                {/* <main>
-                    <header>
-                        <span>
-                            <img src="date-svgrepo-com.svg" alt="" width={24} />
-                        </span>
-                        <b>{getDateTime()}</b>
-                    </header>
-                    <section>
-                        <h1>Method: <span className="postmann-get">GET</span></h1>
-                        <h1>URL:</h1>
-                        <textarea
-                            name="urlTextArea"
-                            className='historyTA urlTextArea'
-                            cols={44}
-                            rows={1}
-                            readOnly
-                            value={histURL}
-                        ></textarea>
-                        <h1>Body:</h1>
-
-                        <textarea
-                            cols={44}
-                            rows={6}
-                            id='bodyTextArea'
-                            className="historyTA"
-                            value={histBody}
-                            readOnly
-                            ></textarea>
-
-                    </section>
-                    <footer>
-                        <button className="btn neutral">
-                            Delete
-                        </button>
-                        <button className="btn primary">
-                            Re-run
-                        </button>
-                    </footer>
-                </main> */}
-                {/* card end */}
-
                 {/* map historyArray sort by latest to oldest */}
                 {historyArray.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
                     .reverse()
@@ -91,6 +49,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                                         <img src="date-svgrepo-com.svg" alt="" width={24} />
                                     </span>
                                     <b>{historyItem.time.curTime}</b>
+                                    <span className='hist-index'>{index+1}</span>
                                 </header>
                                 <section>
                                     <h1>Method: <span className={`postmann-${historyItem.method.toLowerCase()}`}>{historyItem.method}</span></h1>
@@ -139,21 +98,5 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
         </>
     )
 }
-
-// const getDateTime = () => {
-//     const date = new Date();
-//     const options: Intl.DateTimeFormatOptions = {
-//         weekday: 'long', 
-//         year: 'numeric', 
-//         month: 'long', 
-//         day: 'numeric', 
-//         hour: 'numeric', 
-//         minute: 'numeric', 
-//         second: 'numeric', 
-//         hour12: true
-//     };
-
-//     return date.toLocaleString('en-US', options);
-// }
 
 export default HistoryComponent

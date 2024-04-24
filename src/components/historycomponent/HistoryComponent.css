@@ -72,3 +72,20 @@ main {
     display: flex;
     gap: 0.25rem;
   }
+  .hist-index {
+    margin-left: 5.25rem;
+    border: 2px dotted red;
+    border-radius: 50%;
+    /* display: flex; */
+    /* align-items: center; */
+    /* align-content: center; */
+    /* text-align: center; */
+    /* padding: 11px; */
+  }
+
+  .squared-number {
+    border: 2px solid #F15A24;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 0.75rem;
+  }
