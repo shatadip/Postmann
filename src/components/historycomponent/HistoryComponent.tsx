@@ -28,6 +28,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
             <div className="hc-container">
                 <div className='history-label'>Here you'll see your earlier requests, and can re-run them as well.</div>
                 <div className='history-label flex-icon'><img src="150.png" alt="Click Outside" style={{ width: '24px' }} /> Currently, we store the last 150 records.</div>
+                <div className='history-label'>You currently have <span className="squared-number">{historyArray.length}</span> historical records.</div>
 
                 {/* map historyArray sort by latest to oldest */}
                 {historyArray.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
