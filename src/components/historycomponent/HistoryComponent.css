@@ -67,19 +67,22 @@ main {
 .br3px {
     border-radius: 3px !important;
 }
+
 .flex-icon {
     align-items: center;
     display: flex;
     gap: 0.25rem;
-  }
-  .hist-index {
+}
+
+.hist-index {
     margin-left: 5.25rem;
     border-right: 3px solid #f15a24;
-  }
+}
 
-  .squared-number {
+.squared-number {
     border: 2px solid #F15A24;
     border-radius: 3px;
     padding: 0 5px;
     font-size: 0.75rem;
-  }
+}
+

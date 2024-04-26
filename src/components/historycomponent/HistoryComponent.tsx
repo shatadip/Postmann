@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './HistoryComponent.css'
 import './CardStyles.css'
+import { PlayFill, Trash3 } from 'react-bootstrap-icons';
 interface HistoryComponentProps {
     onReRun: (method: string, url: string, body: string) => void;
 }
@@ -81,11 +82,11 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
 
                                 </section>
                                 <footer>
-                                    <button className="btn neutral br3px" onClick={() => deleteHistoryItem(index)}>
-                                        Delete
+                                    <button className="btn neutral br3px btn-del" onClick={() => deleteHistoryItem(index)}>
+                                    <Trash3 /> Delete
                                     </button>
-                                    <button className="btn primary br3px" onClick={() => onReRun(historyItem.method, historyItem.url, historyItem.method === 'GET' ? '' : historyItem.body)}>
-                                        Re-run
+                                    <button className="btn primary br3px btn-rerun" onClick={() => onReRun(historyItem.method, historyItem.url, historyItem.method === 'GET' ? '' : historyItem.body)}>
+                                    <PlayFill /> Re-run
                                     </button>
                                 </footer>
                             </main>
