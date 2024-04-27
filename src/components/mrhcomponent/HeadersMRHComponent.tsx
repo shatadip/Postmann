@@ -129,6 +129,7 @@ const HeadersMRHComponent: React.FC = () => {
   return (
     <>
       <div className='mrh-label'>Headers are auto-saved, add/change them as needed.</div>
+      <div className="mrh-label flex-icon"><img src="click-outside-2.png" alt="Click Outside" style={{ width: '24px' }} /> Click outside to save</div>
       <div className='mrh-label flex-icon'>¯\_(ツ)_/¯ Don't worry if you screw up, you can always restore the default headers.</div>
       <div className='mrh-label'>You currently have <span className='squared-number'>{headersMRH.length}</span> headers{headersMRH.length == 0 ? ', add one by clicking on \'Add Header\' button' : ''}</div>
       <div className="table-container">
