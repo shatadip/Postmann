@@ -702,7 +702,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.0.5*</p>
+                    <p className="postmann-version">v 1.1.0</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}

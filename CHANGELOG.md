@@ -1,3 +1,19 @@
+## [1.1.0] - 2024-04-28
+### Added
+- Dynamic Options
+  - Variables
+  - History
+  - Notes
+  - Modify Request Headers
+
+### Changed
+- UI
+  - UI is wider now
+  - Color Scheme and Styles
+
+### Fixed
+- None
+
 ## [1.0.4] - 2024-02-04
 ### Added
 - Response Size
