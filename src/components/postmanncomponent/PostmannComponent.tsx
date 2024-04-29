@@ -359,6 +359,34 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             const elapsedTime = (performance.now() - startTime) / 1000;
             setResponseTime(elapsedTime);
         }, 100); // Update every 100 milliseconds
+        const scrollToBottom = () => {
+            const currentPosition = window.scrollY;
+            const targetPosition = document.body.scrollHeight;
+            const distance = targetPosition - currentPosition;
+            const duration = 1275; // Scroll duration in milliseconds
+            const startTime = performance.now();
+
+            const scrollStep = (timestamp: DOMHighResTimeStamp) => {
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                window.scrollTo(0, currentPosition + distance * progress);
+
+                if (progress < 1) {
+                    // Continue scrolling
+                    window.requestAnimationFrame(scrollStep);
+                }
+                // } else {
+                //     // Scrolling completed
+                //     setScrolling(false);
+                // }
+            };
+
+            window.requestAnimationFrame(scrollStep);
+        };
+
+        // Wait for the DOM to update before scrolling
+        setTimeout(scrollToBottom, 150);
 
         try {
             const abortController = new AbortController();
@@ -567,34 +595,11 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         } finally {
             // Scroll down when the response is received
             // setScrolling(true);
-            const scrollToBottom = () => {
-                const currentPosition = window.scrollY;
-                const targetPosition = document.body.scrollHeight;
-                const distance = targetPosition - currentPosition;
-                const duration = 1275; // Scroll duration in milliseconds
-                const startTime = performance.now();
-
-                const scrollStep = (timestamp: DOMHighResTimeStamp) => {
-                    const elapsed = timestamp - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-
-                    window.scrollTo(0, currentPosition + distance * progress);
-
-                    if (progress < 1) {
-                        // Continue scrolling
-                        window.requestAnimationFrame(scrollStep);
-                    }
-                    // } else {
-                    //     // Scrolling completed
-                    //     setScrolling(false);
-                    // }
-                };
-
-                window.requestAnimationFrame(scrollStep);
-            };
+            // const scrollToBottom = () => { ...
+            
 
             // Wait for the DOM to update before scrolling
-            setTimeout(scrollToBottom, 100);
+            setTimeout(scrollToBottom, 150);
             clearInterval(intervalId);
             setLoading(false); // Set loading to false when the request is complete
             const endTime = performance.now();
@@ -702,7 +707,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title">Postmann</h2>
-                    <p className="postmann-version">v 1.1.0</p>
+                    <p className="postmann-version">v 1.1.1*</p>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}
