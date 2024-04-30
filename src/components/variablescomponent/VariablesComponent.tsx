@@ -47,6 +47,31 @@ const VariablesComponent: React.FC = () => {
     });
   }, [variables]);
 
+  // Delete empty variables at the time of loading
+
+  // useEffect(() => {
+  //   const storedVariables = localStorage.getItem('postmannVars');
+  //   if (storedVariables) {
+  //     let parsedVariables = JSON.parse(storedVariables);
+  //     // Filter out variables where both name and value are empty
+  //     parsedVariables = parsedVariables.filter((variable: Variable) => variable.name.trim() !== '' || variable.value.trim() !== '');
+  //     setVariables(parsedVariables);
+  //   }
+  // }, []);
+  useEffect(() => {
+    const storedVariables = localStorage.getItem('postmannVars');
+    if (storedVariables) {
+      let parsedVariables = JSON.parse(storedVariables);
+      // Filter out variables where both name and value are empty
+      parsedVariables = parsedVariables.filter((variable: Variable) => variable.name?.trim() !== '' || variable.value?.trim() !== '');
+      // Update the state with the filtered variables
+      setVariables(parsedVariables);
+      // Persist the filtered variables back to localStorage
+      localStorage.setItem('postmannVars', JSON.stringify(parsedVariables));
+    }
+  }, []);
+   
+
   const addVariable = () => {
     if (variables.length < maxNumOfVars) {
       const newVariables = [...variables, { name: '', value: '' }];
