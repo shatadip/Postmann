@@ -13,6 +13,7 @@ const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
   const [warnStyle, setWarnStyle] = useState<String>('none');
   const [isShaking, setIsShaking] = useState(false);
+  const [justMounted, setJustMounted] = useState(true); // New state to track if component just mounted
   const maxNumOfVars = 42;
   // [FOR TEST PURPOSES]
   // const [displayMsgText, setDisplayMsgText] = useState<string>('');
@@ -24,6 +25,8 @@ const VariablesComponent: React.FC = () => {
     if (storedVariables) {
       setVariables(JSON.parse(storedVariables));
     }
+     // Set justMounted to false after initial render
+     setJustMounted(false);
   }, []);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const VariablesComponent: React.FC = () => {
   }, [variables]);
 
   useEffect(() => {
+    if (!justMounted) {
     // Synchronize contentEditable divs with the state
     variables.forEach((variable, index) => {
       if (nameRefs.current[index]) {
@@ -45,35 +49,29 @@ const VariablesComponent: React.FC = () => {
         valueRefs.current[index].textContent = variable.value;
       }
     });
+  }
   }, [variables]);
 
-  // Delete empty variables at the time of loading
-
-  // useEffect(() => {
-  //   const storedVariables = localStorage.getItem('postmannVars');
-  //   if (storedVariables) {
-  //     let parsedVariables = JSON.parse(storedVariables);
-  //     // Filter out variables where both name and value are empty
-  //     parsedVariables = parsedVariables.filter((variable: Variable) => variable.name.trim() !== '' || variable.value.trim() !== '');
-  //     setVariables(parsedVariables);
-  //   }
-  // }, []);
+  // Delete empty variables (both name and value are empty) using useEffect (without using filter)
   useEffect(() => {
-    const storedVariables = localStorage.getItem('postmannVars');
-    if (storedVariables) {
-      let parsedVariables = JSON.parse(storedVariables);
-      // Filter out variables where both name and value are empty
-      parsedVariables = parsedVariables.filter((variable: Variable) => variable.name?.trim() !== '' || variable.value?.trim() !== '');
-      // Update the state with the filtered variables
-      setVariables(parsedVariables);
-      // Persist the filtered variables back to localStorage
-      localStorage.setItem('postmannVars', JSON.stringify(parsedVariables));
+    if (!justMounted && variables.length > 0) {
+      let emptyVars = 0;
+      variables.forEach((variable, index) => {
+        if (variable.name === '' && variable.value === '') {
+          emptyVars++;
+          deleteVariable(index);
+        }
+      });
+      if (emptyVars > 0) {
+        console.log(`Deleted ${emptyVars} empty variables`);
+      }
     }
-  }, []);
-   
+  }, [variables, justMounted]);
+
 
   const addVariable = () => {
     if (variables.length < maxNumOfVars) {
+      setJustMounted(true);
       const newVariables = [...variables, { name: '', value: '' }];
       setVariables(newVariables);
       // Focus on the last added variable's name field
@@ -99,7 +97,7 @@ const VariablesComponent: React.FC = () => {
   };
   const deleteAllVariables = () => {
     const isConfirmed = window.confirm('Are you sure you want to delete all variables?');
-  
+
     if (isConfirmed) {
       setVariables([]);
       setWarnStyle('none');
