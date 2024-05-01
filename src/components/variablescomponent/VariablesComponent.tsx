@@ -176,7 +176,12 @@ const VariablesComponent: React.FC = () => {
       </div> 
   */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
+      {variables.length > 0 && (
+      <>
       <div className="vars-label flex-icon"><img src="click-outside-2.png" alt="Click Outside" style={{ width: '24px' }} /> Click outside to save</div>
+      <div className="vars-label flex-icon" style={{marginLeft:'6px'}}><img src="tab.png" alt="Tab" style={{ width: '17px' }} /> Hit Tab/Shift+tab to navigate</div>
+      </>
+      )}
       <div className='vars-label'>You currently have <span className='squared-number'>{variables.length}</span> {variables.length == 1 ? 'variable' : 'variables'}{variables.length == 0 ? ', create one by clicking on \'Add Variable\' button.' : ''}</div>
       <div className="table-container">
 
