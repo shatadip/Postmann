@@ -144,6 +144,9 @@ const VariablesComponent: React.FC = () => {
         if (key === 'name') {
           // Focus on the current variable's value field
           valueRefs.current[index]?.focus();
+        } else if (key === 'value' && index === variables.length - 1) {
+          // add a new variable if the last variable's value field is focused
+          addVariable();
         } else if (index < variables.length - 1) { // If currently focused on a value field and not the last variable
           // Focus on the next variable's name field
           nameRefs.current[index + 1]?.focus();
