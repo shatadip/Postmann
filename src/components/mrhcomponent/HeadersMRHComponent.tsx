@@ -121,6 +121,8 @@ const HeadersMRHComponent: React.FC = () => {
           valueRefs.current[index]?.focus();
         } else if (index < headersMRH.length - 1) {
           nameRefs.current[index + 1]?.focus();
+        } else if (index === headersMRH.length - 1) {
+          addHeader();
         }
       }
     }
