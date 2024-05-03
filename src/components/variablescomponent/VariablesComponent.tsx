@@ -133,12 +133,20 @@ const VariablesComponent: React.FC = () => {
     if (e.key === 'Tab') {
       e.preventDefault();
       if (e.shiftKey) { // If Shift+Tab is pressed
-        if (key === 'value') { // If currently focused on a value field
-          // Focus on the current variable's name field
-          nameRefs.current[index]?.focus();
-        } else if (index > 0) { // If currently focused on a name field and not the first variable
-          // Focus on the previous variable's value field
-          valueRefs.current[index - 1]?.focus();
+        if (key === 'name') { // If currently focused on a name field
+          // Delay the focus change after the blur event
+          setTimeout(() => {
+            if (index > 0) { // If not the first variable
+              // Focus on the previous variable's value field
+              valueRefs.current[index - 1]?.focus();
+            }
+          }, 10);
+        } else if (key === 'value') { // If currently focused on a value field
+          // Delay the focus change after the blur event
+          setTimeout(() => {
+            // Focus on the current variable's name field
+            nameRefs.current[index]?.focus();
+          }, 10);
         }
       } else {
         if (key === 'name') {
