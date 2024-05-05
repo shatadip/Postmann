@@ -26,6 +26,13 @@ const HeadersMRHComponent: React.FC = () => {
     { name: 'Connection', value: 'keep-alive' },
   ];
 
+// use useEffect to remove empty headers (both header name and value are empty) leaving just mounted headers to avoid racing conditions
+
+  useEffect(() => {
+    setHeadersMRH(headersMRH.filter(header => header.name !== '' || header.value !== ''));
+  }, [headersMRH]);
+  
+
   useEffect(() => {
     const storedHeadersMRH = localStorage.getItem('postmannHeadersMRH');
     if (storedHeadersMRH) {
