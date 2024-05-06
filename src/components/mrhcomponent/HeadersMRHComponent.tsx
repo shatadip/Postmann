@@ -1,14 +1,16 @@
+//HeadersMRHComponent.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Trash, Clipboard } from 'react-bootstrap-icons';
 import './HeadersMRHComponent.css';
 
-interface Header {
+interface header {
   name: string;
   value: string;
 }
 
 const HeadersMRHComponent: React.FC = () => {
-  const [headersMRH, setHeadersMRH] = useState<Header[]>([]);
+  const [headersMRH, setHeadersMRH] = useState<header[]>([]);
   const [restoreButtonText, setRestoreButtonText] = useState<string>('Restore Defaults');
   const [restoreButtonBGColor, setRestoreButtonBGColor] = useState<string>('#F9F9F9');
   const [btnTextColor, setBtnTextColor] = useState<string>('buttontext');
@@ -26,6 +28,23 @@ const HeadersMRHComponent: React.FC = () => {
     { name: 'Connection', value: 'keep-alive' },
   ];
 
+  // use useEffect to remove empty headers (both header name and value are empty) leaving just mounted headers to avoid racing conditions
+
+  // Set justMounted to false after initial render
+  useEffect(() => {
+    setJustMounted(false);
+    setTimeout(() => {
+      setJustMounted(true);
+    }, 11);
+  }, []);
+
+  // Only run this useEffect after the initial render
+  useEffect(() => {
+    if (!justMounted) {
+      setHeadersMRH(headersMRH.filter(header => header.name !== '' || header.value !== ''));
+    }
+  }, [headersMRH, justMounted]);
+
   useEffect(() => {
     const storedHeadersMRH = localStorage.getItem('postmannHeadersMRH');
     if (storedHeadersMRH) {
@@ -34,8 +53,6 @@ const HeadersMRHComponent: React.FC = () => {
       // Set default headers if none are found in localStorage
       setHeadersMRH(defaultHeaders);
     }
-    // Set justMounted to false after initial render
-    setJustMounted(false);
   }, []);
 
   useEffect(() => {
@@ -47,14 +64,8 @@ const HeadersMRHComponent: React.FC = () => {
     valueRefs.current = valueRefs.current.slice(0, headersMRH.length); // Update valueRefs as well
   }, [headersMRH]);
 
-  useEffect(() => {
-    if (!justMounted) {
-      setHeadersMRH(headersMRH.filter(header => header.name !== '' || header.value !== ''));
-    }
-  }, [headersMRH, justMounted]);
-
   const addHeader = () => {
-    setJustMounted(true); // Set justMounted to true when adding a header
+    // setJustMounted(true);
     const newHeadersMRH = [...headersMRH, { name: '', value: '' }];
     setHeadersMRH(newHeadersMRH);
     // Focus on the last added header's name field
@@ -86,8 +97,8 @@ const HeadersMRHComponent: React.FC = () => {
     setHeadersMRH(headersMRH.filter((_, i) => i !== index));
   };
 
-  const copyHeaderValue = (index: number) => {
-    // Ensure the valueRefs are up to date with the current headers
+  const copyHeaderVal = (index: number) => {
+    // Ensure the valueRefs are up to date with the current variables
     valueRefs.current = valueRefs.current.slice(0, headersMRH.length);
 
     // Check if the valueRefs array has an element at the given index
@@ -104,7 +115,9 @@ const HeadersMRHComponent: React.FC = () => {
     }
   };
 
-  const handleInputChange = (index: number, key: keyof Header, value: string) => {
+
+
+  const handleInputChange = (index: number, key: keyof header, value: string) => {
     const updatedHeadersMRH = [...headersMRH];
     updatedHeadersMRH[index][key] = value;
     setHeadersMRH(updatedHeadersMRH);
@@ -112,7 +125,7 @@ const HeadersMRHComponent: React.FC = () => {
 
   const handleKeyPress = (
     index: number,
-    key: keyof Header,
+    key: keyof header,
     e: React.KeyboardEvent<HTMLDivElement>
   ) => {
     if (e.key === 'Tab') {
@@ -129,6 +142,7 @@ const HeadersMRHComponent: React.FC = () => {
         } else if (index < headersMRH.length - 1) {
           nameRefs.current[index + 1]?.focus();
         } else if (index === headersMRH.length - 1) {
+        // setJustMounted(true);
           addHeader();
         }
       }
@@ -169,7 +183,7 @@ const HeadersMRHComponent: React.FC = () => {
             </div>
             <div className="table-cell buttons-div">
               <div style={{ display: 'flex', gap: '0.45rem', border: 'none', alignItems: 'center', justifyContent: 'center' }}>
-                <Clipboard className='icon-copy-header-value' data-tooltip='Copy Value' onClick={() => copyHeaderValue(index)} />
+                <Clipboard className='icon-copy-header-value' data-tooltip='Copy Value' onClick={() => copyHeaderVal(index)} />
                 <Trash className='icon-delete-header' data-tooltip='Delete Header' onClick={() => deleteHeader(index)} />
               </div>
             </div>
