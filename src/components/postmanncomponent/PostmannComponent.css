@@ -34,12 +34,17 @@
 }
 
 .postmann-title {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: #f15a24;
+    font-size: 18px!important;
+    margin-bottom: 12px!important;
+    color: #f15a24!important;
     /* Postmann color */
     /* #61dafb;
     */
+}
+
+.postmann-title:hover {
+    color: #f15a24!important;
+    text-decoration: underline;
 }
 
 .postmann-title-container {

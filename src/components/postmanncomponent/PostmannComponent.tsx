@@ -13,6 +13,7 @@ import VariablesComponent from '../variablescomponent/VariablesComponent';
 import NotesComponent from '../notescomponent/NotesComponent';
 import MRHComponent from '../mrhcomponent/HeadersMRHComponent';
 import HistoryComponent from '../historycomponent/HistoryComponent';
+import AboutPostmannComponent from './AboutPostmannComponent';
 
 Modal.setAppElement('#root'); // This line is important for accessibility reasons.
 
@@ -41,6 +42,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState<boolean>(false);
     const [isNotesModalOpen, setIsNotesModalOpen] = useState<boolean>(false);
     const [isModifyRequestHeadersModalOpen, setIsModifyRequestHeadersModalOpen] = useState<boolean>(false);
+    const [isAboutModalOpen, setIsAboutModalOpen] = useState<boolean>(false);
     const [isClosing, setIsClosing] = useState<boolean>(false);
     const [responseType, setResponseType] = useState<any>('');
     const [binaryFileContents, setBinaryFileContents] = useState<string>('');
@@ -596,7 +598,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             // Scroll down when the response is received
             // setScrolling(true);
             // const scrollToBottom = () => { ...
-            
+
 
             // Wait for the DOM to update before scrolling
             setTimeout(scrollToBottom, 150);
@@ -676,6 +678,9 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             );
         }
     };
+    const renderAboutModal = () => {
+        setIsAboutModalOpen(true);
+    }
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -689,6 +694,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             setIsHistoryModalOpen(false);
             setIsNotesModalOpen(false);
             setIsModifyRequestHeadersModalOpen(false);
+            setIsAboutModalOpen(false);
             setIsClosing(false);
         }, 150);
     };
@@ -706,7 +712,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             <div className="postmann-header">
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
-                    <h2 className="postmann-title">Postmann</h2>
+                    <h2 className="postmann-title"><a href="#" style={{color:'#f15a24'}} onClick={renderAboutModal}>Postmann</a></h2>
                     <p className="postmann-version">v 1.1.1*</p>
                 </div>
                 <div className="postmann-links">
@@ -1021,6 +1027,23 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                     </button>
                     <h1 className='dynamic-options-modal-h1'>Request Headers</h1>
                     <MRHComponent />
+                </div>
+            </Modal>
+            {/* Modal for ABOUT */}
+            <Modal
+                isOpen={isAboutModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Donation Modal"
+                className={`donation-modal about-modal ${isClosing ? 'ReactModal__Content--before-close' : ''}`}
+                overlayClassName="donation-modal-overlay"
+                shouldCloseOnOverlayClick={true}
+            >
+                <div className="modal-content" style={{ width: '23rem' }}>
+                    <button className="close-button" onClick={closeModal}>
+                        &times;
+                    </button>
+                    <h1 className='dynamic-options-modal-h1'>About Postmann</h1>
+                    <AboutPostmannComponent />
                 </div>
             </Modal>
 
