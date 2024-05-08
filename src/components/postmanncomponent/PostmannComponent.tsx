@@ -712,7 +712,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
             <div className="postmann-header">
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
-                    <h2 className="postmann-title"><a href="#" style={{color:'#f15a24'}} onClick={renderAboutModal}>Postmann</a></h2>
+                    <h2 className="postmann-title"><a href="#" className='postmann-title-anchor' onClick={renderAboutModal}>Postmann</a></h2>
                     <p className="postmann-version">v 1.1.1*</p>
                 </div>
                 <div className="postmann-links">

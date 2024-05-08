@@ -32,21 +32,30 @@
     text-align: left;
     min-height: 37rem;
 }
+.postmann-title-anchor {
+    font-weight: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    color: inherit;
+}
 
 .postmann-title {
     font-size: 18px!important;
-    margin-bottom: 12px!important;
+    /* margin-bottom: 12px!important; */
     color: #f15a24!important;
     /* Postmann color */
     /* #61dafb;
     */
 }
 
-.postmann-title:hover {
-    color: #f15a24!important;
+.postmann-title-anchor:hover {
+    color: #d33800!important;
     text-decoration: underline;
 }
-
+.postmann-title-anchor:hover .postmann-logo.rotating {
+    animation-play-state: paused;
+}
 .postmann-title-container {
     display: flex;
     flex-direction: column;
@@ -706,7 +715,8 @@ pre {
 .notes-modal,
 .vars-modal,
 .history-modal,
-.mrh-modal {
+.mrh-modal,
+.about-modal {
     background-color: var(--modal-bg-color);
     border: 2px solid #666;
 }
