@@ -1,0 +1,18 @@
+.apc-label {
+    color: white;
+    margin-bottom: 1rem;
+}
+.apc-disclaimer {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+}
+.apc-ul {
+    list-style-type:disc;
+}
+.apc-ul li {
+    color: white;
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+}
