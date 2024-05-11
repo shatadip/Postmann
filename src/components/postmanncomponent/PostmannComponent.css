@@ -729,3 +729,14 @@ pre {
 .mt-equal-1 {
     margin-top: 1.15rem;
 }
+
+.postmann-version-container {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
+}
+
+.postmann-info-circle {
+    font-size: 16px;
+}

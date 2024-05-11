@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './PostmannComponent.css'; // Import the stylesheet
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark, ghcolors } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Import the new theme
-import { Github, HeartFill, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl } from 'react-bootstrap-icons';
+import { Github, HeartFill, TextWrap, Clipboard, BrightnessHighFill, Download, MoonFill, ListOl, InfoCircle } from 'react-bootstrap-icons';
 import LinkAlternator from '../LinkAlternator'; //Show <> @Shatadip <> Rate Postmann <> alternately
 import Modal from 'react-modal'; // Import the modal library
 
@@ -713,7 +713,10 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
                 <img src="postmann-icon128.png" alt="Postmann Logo" className="postmann-logo rotating" />
                 <div className="postmann-title-container">
                     <h2 className="postmann-title"><a href="#" className='postmann-title-anchor' onClick={renderAboutModal}>Postmann</a></h2>
-                    <p className="postmann-version">v 1.1.1*</p>
+                    <div className="postmann-version-container">
+                    <p className="postmann-version">v 1.1.1 </p>
+                    <a href="#" className='postmann-title-anchor postmann-info-circle' onClick={renderAboutModal}><InfoCircle /></a>
+                    </div>
                 </div>
                 <div className="postmann-links">
                     {renderDonationLink()}

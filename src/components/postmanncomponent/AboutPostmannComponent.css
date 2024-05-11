@@ -44,3 +44,8 @@ img {
     font-weight: bold;
     font-family: 'Inter', sans-serif;
 }
+.author-links {
+    font-size: 0.8rem;
+    margin: 7px;
+    padding: 0;
+}

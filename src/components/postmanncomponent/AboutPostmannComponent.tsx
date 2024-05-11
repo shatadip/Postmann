@@ -35,7 +35,7 @@ const AboutPostmannComponent = () => {
         <img src="shatadip.jpg" alt="Shatadip Majumder" className="author-shatadip-img" />
       </div>
         <p className="text-align-center">Shatadip Majumder (Developer)</p>
-        <p className="text-align-center"><a href="https://www.shatadip.com" target="_blank">Website</a> | <a href="https://github.com/shatadip" target="_blank">GitHub</a> | <a href="https://chromewebstore.google.com/search/shatadip" target="_blank">Other Chrome Extensions</a></p>
+        <p className="text-align-center author-links"><a href="https://www.shatadip.com" target="_blank">Website</a> | <a href="https://github.com/shatadip" target="_blank">GitHub</a> | <a href="https://chromewebstore.google.com/search/shatadip" target="_blank">Other Chrome Extensions</a></p>
     </>
   )
 }
