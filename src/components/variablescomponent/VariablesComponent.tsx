@@ -178,6 +178,14 @@ const VariablesComponent: React.FC = () => {
     }
   };
 
+  const handleNameFieldBlur = (index: number, value: string) => {
+
+    let sanitizedValue = value.trim().replace(/[^\w-]/g, ''); // Remove whitespace and special characters
+
+    handleInputChange(index, 'name', sanitizedValue);
+
+  };
+
   return (
     <>
       {/*     
@@ -210,7 +218,8 @@ const VariablesComponent: React.FC = () => {
               ref={(element) => (nameRefs.current[index] = element as HTMLDivElement)}
               className="table-cell var-name"
               contentEditable
-              onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
+              // onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
+              onBlur={(e) => handleNameFieldBlur(index, e.currentTarget.textContent || '')}
               onKeyDown={(e) => handleKeyPress(index, 'name', e)}
             >
               {variable.name}
