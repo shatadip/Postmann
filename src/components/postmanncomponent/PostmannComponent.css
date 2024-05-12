@@ -44,13 +44,14 @@
     font-size: 18px!important;
     /* margin-bottom: 12px!important; */
     color: #f15a24!important;
+    cursor: default;
     /* Postmann color */
     /* #61dafb;
     */
 }
 
 .postmann-title-anchor:hover {
-    color: #d33800!important;
+    color: #f15a24!important;
     text-decoration: underline;
 }
 .postmann-title-anchor:hover .postmann-logo.rotating {
