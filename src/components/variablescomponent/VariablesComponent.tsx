@@ -25,8 +25,8 @@ const VariablesComponent: React.FC = () => {
     if (storedVariables) {
       setVariables(JSON.parse(storedVariables));
     }
-     // Set justMounted to false after initial render
-     setJustMounted(false);
+    // Set justMounted to false after initial render
+    setJustMounted(false);
   }, []);
 
   useEffect(() => {
@@ -40,16 +40,16 @@ const VariablesComponent: React.FC = () => {
 
   useEffect(() => {
     if (!justMounted) {
-    // Synchronize contentEditable divs with the state
-    variables.forEach((variable, index) => {
-      if (nameRefs.current[index]) {
-        nameRefs.current[index].textContent = variable.name;
-      }
-      if (valueRefs.current[index]) {
-        valueRefs.current[index].textContent = variable.value;
-      }
-    });
-  }
+      // Synchronize contentEditable divs with the state
+      variables.forEach((variable, index) => {
+        if (nameRefs.current[index]) {
+          nameRefs.current[index].textContent = variable.name;
+        }
+        if (valueRefs.current[index]) {
+          valueRefs.current[index].textContent = variable.value;
+        }
+      });
+    }
   }, [variables]);
 
   // Delete empty variables (both name and value are empty) using useEffect (without using filter)
@@ -182,7 +182,7 @@ const VariablesComponent: React.FC = () => {
 
     let sanitizedValue = value.trim().replace(/[^\w-]/g, ''); // Remove whitespace and special characters
 
-    handleInputChange(index, 'name', sanitizedValue);
+    handleInputChange(index, 'name', sanitizedValue == '' ? '\n' : sanitizedValue); // \n seems to be a hack to prevent only special characters used as a variable name
 
   };
 
@@ -196,10 +196,10 @@ const VariablesComponent: React.FC = () => {
   */}
       <div className='vars-label'>Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL input or body</div>
       {variables.length > 0 && (
-      <>
-      <div className="vars-label flex-icon"><img src="click-outside-2.png" alt="Click Outside" style={{ width: '24px' }} /> Click outside to save</div>
-      <div className="vars-label flex-icon" style={{marginLeft:'6px'}}><img src="tab.png" alt="Tab" style={{ width: '17px' }} /> Hit Tab/Shift+tab to navigate</div>
-      </>
+        <>
+          <div className="vars-label flex-icon"><img src="click-outside-2.png" alt="Click Outside" style={{ width: '24px' }} /> Click outside to save</div>
+          <div className="vars-label flex-icon" style={{ marginLeft: '6px' }}><img src="tab.png" alt="Tab" style={{ width: '17px' }} /> Hit Tab/Shift+tab to navigate</div>
+        </>
       )}
       <div className='vars-label'>You currently have <span className='squared-number'>{variables.length}</span> {variables.length == 1 ? 'variable' : 'variables'}{variables.length == 0 ? ', create one by clicking on \'Add Variable\' button.' : ''}</div>
       <div className="table-container">
