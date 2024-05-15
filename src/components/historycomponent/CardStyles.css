@@ -15,15 +15,21 @@ main {
     padding: 16px;
     gap: 16px;
     width: 95%;
-    background: #ffffff;
+    /* background: #ffffff; */
     box-shadow: 0px 16px 32px rgba(17, 24, 39, 0.08);
     border-radius: 4px;
+
+    background: #101010;
+    border-radius: 4px;
+    border: 1px solid #333;
+    margin-bottom: 1.4rem;
 }
 
 main header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #e1e1e1;
 }
 
 main header span {
@@ -41,7 +47,8 @@ main section h1 {
     font-weight: 700;
     font-size: 0.85rem;
     line-height: 19px;
-    color: #151619;
+    /* color: #151619; */
+    color: #e1e1e1;
 }
 
 main section p {
@@ -93,10 +100,12 @@ main footer {
 
 .btn.primary {
     color: #ffffff;
-    background: #2b67e9;
+    /* background: #2b67e9; */
+    background: #5ea6e9;
 }
 .btn.primary:hover {
-    background: #022380;
+    background: #646cff;
+    /* background: #022380; */
     cursor: pointer;
 }
 .btn.primary:active {
