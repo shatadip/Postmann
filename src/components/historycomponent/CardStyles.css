@@ -89,10 +89,15 @@ main footer {
     background: #d6d8db;
 }
 .btn.neutral:hover {
-    background: #151619;
-    color: #d6d8db;
+    /* background: #151619; */
+    /* color: #d6d8db; */
+    /* cursor: pointer; */
+
+    background: slategrey;
+    color: #efedef;
     cursor: pointer;
 }
+
 .btn.neutral:active {
     background: rgb(139, 4, 4);
     color: #fff;
