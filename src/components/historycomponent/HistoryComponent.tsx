@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './HistoryComponent.css'
 import './CardStyles.css'
-import { PlayFill, Trash3 } from 'react-bootstrap-icons';
+import { PlayFill, Trash3, Calendar } from 'react-bootstrap-icons';
 interface HistoryComponentProps {
     onReRun: (method: string, url: string, body: string) => void;
 }
@@ -48,7 +48,8 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ onReRun }) => {
                                 <header>
                                     <span>
                                         {/* add svg */}
-                                        <img src="date-svgrepo-com.svg" alt="" width={24} />
+                                        {/* <img src="date-svgrepo-com.svg" alt="" width={24} /> */}
+                                        <Calendar />
                                     </span>
                                     <b>{historyItem.time.curTime}</b>
                                     <span className='hist-index'>{index+1}</span>

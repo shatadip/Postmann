@@ -28,7 +28,7 @@ main {
 main header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1px;
     color: #e1e1e1;
 }
 
