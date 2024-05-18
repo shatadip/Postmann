@@ -16,10 +16,13 @@ main {
     gap: 16px;
     width: 95%;
     /* background: #ffffff; */
-    box-shadow: 0px 16px 32px rgba(17, 24, 39, 0.08);
+    /* box-shadow: 0px 16px 32px rgba(17, 24, 39, 0.08); */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
     border-radius: 4px;
 
-    background: #101010;
+    /* background: #101010; */
+    background: linear-gradient(135deg, #2e2e2e, #1c1c1c);
     border-radius: 4px;
     border: 1px solid #333;
     margin-bottom: 1.4rem;
