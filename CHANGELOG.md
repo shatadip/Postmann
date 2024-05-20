@@ -1,5 +1,27 @@
-## [1.1.0] - 2024-04-28
+## [1.1.1] - 2024-05-20
+
 ### Added
+
+- Info Button
+  - Disclaimer
+  - About Postmann
+  - Author Info
+- Press Tab to create new variable or header
+
+### Changed
+
+- Time Format (In saved history)
+- UI of History modal (cards)
+
+### Fixed
+
+- Empty variables are now auto-deleted (if both name & value fields empty)
+- Variable name sanitization if clicking outside to defocus
+
+## [1.1.0] - 2024-04-28
+
+### Added
+
 - Dynamic Options
   - Variables
   - History
@@ -7,15 +29,19 @@
   - Modify Request Headers
 
 ### Changed
+
 - UI
   - UI is wider now
   - Color Scheme and Styles
 
 ### Fixed
+
 - None
 
 ## [1.0.4] - 2024-02-04
+
 ### Added
+
 - Response Size
 - Tooltip for Response Code, Time, Size (Breakup)
 - Dark Theme (AtomDark) for better visibility and readability
@@ -28,6 +54,7 @@
 - Link to Rate Postmann (On Chrome Web Store)
 
 ### Changed
+
 - Default response theme to Dark
 - Styles
   - Response Status Code, Time, Size (Separate boxes and colors with Font style - Inter)
@@ -36,6 +63,7 @@
 - Displaying a message with possible reasons for errors in Headers; previously, nothing was displayed in headers in case of an error while fetching.
 
 ### Fixed
+
 - Raw response (fetch and display absolute raw response)
 - Clearing previous response code when sending a new request
 - Clearing previous response headers and raw response in case of an error while fetching
@@ -43,21 +71,27 @@
 - Fixed the display of inner JSON values in response headers.
 
 ## [1.0.3] - 2024-01-31
+
 ### Added
+
 - Support for fetching invalid JSON responses (e.g. https://httpbin.org/stream/2)
 - Added a small notification text block using &lt;sup&gt; to inform if the response is Invalid JSON
 
 ### Changed
+
 - Parsing JSON as JSON.parse(res.text()), previously JSON was parsed as res.json()
 - Styling updated
-  - @index.css > min-width: 33em; from /*320px;*/, and min-height: 40em; from /*100vh;*/
+  - @index.css > min-width: 33em; from /_320px;_/, and min-height: 40em; from /_100vh;_/
   - @PostmannComponent.css > Added .invalidJSON-sup class and added color:white & text-decoration:none to .postmann-tab.active
 
 ### Fixed
-- No fixes needed, my code rocks!  
+
+- No fixes needed, my code rocks!
 
 ## [1.0.2] - 2024-01-28
+
 ### Added
+
 - Support for fetching XML responses.
 - Support for fetching binary/octet-stream responses.
   - Display length count of the binary response.
@@ -86,8 +120,11 @@
 - Updated version number to 1.0.2 in public/manifest.json and /package.json
 
 ### Fixed
+
 - No fixes needed, my code rocks!
 
 ## [1.0.1] - 2024-01-21
+
 ### Added
+
 - Initial release on Chrome Web Store.
