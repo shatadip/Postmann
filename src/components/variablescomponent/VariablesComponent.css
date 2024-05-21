@@ -154,3 +154,8 @@
   align-items: center;
   gap: 0.25rem;
 }
+
+.goldenrod {
+  background: goldenrod!important;
+  color: #fefefe!important;
+}
