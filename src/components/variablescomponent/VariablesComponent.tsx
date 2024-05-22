@@ -13,22 +13,27 @@ const VariablesComponent: React.FC = () => {
   const [variables, setVariables] = useState<Variable[]>([]);
   const [warnStyle, setWarnStyle] = useState<String>("none");
   const [isShaking, setIsShaking] = useState(false);
-  const [justMounted, setJustMounted] = useState(false); // New state to track if component just mounted
+  const [justMounted, setJustMounted] = useState(true); // New state to track if component just mounted
   const maxNumOfVars = 42;
   // [FOR TEST PURPOSES]
   // const [displayMsgText, setDisplayMsgText] = useState<string>('');
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
-
+  let displayMsgText = "N.A.";
   useEffect(() => {
     const storedVariables = localStorage.getItem("postmannVars");
     if (storedVariables) {
       setVariables(JSON.parse(storedVariables));
     }
     // Set justMounted to false after initial render
-    setJustMounted(false);
   }, []);
-
+  // Set justMounted to false after initial render
+  useEffect(() => {
+    setJustMounted(false);
+    setTimeout(() => {
+      setJustMounted(true);
+    }, 11);
+  }, []);
   useEffect(() => {
     localStorage.setItem("postmannVars", JSON.stringify(variables));
   }, [variables]);
@@ -57,14 +62,15 @@ const VariablesComponent: React.FC = () => {
     if (!justMounted && variables.length > 0) {
       let emptyVars = 0;
       variables.forEach((variable, index) => {
-        if (variable.name == "" && variable.value == "") {
+        if (variable.name === "" && variable.value === "") {
           emptyVars++;
           deleteVariable(index);
         }
       });
-      if (emptyVars > 0) {
-        console.log(`Deleted ${emptyVars} empty variables`);
-      }
+      // if (emptyVars > 0) {
+      //   console.log(`Deleted ${emptyVars} empty variables`);
+      // }
+      displayMsgText = `Deleted ${emptyVars} empty variables`;
     }
   }, [variables, justMounted]);
 
@@ -132,6 +138,11 @@ const VariablesComponent: React.FC = () => {
   ) => {
     let updatedVariables = [...variables];
     updatedVariables[index][key] = value;
+    // Filter out variables where both name and value are empty
+    updatedVariables = updatedVariables.filter(
+      (variable) => variable.name !== "" || variable.value !== ""
+    );
+
     setVariables(updatedVariables);
   };
 
@@ -210,12 +221,13 @@ const VariablesComponent: React.FC = () => {
 
   return (
     <>
-      {/*     
-    FOR TEST PURPOSES
-      <div className="debugVars" style={{ color: 'yellow', fontSize: '1.35rem' }}>
+      FOR TEST PURPOSES
+      <div
+        className="debugVars"
+        style={{ color: "yellow", fontSize: "1.35rem" }}
+      >
         {displayMsgText}
-      </div> 
-  */}
+      </div>
       <div className="vars-label">
         Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL
         input or body
