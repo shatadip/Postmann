@@ -26,14 +26,9 @@ const VariablesComponent: React.FC = () => {
       setVariables(JSON.parse(storedVariables));
     }
     // Set justMounted to false after initial render
-  }, []);
-  // Set justMounted to false after initial render
-  useEffect(() => {
     setJustMounted(false);
-    setTimeout(() => {
-      setJustMounted(true);
-    }, 11);
   }, []);
+
   useEffect(() => {
     localStorage.setItem("postmannVars", JSON.stringify(variables));
   }, [variables]);
@@ -59,18 +54,16 @@ const VariablesComponent: React.FC = () => {
 
   // Delete empty variables (both name and value are empty) using useEffect (without using filter)
   useEffect(() => {
-    if (!justMounted && variables.length > 0) {
-      let emptyVars = 0;
-      variables.forEach((variable, index) => {
-        if (variable.name === "" && variable.value === "") {
-          emptyVars++;
-          deleteVariable(index);
-        }
-      });
-      // if (emptyVars > 0) {
-      //   console.log(`Deleted ${emptyVars} empty variables`);
-      // }
-      displayMsgText = `Deleted ${emptyVars} empty variables`;
+    if (!justMounted) {
+      const nonEmptyVariables = variables.filter(
+        (variable) => variable.name !== "" || variable.value !== ""
+      );
+      if (nonEmptyVariables.length !== variables.length) {
+        setVariables(nonEmptyVariables);
+        displayMsgText = `Deleted ${
+          variables.length - nonEmptyVariables.length
+        } empty variables`;
+      }
     }
   }, [variables, justMounted]);
 
@@ -139,11 +132,10 @@ const VariablesComponent: React.FC = () => {
     let updatedVariables = [...variables];
     updatedVariables[index][key] = value;
     // Filter out variables where both name and value are empty
-    updatedVariables = updatedVariables.filter(
+    const nonEmptyVariables = updatedVariables.filter(
       (variable) => variable.name !== "" || variable.value !== ""
     );
-
-    setVariables(updatedVariables);
+    setVariables(nonEmptyVariables);
   };
 
   const handleKeyPress = (
