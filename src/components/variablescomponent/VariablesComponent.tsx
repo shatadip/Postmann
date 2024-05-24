@@ -19,7 +19,7 @@ const VariablesComponent: React.FC = () => {
   // const [displayMsgText, setDisplayMsgText] = useState<string>('');
   const nameRefs = useRef<HTMLDivElement[]>([]);
   const valueRefs = useRef<HTMLDivElement[]>([]); // Ref for value fields
-  let displayMsgText = "N.A.";
+
   useEffect(() => {
     const storedVariables = localStorage.getItem("postmannVars");
     if (storedVariables) {
@@ -54,15 +54,16 @@ const VariablesComponent: React.FC = () => {
 
   // Delete empty variables (both name and value are empty) using useEffect (without using filter)
   useEffect(() => {
-    if (!justMounted) {
-      const nonEmptyVariables = variables.filter(
-        (variable) => variable.name !== "" || variable.value !== ""
-      );
-      if (nonEmptyVariables.length !== variables.length) {
-        setVariables(nonEmptyVariables);
-        displayMsgText = `Deleted ${
-          variables.length - nonEmptyVariables.length
-        } empty variables`;
+    if (!justMounted && variables.length > 0) {
+      let emptyVars = 0;
+      variables.forEach((variable, index) => {
+        if (variable.name === "" && variable.value === "") {
+          emptyVars++;
+          deleteVariable(index);
+        }
+      });
+      if (emptyVars > 0) {
+        console.log(`Deleted ${emptyVars} empty variables`);
       }
     }
   }, [variables, justMounted]);
@@ -131,11 +132,7 @@ const VariablesComponent: React.FC = () => {
   ) => {
     let updatedVariables = [...variables];
     updatedVariables[index][key] = value;
-    // Filter out variables where both name and value are empty
-    const nonEmptyVariables = updatedVariables.filter(
-      (variable) => variable.name !== "" || variable.value !== ""
-    );
-    setVariables(nonEmptyVariables);
+    setVariables(updatedVariables);
   };
 
   const handleKeyPress = (
@@ -201,25 +198,14 @@ const VariablesComponent: React.FC = () => {
     }
   };
 
-  const handleNameFieldBlur = (index: number, value: string) => {
-    let sanitizedValue = value.trim().replace(/[^\w-]/g, ""); // Remove whitespace and special characters
-
-    handleInputChange(
-      index,
-      "name",
-      sanitizedValue == "" ? "\n" : sanitizedValue
-    ); // \n seems to be a hack to prevent only special characters used as a variable name
-  };
-
   return (
     <>
-      FOR TEST PURPOSES
-      <div
-        className="debugVars"
-        style={{ color: "yellow", fontSize: "1.35rem" }}
-      >
+      {/*     
+    FOR TEST PURPOSES
+      <div className="debugVars" style={{ color: 'yellow', fontSize: '1.35rem' }}>
         {displayMsgText}
-      </div>
+      </div> 
+  */}
       <div className="vars-label">
         Variables are auto-saved, use &#x7B;&#x7B;var_name&#x7D;&#x7D; in URL
         input or body
@@ -265,9 +251,12 @@ const VariablesComponent: React.FC = () => {
               }
               className="table-cell var-name"
               contentEditable
-              // onBlur={(e) => handleInputChange(index, 'name', e.currentTarget.textContent || '')}
               onBlur={(e) =>
-                handleNameFieldBlur(index, e.currentTarget.textContent || "")
+                handleInputChange(
+                  index,
+                  "name",
+                  e.currentTarget.textContent || ""
+                )
               }
               onKeyDown={(e) => handleKeyPress(index, "name", e)}
             >
