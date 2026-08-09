@@ -16,7 +16,7 @@ const AboutPostmannComponent = () => {
       </ul>
       <p className="apc-title">About</p>
       <ul className="apc-ul">
-        <li>First release was in January 2024, latest in May 2024 (v 1.1.1)</li>
+        <li>First release was in January 2024, latest in June 2026 (v 1.2.1) by <a className="apc-link" href="https://github.com/Fire162" target="_blank" rel="noopener noreferrer">Fire162</a></li>
         <li>Supports JSON, XML, HTML, Image, PDF, Octet Stream responses</li>
         <li>
           Work with variables, history, notes, request headers (e.g. add bearer

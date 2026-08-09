@@ -1,6 +1,6 @@
 .table-container {
   display: table;
-  width: 304px;
+  width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
 }
@@ -21,13 +21,16 @@
   border: 1px solid #ddd !important;
   text-align: left;
   font-size: 0.65rem;
+  color: #1e1e1e;
+  word-break: break-word;
 }
 
 .buttons-div {
   text-align: center;
-  color: white;
   padding: 5px;
   align-content: center;
+  white-space: nowrap;
+  width: 1%;
 }
 
 
@@ -146,6 +149,7 @@
 
 .buttonContainerVars button {
   border-radius: 2px!important;
+  color: #1e1e1e;
 }
 
 #btnDelAllVars {
@@ -153,6 +157,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  color: #fff;
 }
 
 .goldenrod {

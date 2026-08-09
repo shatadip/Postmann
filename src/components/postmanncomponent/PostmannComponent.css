@@ -15,12 +15,12 @@
 
 @font-face {
     font-family: 'IBMPlexMono';
-    src: url('../fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+    src: url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Inter';
-    src: url('../fonts/Inter/Inter-Regular.ttf') format('truetype');
+    src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
 }
 
 .postmann-container {
@@ -389,7 +389,7 @@ pre {
     cursor: pointer;
     background: none;
     border: none;
-    color: #333;
+    color: #ccc;
 }
 
 .close-button:hover {
@@ -411,7 +411,7 @@ pre {
     cursor: pointer;
     background: none;
     border: none;
-    color: #333;
+    color: #ccc;
 }
 
 .binaryPRE {
@@ -720,6 +720,14 @@ pre {
 .about-modal {
     background-color: var(--modal-bg-color);
     border: 2px solid #666;
+    resize: both;
+    overflow: auto;
+    width: 600px;
+    height: 550px;
+    min-width: 320px;
+    min-height: 250px;
+    max-width: 95vw;
+    max-height: 90vh;
 }
 
 .dynamic-options-modal-h1 {

@@ -3,7 +3,7 @@
     margin-bottom: 0.5rem;
 }
 .mrh-container {
-    width: 318px;
+    width: 100%;
 }
 .mrhTA {
     width: 100%;
@@ -12,64 +12,59 @@
 
 .table-container {
     display: table;
-    width: 366px;
+    width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-   }
-   
-   .table-row {
+}
+
+.table-row {
     display: table-row;
-   }
-   
-   .table-row.header {
+}
+
+.table-row.header {
     background-color: #f2f2f2; /* Light grey background for headers */
     font-weight: bold;
-   }
-   
-   .table-cell {
+}
+
+.table-cell {
     display: table-cell;
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
     font-size: 0.65rem;
-   }
-   
-   .buttons-div {
+    color: #1e1e1e;
+    word-break: break-word;
+}
+
+.buttons-div {
     text-align: center;
-    color: white;
     padding: 5px;
     align-content: center;
-   }
-   
-   .delete-button:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-   }
-   
-   /* Styling for alternating row colors */
-   .table-row:nth-child(even) {
-    background-color: #f2f2f2;
-   }
-   .table-row:nth-child(odd) {
-    background-color: #ffffff; /* White background for odd rows */
-  }
-   /* .ellipsis {
-    overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
-  } */
+    width: 1%;
+}
 
-  .btnContainerMRH {
+.delete-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Styling for alternating row colors */
+.table-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.table-row:nth-child(odd) {
+    background-color: #ffffff; /* White background for odd rows */
+}
+
+.btnContainerMRH {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-  }
-  .btnContainerMRH button {
+}
+.btnContainerMRH button {
     border-radius: 2px;
-  }
-  
-/* .var-name {
-    max-width: 19px;
-} */
+    color: #1e1e1e;
+}
 
 
 .icon-delete-header, .icon-copy-header-value {
@@ -80,8 +75,8 @@
 .icon-delete-header:hover, .icon-copy-header-value:hover {
   color: rgb(36, 34, 34);
   cursor: pointer;
- }
- .icon-delete-header:active {
+}
+.icon-delete-header:active {
   color: rgb(0, 0, 0);
   cursor: pointer;
 }

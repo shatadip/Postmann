@@ -797,7 +797,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         <div className="postmann-title-container">
           <h2 className="postmann-title">Postmann</h2>
           <div className="postmann-version-container">
-            <p className="postmann-version">v 1.1.1 </p>
+            <p className="postmann-version">v 1.2.1 </p>
             <a
               href="#"
               className="postmann-title-anchor postmann-info-circle"
@@ -1188,7 +1188,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
       >
         <div
           className="modal-content"
-          style={{ width: "369px", height: "393px" }}
+          style={{ width: "100%" }}
         >
           <button className="close-button" onClick={closeModal}>
             &times;
@@ -1208,7 +1208,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         overlayClassName="donation-modal-overlay"
         shouldCloseOnOverlayClick={true}
       >
-        <div className="modal-content" style={{ width: "23rem" }}>
+        <div className="modal-content" style={{ width: "100%" }}>
           <button className="close-button" onClick={closeModal}>
             &times;
           </button>
@@ -1227,7 +1227,7 @@ const PostmannComponent: React.FC<PostmannComponentProps> = () => {
         overlayClassName="donation-modal-overlay"
         shouldCloseOnOverlayClick={true}
       >
-        <div className="modal-content" style={{ width: "23rem" }}>
+        <div className="modal-content" style={{ width: "100%" }}>
           <button className="close-button" onClick={closeModal}>
             &times;
           </button>

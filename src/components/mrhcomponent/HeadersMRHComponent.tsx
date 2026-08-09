@@ -15,7 +15,7 @@ const HeadersMRHComponent: React.FC = () => {
     useState<string>("Restore Defaults");
   const [restoreButtonBGColor, setRestoreButtonBGColor] =
     useState<string>("#F9F9F9");
-  const [btnTextColor, setBtnTextColor] = useState<string>("buttontext");
+  const [btnTextColor, setBtnTextColor] = useState<string>("#1e1e1e");
   const [isRestoring, setIsRestoring] = useState(false);
   const [justMounted, setJustMounted] = useState(true);
 
@@ -85,14 +85,14 @@ const HeadersMRHComponent: React.FC = () => {
     setRestoreButtonBGColor("#0b5f03"); // Change to green
     setBtnTextColor("#b2ff00");
     setTimeout(() => {
-      setBtnTextColor("#ffffff");
+      setBtnTextColor("#fff");
       setRestoreButtonText("Restored Successfully");
     }, 1000);
     setTimeout(() => {
       setHeadersMRH(defaultHeaders);
       setRestoreButtonText("Restore Defaults");
       setRestoreButtonBGColor("#F9F9F9"); // Change back to the original color
-      setBtnTextColor("buttontext");
+      setBtnTextColor("#1e1e1e");
       setIsRestoring(false);
     }, 1750);
   };
